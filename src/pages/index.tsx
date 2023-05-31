@@ -1,4 +1,3 @@
-import Head from "next/head"
 import SignUp from "./sign-up"
 
 export default function Home() {
