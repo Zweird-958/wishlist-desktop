@@ -5,36 +5,15 @@ const Form = (props) => {
   const { children, title, button, ...otherProps } = props
 
   return (
-    <div
-      className="flex items-center justify-center min-h-screen w-full bg-red-500"
-      // display="flex"
-      // alignItems="center"
-      // justify="center"
-      // css={{ minHeight: "100vh" }}
-    >
-      <Card>
-        {/* <Text
-          size={26}
-          weight="bold"
-          css={{
-            as: "center",
-            mb: "20px",
-            color: "$primary",
-          }}
-        >
-          {title}
-        </Text> */}
+    <div className="flex items-center justify-center min-h-screen w-full">
+      <Card className="lg:w-1/5 sm:w-3/4 py-8 w-full mx-3 sm:mx-0">
         <Formik {...otherProps}>
-          <FormFormik noValidate>
-            {/* <FormField name="email" type="text" label="Email" />
-            <FormField
-              name="password"
-              type="password"
-              label="Mot de passe"
-              isPassword={true}
-            /> */}
+          <FormFormik noValidate className="w-2/3 mx-auto gap-4 flex flex-col">
+            <p className="text-center">{title}</p>
             {children}
-            <Button type="submit">{button}</Button>
+            <Button type="submit" fullWidth color="primary">
+              {button}
+            </Button>
           </FormFormik>
         </Formik>
       </Card>

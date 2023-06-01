@@ -1,43 +1,26 @@
-import { Input, Spacer } from "@nextui-org/react"
+import { Input } from "@nextui-org/react"
 import { useField } from "formik"
 
 const FormField = (props) => {
   const { label, isPassword, ...otherProps } = props
   const [field, meta] = useField(otherProps)
 
-  const options = {
-    clearable: true,
-    bordered: true,
-    fullWidth: true,
-    color: "primary",
-    size: "lg",
-    placeholder: label,
-    ...field,
-    ...props,
-  }
-
   return (
     <>
-      {/* {isPassword ? <Input.Password {...options} /> : <Input {...options} />} */}
-      {/* <Input type="email" label="Email" position="inside" /> */}
       <Input
-        label="Email"
-        placeholder="Enter your email"
-        color="primary"
+        label={label}
+        color="secondary"
+        variant="bordered"
         size="sm"
         radius="lg"
         fullWidth
         labelPlacement="inside"
+        {...field}
+        {...otherProps}
       />
       {meta.touched && meta.error ? (
-        <>
-          {/* <Spacer y={0.3} /> */}
-          {/* <Text color="error" css={{ px: "$5" }}>
-            {meta.error}
-          </Text> */}
-        </>
+        <p className="px-2 text-sm">{meta.error}</p>
       ) : null}
-      <Spacer y={1} />
     </>
   )
 }
