@@ -1,46 +1,50 @@
-import { Button, Card, Container, Input, Spacer, Text } from "@nextui-org/react"
+import Form from "@/web/components/Form"
+import FormField from "@/web/components/FormField"
+import api from "@/web/services/api"
+import { Button } from "@nextui-org/react"
+import * as yup from "yup"
+
+const initialValues = {
+  email: "",
+  password: "",
+}
+
+const signUpSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email("Veuillez entrer un email valide")
+    .required("Veuillez entrer un email"),
+  password: yup
+    .string()
+    .min(8, "Votre mot de passe doit contenir au moins 8 caractères")
+    .required("Veuillez entrer un mot de passe"),
+})
 
 const SignUp = () => {
+  const handleSubmit = async (values: any) => {
+    try {
+      await api.post("/sign-up", values)
+    } catch (err) {
+      return
+    }
+  }
+
   return (
-    <Container
-      display="flex"
-      alignItems="center"
-      justify="center"
-      css={{ minHeight: "100vh" }}
+    <Form
+      initialValues={initialValues}
+      validationSchema={signUpSchema}
+      onSubmit={handleSubmit}
+      title="Inscription"
+      button="S'inscrire"
     >
-      <Card css={{ mw: "420px", p: "20px" }}>
-        <Text
-          size={26}
-          weight="bold"
-          css={{
-            as: "center",
-            mb: "20px",
-            color: "$primary",
-          }}
-        >
-          Inscription
-        </Text>
-        <Input
-          clearable
-          bordered
-          fullWidth
-          color="primary"
-          size="lg"
-          placeholder="Email"
-        />
-        <Spacer y={1} />
-        <Input.Password
-          clearable
-          bordered
-          fullWidth
-          color="primary"
-          size="lg"
-          placeholder="Password"
-        />
-        <Spacer y={1} />
-        <Button>S'inscire</Button>
-      </Card>
-    </Container>
+      <FormField name="email" type="text" label="Email" />
+      <FormField
+        name="password"
+        type="password"
+        label="Mot de passe"
+        isPassword={true}
+      />
+    </Form>
   )
 }
 
