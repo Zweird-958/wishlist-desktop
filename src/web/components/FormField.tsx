@@ -1,8 +1,14 @@
 import { Input } from "@nextui-org/react"
 import { useField } from "formik"
 
-const FormField = (props) => {
-  const { label, isPassword, ...otherProps } = props
+type Props = {
+  label: string
+  name: string
+  type: string
+}
+
+const FormField = (props: Props) => {
+  const { label, ...otherProps } = props
   const [field, meta] = useField(otherProps)
 
   return (

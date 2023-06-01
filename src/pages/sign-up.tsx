@@ -37,12 +37,7 @@ const SignUp = () => {
       button="S'inscrire"
     >
       <FormField name="email" type="text" label="Email" />
-      <FormField
-        name="password"
-        type="password"
-        label="Mot de passe"
-        isPassword={true}
-      />
+      <FormField name="password" type="password" label="Mot de passe" />
     </Form>
   )
 }

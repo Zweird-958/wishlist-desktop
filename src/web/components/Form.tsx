@@ -1,7 +1,17 @@
 import { Button, Card } from "@nextui-org/react"
 import { Form as FormFormik, Formik } from "formik"
+import React from "react"
 
-const Form = (props) => {
+type Props = {
+  children: React.ReactNode
+  title: string
+  button: string
+  initialValues: any
+  validationSchema: any
+  onSubmit: any
+}
+
+const Form = (props: Props) => {
   const { children, title, button, ...otherProps } = props
 
   return (
