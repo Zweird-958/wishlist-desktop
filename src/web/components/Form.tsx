@@ -15,7 +15,7 @@ const Form = (props: Props) => {
   const { children, title, button, ...otherProps } = props
 
   return (
-    <Card className="lg:w-1/5 sm:w-3/4 py-8 w-full mx-3 sm:mx-0">
+    <Card className="lg:w-1/5 sm:w-3/4 py-8 w-full mx-3 sm:mx-0 bg-white z-10">
       <Formik {...otherProps}>
         <FormFormik noValidate className="w-2/3 mx-auto gap-4 flex flex-col">
           <p className="text-center">{title}</p>
