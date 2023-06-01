@@ -1,7 +1,6 @@
 import Form from "@/web/components/Form"
 import FormField from "@/web/components/FormField"
 import api from "@/web/services/api"
-import { Button } from "@nextui-org/react"
 import * as yup from "yup"
 
 const initialValues = {

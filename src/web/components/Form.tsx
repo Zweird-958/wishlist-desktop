@@ -1,18 +1,19 @@
-import { Button, Card, Container, Text } from "@nextui-org/react"
+import { Button, Card } from "@nextui-org/react"
 import { Form as FormFormik, Formik } from "formik"
 
 const Form = (props) => {
   const { children, title, button, ...otherProps } = props
 
   return (
-    <Container
-      display="flex"
-      alignItems="center"
-      justify="center"
-      css={{ minHeight: "100vh" }}
+    <div
+      className="flex items-center justify-center min-h-screen w-full bg-red-500"
+      // display="flex"
+      // alignItems="center"
+      // justify="center"
+      // css={{ minHeight: "100vh" }}
     >
-      <Card css={{ mw: "420px", p: "20px" }}>
-        <Text
+      <Card>
+        {/* <Text
           size={26}
           weight="bold"
           css={{
@@ -22,7 +23,7 @@ const Form = (props) => {
           }}
         >
           {title}
-        </Text>
+        </Text> */}
         <Formik {...otherProps}>
           <FormFormik noValidate>
             {/* <FormField name="email" type="text" label="Email" />
@@ -37,7 +38,7 @@ const Form = (props) => {
           </FormFormik>
         </Formik>
       </Card>
-    </Container>
+    </div>
   )
 }
 
