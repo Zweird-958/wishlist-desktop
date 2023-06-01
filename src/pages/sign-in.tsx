@@ -1,7 +1,6 @@
 import AppContext from "@/web/components/AppContext"
 import Form from "@/web/components/Form"
 import FormField from "@/web/components/FormField"
-import api from "@/web/services/api"
 import { useContext } from "react"
 import * as yup from "yup"
 
