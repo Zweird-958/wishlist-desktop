@@ -1,6 +1,5 @@
 import { Button, Card, Container, Text } from "@nextui-org/react"
-import { Formik, Form as FormFormik } from "formik"
-import FormField from "./FormField"
+import { Form as FormFormik, Formik } from "formik"
 
 const Form = (props) => {
   const { children, title, button, ...otherProps } = props
@@ -34,9 +33,7 @@ const Form = (props) => {
               isPassword={true}
             /> */}
             {children}
-            <Button type="submit" css={{ w: "100%" }}>
-              {button}
-            </Button>
+            <Button type="submit">{button}</Button>
           </FormFormik>
         </Formik>
       </Card>
