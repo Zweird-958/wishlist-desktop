@@ -1,3 +1,4 @@
+import AbsoluteDiv from "@/web/components/AbsoluteDiv"
 import AppContext from "@/web/components/AppContext"
 import Form from "@/web/components/Form"
 import FormField from "@/web/components/FormField"
@@ -39,16 +40,18 @@ const SignUp = () => {
   }
 
   return (
-    <Form
-      initialValues={initialValues}
-      validationSchema={signUpSchema}
-      onSubmit={handleSubmit}
-      title="Connexion"
-      button="Se connecter"
-    >
-      <FormField name="email" type="text" label="Email" />
-      <FormField name="password" type="password" label="Mot de passe" />
-    </Form>
+    <AbsoluteDiv>
+      <Form
+        initialValues={initialValues}
+        validationSchema={signUpSchema}
+        onSubmit={handleSubmit}
+        title="Connexion"
+        button="Se connecter"
+      >
+        <FormField name="email" type="text" label="Email" />
+        <FormField name="password" type="password" label="Mot de passe" />
+      </Form>
+    </AbsoluteDiv>
   )
 }
 

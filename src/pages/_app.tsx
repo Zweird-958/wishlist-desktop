@@ -1,4 +1,5 @@
 import "@/styles/globals.css"
+import AppBar from "@/web/components/AppBar"
 import { AppContextProvider } from "@/web/components/AppContext"
 
 import { NextUIProvider } from "@nextui-org/react"
@@ -7,7 +8,10 @@ const MyApp = ({ Component, pageProps }) => {
   return (
     <NextUIProvider>
       <AppContextProvider>
-        <Component {...pageProps} />
+        <div className="flex flex-col">
+          <AppBar />
+          <Component {...pageProps} />
+        </div>
       </AppContextProvider>
     </NextUIProvider>
   )

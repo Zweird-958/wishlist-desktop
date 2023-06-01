@@ -1,3 +1,4 @@
+import AbsoluteDiv from "@/web/components/AbsoluteDiv"
 import Form from "@/web/components/Form"
 import FormField from "@/web/components/FormField"
 import api from "@/web/services/api"
@@ -29,16 +30,18 @@ const SignUp = () => {
   }
 
   return (
-    <Form
-      initialValues={initialValues}
-      validationSchema={signUpSchema}
-      onSubmit={handleSubmit}
-      title="Inscription"
-      button="S'inscrire"
-    >
-      <FormField name="email" type="text" label="Email" />
-      <FormField name="password" type="password" label="Mot de passe" />
-    </Form>
+    <AbsoluteDiv>
+      <Form
+        initialValues={initialValues}
+        validationSchema={signUpSchema}
+        onSubmit={handleSubmit}
+        title="Inscription"
+        button="S'inscrire"
+      >
+        <FormField name="email" type="text" label="Email" />
+        <FormField name="password" type="password" label="Mot de passe" />
+      </Form>
+    </AbsoluteDiv>
   )
 }
 
