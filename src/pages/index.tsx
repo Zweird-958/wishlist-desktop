@@ -13,7 +13,7 @@ import * as yup from "yup"
 const initialValues = {
   name: "",
   currency: "",
-  price: 0,
+  price: "",
 }
 
 const validationSchema = yup.object().shape({
@@ -127,8 +127,7 @@ const Home = () => {
             validationSchema={validationSchema}
           >
             <FormField name="name" type="text" label="Nom" />
-            <FormField name="price" type="text" label="Prix" />
-            <FormField name="currency" type="text" label="Monnaie" />
+            <FormField name="price" type="number" label="Prix" />
             <Select
               onSelectionChange={onSelectionChange}
               selectedValue={currency}
