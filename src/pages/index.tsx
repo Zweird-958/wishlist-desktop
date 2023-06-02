@@ -12,7 +12,6 @@ import * as yup from "yup"
 
 const initialValues = {
   name: "",
-  currency: "",
   price: "",
 }
 
@@ -55,7 +54,7 @@ const Home = () => {
   }
 
   const handleSubmit = async (values) => {
-    const { name, currency, price } = values
+    const { name, price } = values
 
     const formData = new FormData()
 
@@ -63,8 +62,11 @@ const Home = () => {
       formData.append("image", image)
     }
 
+    if (currency) {
+      formData.append("currency", currency)
+    }
+
     formData.append("name", name)
-    formData.append("currency", currency)
     formData.append("price", price)
 
     try {
