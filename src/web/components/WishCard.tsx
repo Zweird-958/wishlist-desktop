@@ -1,16 +1,16 @@
+import DeleteIcon from "@/components/DeleteIcon"
 import EditIcon from "@/components/EditIcon"
 import formatCurrency from "@/utils/formatCurrency"
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  Image,
-  Button,
-  CardFooter,
-} from "@nextui-org/react"
+import { Button, Card, CardBody, CardFooter, Image } from "@nextui-org/react"
 import { useState } from "react"
 
 type WishCardProps = {
+  wish: Wish
+  // eslint-disable-next-line no-unused-vars
+  deleteWish: (id: number) => void
+}
+
+type Wish = {
   name: string
   image: string
   currency: string
@@ -19,9 +19,8 @@ type WishCardProps = {
 }
 
 const WishCard = (props: WishCardProps) => {
-  const { name, image, currency, price, id } = props
-
-  const [isFollowed, setIsFollowed] = useState(false)
+  const { wish, deleteWish } = props
+  const { name, image, currency, price, id } = wish
 
   return (
     <Card
@@ -30,13 +29,22 @@ const WishCard = (props: WishCardProps) => {
       className="w-1/3 "
     >
       <CardBody className="overflow-visible p-0">
-        <Button
-          isIconOnly
-          className="right-0 z-10"
-          onPress={() => console.log("edit")}
-        >
-          <EditIcon />
-        </Button>
+        <div className="flex justify-between">
+          <Button
+            isIconOnly
+            className="right-0 z-10"
+            onPress={() => deleteWish(id)}
+          >
+            <DeleteIcon />
+          </Button>
+          <Button
+            isIconOnly
+            className="right-0 z-10"
+            onPress={() => console.log("edit")}
+          >
+            <EditIcon />
+          </Button>
+        </div>
         <Image
           shadow="lg"
           radius="xl"

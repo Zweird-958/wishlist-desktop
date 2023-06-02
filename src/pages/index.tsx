@@ -23,18 +23,30 @@ const Home = () => {
           data: { result },
         } = await api.get("/wish")
 
+        setWishList(result)
+
         const {
           data: { result: currencies },
         } = await api.get("/currency")
         setCurrencies(currencies)
-
-        setWishList(result)
       } catch (err) {
         return
       }
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const deleteWish = async (id: number) => {
+    try {
+      const {
+        data: { result },
+      } = await api.delete(`/wish/${id}`)
+
+      setWishList(wishList.filter((wish: any) => wish.id !== result.id))
+    } catch (err) {
+      return
+    }
+  }
 
   return (
     <>
@@ -48,15 +60,8 @@ const Home = () => {
         </AbsoluteDiv>
       ) : (
         <div className="flex items-center flex-col gap-4 mt-5">
-          {wishList.map(({ name, image, currency, price, id }) => (
-            <WishCard
-              key={id}
-              name={name}
-              image={image}
-              currency={currency}
-              price={price}
-              id={id}
-            />
+          {wishList.map((wish, index) => (
+            <WishCard key={index} wish={wish} deleteWish={deleteWish} />
           ))}
         </div>
       )}
