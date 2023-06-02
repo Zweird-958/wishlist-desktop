@@ -15,7 +15,6 @@ type Props = {
 
 const Select = (props: Props) => {
   const { selectedValue, onSelectionChange, items } = props
-  console.log(selectedValue)
 
   return (
     <Dropdown>
