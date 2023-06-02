@@ -1,30 +1,14 @@
-import FullDiv from "@/components/FullDiv"
-import Select from "@/components/Select"
-import SingleWish from "@/components/SingleWish"
+import WishForm from "@/components/WishForm"
 import AbsoluteDiv from "@/web/components/AbsoluteDiv"
 import AddIcon from "@/web/components/AddIcon"
-import Form from "@/web/components/Form"
-import FormField from "@/web/components/FormField"
 import WishCard from "@/web/components/WishCard"
 import api from "@/web/services/api"
 import { Button, Card, CardBody } from "@nextui-org/react"
 import { useEffect, useState } from "react"
-import * as yup from "yup"
-
-const initialValues = {
-  name: "",
-  price: "",
-}
-
-const validationSchema = yup.object().shape({
-  name: yup.string().required("Veuillez entrer un nom"),
-  price: yup.number().required("Veuillez entrer un prix"),
-})
 
 const Home = () => {
   const [wishList, setWishList] = useState([])
   const [isOpen, setIsOpen] = useState(false)
-  const [image, setImage] = useState(null)
   const [wishSelected, setWishSelected] = useState(false)
 
   const [currencies, setCurrencies] = useState([])
@@ -50,43 +34,6 @@ const Home = () => {
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  const onSelectionChange = (value: string) => {
-    setCurrency(value)
-  }
-
-  const handleSubmit = async (values) => {
-    const { name, price } = values
-
-    const formData = new FormData()
-
-    if (image) {
-      formData.append("image", image)
-    }
-
-    if (currency) {
-      formData.append("currency", currency)
-    }
-
-    formData.append("name", name)
-    formData.append("price", price)
-
-    try {
-      const {
-        data: { result },
-      } = await api.post("/wish", formData)
-
-      setWishList((prev) => [...prev, result])
-      setIsOpen(false)
-    } catch (err) {
-      return
-    }
-  }
-
-  const handleFileUpload = async (event: any) => {
-    const file = event.target.files[0]
-    setImage(file)
-  }
 
   return (
     <>
@@ -121,37 +68,10 @@ const Home = () => {
       >
         <AddIcon />
       </Button>
-      {isOpen && (
-        <FullDiv className="z-10 fixed">
-          <Form
-            title="Ajouter à la liste d'envies"
-            button="Créer"
-            initialValues={initialValues}
-            onSubmit={handleSubmit}
-            validationSchema={validationSchema}
-          >
-            <FormField name="name" type="text" label="Nom" />
-            <FormField name="price" type="number" label="Prix" />
-            <Select
-              onSelectionChange={onSelectionChange}
-              selectedValue={currency}
-              items={currencies}
-            />
-            <Button as="label">
-              Ajouter une image
-              <input
-                type="file"
-                hidden
-                accept="image/*"
-                onChange={handleFileUpload}
-              />
-            </Button>
-          </Form>
-        </FullDiv>
-      )}
-      {wishSelected && (
-        <SingleWish wish={wishSelected} setWishSelected={setWishSelected} />
-      )}
+      {isOpen && <WishForm currencies={currencies} />}
+      {/* {wishSelected && (
+        // <SingleWish wish={wishSelected} setWishSelected={setWishSelected} />
+      )} */}
     </>
   )
 }
