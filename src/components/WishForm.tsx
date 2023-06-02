@@ -5,15 +5,14 @@ import Select from "./Select"
 import { Button } from "@nextui-org/react"
 import * as yup from "yup"
 import { useState } from "react"
+import api from "@/web/services/api"
 
 type Props = {
-  initialValues: any
-  validationSchema: any
-  handleSubmit: any
-  onSelectionChange: any
-  currency: string
   currencies: string[]
-  handleFileUpload: any
+  // eslint-disable-next-line no-unused-vars
+  setIsOpen: (value: boolean) => void
+  // eslint-disable-next-line no-unused-vars
+  updateWishList: (value: any) => void
 }
 
 type FormProps = {
@@ -32,9 +31,10 @@ const validationSchema = yup.object().shape({
 })
 
 const WishForm = (props: Props) => {
-  const { currencies } = props
+  const { currencies, setIsOpen, updateWishList } = props
   const [image, setImage] = useState(null)
   const [currency, setCurrency] = useState(currencies[0])
+  console.log(props)
 
   const onSelectionChange = (value: string) => {
     setCurrency(value)
@@ -61,9 +61,12 @@ const WishForm = (props: Props) => {
         data: { result },
       } = await api.post("/wish", formData)
 
-      setWishList((prev) => [...prev, result])
+      updateWishList(result)
+      // setWishList((prev) => [...prev, result])
       setIsOpen(false)
     } catch (err) {
+      console.log(err)
+
       return
     }
   }

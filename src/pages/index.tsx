@@ -9,10 +9,12 @@ import { useEffect, useState } from "react"
 const Home = () => {
   const [wishList, setWishList] = useState([])
   const [isOpen, setIsOpen] = useState(false)
-  const [wishSelected, setWishSelected] = useState(false)
-
+  // const [wishSelected, setWishSelected] = useState(false)
   const [currencies, setCurrencies] = useState([])
-  const [currency, setCurrency] = useState(null)
+
+  const updateWishList = (newWish: any) => {
+    setWishList((prev: any) => [...prev, newWish])
+  }
 
   useEffect(() => {
     ;(async () => {
@@ -25,7 +27,6 @@ const Home = () => {
           data: { result: currencies },
         } = await api.get("/currency")
         setCurrencies(currencies)
-        setCurrency(currencies[0])
 
         setWishList(result)
       } catch (err) {
@@ -68,7 +69,13 @@ const Home = () => {
       >
         <AddIcon />
       </Button>
-      {isOpen && <WishForm currencies={currencies} />}
+      {isOpen && (
+        <WishForm
+          currencies={currencies}
+          setIsOpen={setIsOpen}
+          updateWishList={updateWishList}
+        />
+      )}
       {/* {wishSelected && (
         // <SingleWish wish={wishSelected} setWishSelected={setWishSelected} />
       )} */}
