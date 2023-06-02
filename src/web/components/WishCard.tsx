@@ -1,3 +1,4 @@
+import EditIcon from "@/components/EditIcon"
 import formatCurrency from "@/utils/formatCurrency"
 import {
   Card,
@@ -26,9 +27,16 @@ const WishCard = (props: WishCardProps) => {
     <Card
       isPressable
       onPress={() => console.log("item pressed")}
-      className="w-1/3"
+      className="w-1/3 "
     >
       <CardBody className="overflow-visible p-0">
+        <Button
+          isIconOnly
+          className="right-0 z-10"
+          onPress={() => console.log("edit")}
+        >
+          <EditIcon />
+        </Button>
         <Image
           shadow="lg"
           radius="xl"

@@ -1,5 +1,6 @@
 import FullDiv from "@/components/FullDiv"
 import Select from "@/components/Select"
+import SingleWish from "@/components/SingleWish"
 import AbsoluteDiv from "@/web/components/AbsoluteDiv"
 import AddIcon from "@/web/components/AddIcon"
 import Form from "@/web/components/Form"
@@ -24,6 +25,7 @@ const Home = () => {
   const [wishList, setWishList] = useState([])
   const [isOpen, setIsOpen] = useState(false)
   const [image, setImage] = useState(null)
+  const [wishSelected, setWishSelected] = useState(false)
 
   const [currencies, setCurrencies] = useState([])
   const [currency, setCurrency] = useState(null)
@@ -146,6 +148,9 @@ const Home = () => {
             </Button>
           </Form>
         </FullDiv>
+      )}
+      {wishSelected && (
+        <SingleWish wish={wishSelected} setWishSelected={setWishSelected} />
       )}
     </>
   )
