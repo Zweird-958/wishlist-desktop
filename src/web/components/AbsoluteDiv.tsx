@@ -1,5 +1,6 @@
 import React from "react"
 import clsx from "clsx"
+import FullDiv from "@/components/FullDiv"
 
 type Props = {
   children: React.ReactNode
@@ -10,14 +11,7 @@ const AbsoluteDiv = (props: Props) => {
   const { children, className } = props
 
   return (
-    <div
-      className={clsx(
-        "absolute -z-10 flex h-screen w-full items-center justify-center",
-        className
-      )}
-    >
-      {children}
-    </div>
+    <FullDiv className={clsx("absolute -z-10 ", className)}>{children}</FullDiv>
   )
 }
 

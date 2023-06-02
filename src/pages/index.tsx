@@ -1,14 +1,13 @@
+import FullDiv from "@/components/FullDiv"
+import Select from "@/components/Select"
 import AbsoluteDiv from "@/web/components/AbsoluteDiv"
 import AddIcon from "@/web/components/AddIcon"
-import AppContext from "@/web/components/AppContext"
 import Form from "@/web/components/Form"
 import FormField from "@/web/components/FormField"
 import WishCard from "@/web/components/WishCard"
-import config from "@/web/config"
 import api from "@/web/services/api"
 import { Button, Card, CardBody } from "@nextui-org/react"
-import { useRouter } from "next/router"
-import { useContext, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import * as yup from "yup"
 
 const initialValues = {
@@ -24,31 +23,36 @@ const validationSchema = yup.object().shape({
 
 const Home = () => {
   const [wishList, setWishList] = useState([])
-  const {
-    state: { session },
-  } = useContext(AppContext)
-  const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
   const [image, setImage] = useState(null)
-  // const { isOpen, onOpen, onOpenChange } = useDisclosure({ defaultOpen: true })
+
+  const [currencies, setCurrencies] = useState([])
+  const [currency, setCurrency] = useState(null)
 
   useEffect(() => {
     ;(async () => {
-      if (!session) {
-        router.push("/")
-      }
-
       try {
         const {
           data: { result },
         } = await api.get("/wish")
+
+        const {
+          data: { result: currencies },
+        } = await api.get("/currency")
+        setCurrencies(currencies)
+        setCurrency(currencies[0])
 
         setWishList(result)
       } catch (err) {
         return
       }
     })()
-  }, [router, session])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const onSelectionChange = (value: string) => {
+    setCurrency(value)
+  }
 
   const handleSubmit = async (values) => {
     const { name, currency, price } = values
@@ -67,9 +71,8 @@ const Home = () => {
       const {
         data: { result },
       } = await api.post("/wish", formData)
-      console.log(result)
 
-      // setWishList((prev) => [...prev, result])
+      setWishList((prev) => [...prev, result])
       setIsOpen(false)
     } catch (err) {
       return
@@ -97,7 +100,7 @@ const Home = () => {
             <WishCard
               key={id}
               name={name}
-              image={`${config.api.baseURL}/${image}`}
+              image={image}
               currency={currency}
               price={price}
               id={id}
@@ -109,13 +112,13 @@ const Home = () => {
         isIconOnly
         color="danger"
         aria-label="Add"
-        className="z-10 absolute bottom-5 right-5"
+        className="z-20 fixed right-5 bottom-5"
         onPress={() => setIsOpen(!isOpen)}
       >
         <AddIcon />
       </Button>
       {isOpen && (
-        <AbsoluteDiv className="z-0">
+        <FullDiv className="z-10 fixed">
           <Form
             title="Ajouter à la liste d'envies"
             button="Créer"
@@ -126,6 +129,11 @@ const Home = () => {
             <FormField name="name" type="text" label="Nom" />
             <FormField name="price" type="text" label="Prix" />
             <FormField name="currency" type="text" label="Monnaie" />
+            <Select
+              onSelectionChange={onSelectionChange}
+              selectedValue={currency}
+              items={currencies}
+            />
             <Button as="label">
               Ajouter une image
               <input
@@ -136,7 +144,7 @@ const Home = () => {
               />
             </Button>
           </Form>
-        </AbsoluteDiv>
+        </FullDiv>
       )}
     </>
   )
