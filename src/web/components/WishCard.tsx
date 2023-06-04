@@ -1,7 +1,14 @@
 import DeleteIcon from "@/components/DeleteIcon"
 import EditIcon from "@/components/EditIcon"
 import formatCurrency from "@/utils/formatCurrency"
-import { Button, Card, CardBody, CardFooter, Image } from "@nextui-org/react"
+import {
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Image,
+} from "@nextui-org/react"
 import { useState } from "react"
 
 type WishCardProps = {
@@ -24,39 +31,48 @@ const WishCard = (props: WishCardProps) => {
 
   return (
     <Card
-      isPressable
-      onPress={() => console.log("item pressed")}
-      className="w-1/3 "
+      className="w-[330px] bg-zinc-100 dark:bg-zinc-100"
+      radius="xl"
+      shadow="lg"
     >
-      <CardBody className="overflow-visible p-0">
-        <div className="flex justify-between">
-          <Button
-            isIconOnly
-            className="right-0 z-10"
-            onPress={() => deleteWish(id)}
-          >
-            <DeleteIcon />
-          </Button>
-          <Button
-            isIconOnly
-            className="right-0 z-10"
-            onPress={() => console.log("edit")}
-          >
-            <EditIcon />
-          </Button>
+      <CardHeader className="z-10">
+        <div className="flex flex-col gap-2 w-full">
+          <div className="flex justify-between w-full">
+            <Button
+              isIconOnly
+              color="danger"
+              className="right-0 z-10"
+              onPress={() => deleteWish(id)}
+            >
+              <DeleteIcon />
+            </Button>
+            <Button
+              isIconOnly
+              className="right-0 z-10"
+              color="warning"
+              onPress={() => console.log("edit")}
+            >
+              <EditIcon />
+            </Button>
+          </div>
+          <h4 className="text-3xl font-medium text-black">{name}</h4>
         </div>
+      </CardHeader>
+      <div className="flex justify-center items-center px-5">
         <Image
-          shadow="lg"
-          radius="xl"
-          width="100%"
-          alt={name}
-          className="w-full h-[140px] object-cover"
+          isBlurred
+          alt="Card background"
+          className="h-[400px] w-full object-contain"
           src={image}
         />
-      </CardBody>
-      <CardFooter className="text-sm justify-between">
-        <b>{name}</b>
-        <p className="text-default-500">{formatCurrency(price, currency)}</p>
+      </div>
+      <CardFooter className="justify-between">
+        <p className="text-md font-medium text-black/80">
+          {formatCurrency(price, currency)}
+        </p>
+        <Button radius="lg" color="primary">
+          LINK
+        </Button>
       </CardFooter>
     </Card>
   )
