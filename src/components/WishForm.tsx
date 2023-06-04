@@ -88,8 +88,8 @@ const WishForm = (props: Props) => {
           selectedValue={currency}
           items={currencies}
         />
-        <Button as="label">
-          Ajouter une image
+        <Button as="label" className="truncate">
+          {image ? image.name : "Ajouter une image"}
           <input
             type="file"
             hidden
