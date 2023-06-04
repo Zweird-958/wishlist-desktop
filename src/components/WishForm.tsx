@@ -33,7 +33,7 @@ const validationSchema = yup.object().shape({
 const WishForm = (props: Props) => {
   const { currencies, setIsOpen, updateWishList } = props
   const [image, setImage] = useState(null)
-  const [currency, setCurrency] = useState(currencies[0])
+  const [currency, setCurrency] = useState(currencies[0] ?? "")
 
   const onSelectionChange = (value: any) => {
     setCurrency(value.currentKey)
