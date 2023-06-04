@@ -1,4 +1,4 @@
-import WishForm from "@/components/WishForm"
+import WishForm from "@/web/components/WishForm"
 import AbsoluteDiv from "@/web/components/AbsoluteDiv"
 import AddIcon from "@/web/components/AddIcon"
 import WishCard from "@/web/components/WishCard"

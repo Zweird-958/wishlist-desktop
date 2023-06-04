@@ -1,5 +1,5 @@
-import DeleteIcon from "@/components/DeleteIcon"
-import EditIcon from "@/components/EditIcon"
+import DeleteIcon from "@/web/components/DeleteIcon"
+import EditIcon from "@/web/components/EditIcon"
 import formatCurrency from "@/utils/formatCurrency"
 import {
   Button,

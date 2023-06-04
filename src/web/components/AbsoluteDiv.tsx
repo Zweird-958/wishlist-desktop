@@ -1,6 +1,6 @@
 import React from "react"
 import clsx from "clsx"
-import FullDiv from "@/components/FullDiv"
+import FullDiv from "@/web/components/FullDiv"
 
 type Props = {
   children: React.ReactNode
