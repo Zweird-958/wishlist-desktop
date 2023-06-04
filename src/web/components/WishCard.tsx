@@ -31,7 +31,7 @@ const WishCard = (props: WishCardProps) => {
 
   return (
     <Card
-      className="w-[330px] bg-zinc-100 dark:bg-zinc-100"
+      className="sm:w-[330px] w-full bg-zinc-100 dark:bg-zinc-100"
       radius="xl"
       shadow="lg"
     >
