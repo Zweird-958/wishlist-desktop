@@ -1,19 +1,31 @@
-module.exports = {
-  root: true,
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const path = require("path")
+
+/** @type {import("eslint").Linter.Config} */
+const config = {
+  overrides: [
+    {
+      extends: [
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
+      ],
+      files: ["*.ts", "*.tsx"],
+      parserOptions: {
+        project: path.join(__dirname, "tsconfig.json"),
+      },
+    },
+  ],
+  parser: "@typescript-eslint/parser",
+  parserOptions: {
+    project: path.join(__dirname, "tsconfig.json"),
+  },
+  plugins: ["react", "react-hooks", "@typescript-eslint"],
   extends: [
     "eslint:recommended",
-    "prettier",
     "next",
     "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
   ],
-  plugins: ["react", "react-hooks"],
-  env: {
-    es2022: true,
-    node: true,
-  },
-  parserOptions: {
-    sourceType: "module",
-  },
   rules: {
     indent: "off",
     "linebreak-style": ["error", "unix"],
@@ -73,5 +85,6 @@ module.exports = {
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
   },
-  settings: { react: { version: "detect" } },
 }
+
+module.exports = config
