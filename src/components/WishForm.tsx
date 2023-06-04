@@ -34,10 +34,9 @@ const WishForm = (props: Props) => {
   const { currencies, setIsOpen, updateWishList } = props
   const [image, setImage] = useState(null)
   const [currency, setCurrency] = useState(currencies[0])
-  console.log(props)
 
-  const onSelectionChange = (value: string) => {
-    setCurrency(value)
+  const onSelectionChange = (value: any) => {
+    setCurrency(value.currentKey)
   }
 
   const handleSubmit = async (values: FormProps) => {
