@@ -2,6 +2,7 @@ import AbsoluteDiv from "@/web/components/AbsoluteDiv"
 import Form from "@/web/components/Form"
 import FormField from "@/web/components/FormField"
 import api from "@/web/services/api"
+import { useRouter } from "next/router"
 import * as yup from "yup"
 
 const initialValues = {
@@ -21,9 +22,13 @@ const signUpSchema = yup.object().shape({
 })
 
 const SignUp = () => {
+  const router = useRouter()
+
   const handleSubmit = async (values: any) => {
     try {
       await api.post("/sign-up", values)
+
+      router.push("/sign-in")
     } catch (err) {
       return
     }
