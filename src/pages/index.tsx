@@ -59,7 +59,7 @@ const Home = () => {
           </Card>
         </AbsoluteDiv>
       ) : (
-        <div className="flex items-center flex-col gap-4 mt-5">
+        <div className="grid sm:grid-cols-2 grid-cols-1 gap-5 mt-5 mx-auto">
           {wishList.map((wish, index) => (
             <WishCard key={index} wish={wish} deleteWish={deleteWish} />
           ))}
