@@ -9,11 +9,11 @@ import {
   CardHeader,
   Image,
 } from "@nextui-org/react"
+import Link from "next/link"
 import { useState } from "react"
 
 type WishCardProps = {
   wish: Wish
-  // eslint-disable-next-line no-unused-vars
   deleteWish: (id: number) => void
 }
 
@@ -23,11 +23,13 @@ type Wish = {
   currency: string
   price: number
   id: number
+  link: string | undefined
 }
 
 const WishCard = (props: WishCardProps) => {
   const { wish, deleteWish } = props
-  const { name, image, currency, price, id } = wish
+  const { name, image, currency, price, id, link } = wish
+  console.log(link)
 
   return (
     <Card
@@ -70,9 +72,11 @@ const WishCard = (props: WishCardProps) => {
         <p className="text-md font-medium text-black/80">
           {formatCurrency(price, currency)}
         </p>
-        <Button radius="lg" color="primary">
-          LINK
-        </Button>
+        {link && (
+          <Button radius="lg" color="primary" as={Link} href={link}>
+            Acheter
+          </Button>
+        )}
       </CardFooter>
     </Card>
   )

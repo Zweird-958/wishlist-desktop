@@ -16,16 +16,19 @@ type Props = {
 type FormProps = {
   name: string
   price: string
+  link: string
 }
 
 const initialValues = {
   name: "",
   price: "",
+  link: "",
 }
 
 const validationSchema = yup.object().shape({
   name: yup.string().required("Veuillez entrer un nom"),
   price: yup.number().required("Veuillez entrer un prix"),
+  link: yup.string().url("Veuillez entrer un lien valide"),
 })
 
 const WishForm = (props: Props) => {
@@ -38,7 +41,7 @@ const WishForm = (props: Props) => {
   }
 
   const handleSubmit = async (values: FormProps) => {
-    const { name, price } = values
+    const { name, price, link } = values
 
     const formData = new FormData()
 
@@ -52,6 +55,7 @@ const WishForm = (props: Props) => {
 
     formData.append("name", name)
     formData.append("price", price)
+    formData.append("link", link)
 
     try {
       const {
@@ -83,6 +87,7 @@ const WishForm = (props: Props) => {
       >
         <FormField name="name" type="text" label="Nom" />
         <FormField name="price" type="number" label="Prix" />
+        <FormField name="link" type="url" label="Lien" />
         <Select
           onSelectionChange={onSelectionChange}
           selectedValue={currency}
