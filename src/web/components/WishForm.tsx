@@ -1,7 +1,7 @@
 import Form from "@/web/components/Form"
 import FormField from "@/web/components/FormField"
 import api from "@/web/services/api"
-import { Button } from "@nextui-org/react"
+import { Button, Spinner } from "@nextui-org/react"
 import React, { useEffect, useState } from "react"
 import * as yup from "yup"
 import Wish from "../types/Wish"
@@ -12,6 +12,7 @@ type FormProps = {
   name: string
   price: string
   link: string
+  currency?: string
 }
 
 type Props = {
@@ -34,6 +35,7 @@ const WishForm = (props: Props) => {
   const [image, setImage] = useState<File | null>(null)
   const [currencies, setCurrencies] = useState([])
   const [currency, setCurrency] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     ;(async () => {
@@ -83,11 +85,14 @@ const WishForm = (props: Props) => {
         title={title}
         button={button}
         initialValues={initialValues}
-        onSubmit={(values: FormProps) => {
+        onSubmit={async (values: FormProps) => {
           const formData = createFormData(values)
-          handleSubmit(formData)
+          setIsLoading(true)
+          await handleSubmit(formData)
+          setIsLoading(false)
         }}
         validationSchema={validationSchema}
+        isLoading={isLoading}
       >
         <FormField name="name" type="text" label="Nom" />
         <FormField name="price" type="number" label="Prix" />
