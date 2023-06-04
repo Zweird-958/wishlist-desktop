@@ -63,9 +63,11 @@ const AppBar = () => {
 
             if (fn) {
               return (
-                <Button {...props} onPress={fn} key={index}>
-                  {label}
-                </Button>
+                <NavbarItem key={index}>
+                  <Button {...props} onPress={fn}>
+                    {label}
+                  </Button>
+                </NavbarItem>
               )
             } else {
               return (
