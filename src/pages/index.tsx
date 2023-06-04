@@ -7,12 +7,17 @@ import { Button, Card, CardBody } from "@nextui-org/react"
 import { useEffect, useState } from "react"
 import WishEditForm from "@/web/components/WishEditForm"
 import WishAddForm from "@/web/components/WishAddForm"
+import Select from "@/web/components/Select"
+import Wish from "@/web/types/Wish"
+
+const FILTERS = ["Tous", "Achetées", "Non Achetées"]
 
 const Home = () => {
   const [wishList, setWishList] = useState([])
   const [isOpen, setIsOpen] = useState(false)
   const [wishSelected, setWishSelected] = useState(null)
   const [currencies, setCurrencies] = useState([])
+  const [filter, setFilter] = useState<string>(FILTERS[0] as string)
 
   const updateWishList = (newWish: any) => {
     setWishList((prev: any) => [...prev, newWish])
@@ -20,7 +25,7 @@ const Home = () => {
 
   useEffect(() => {
     ;(async () => {
-      getWishList()
+      await getWishList()
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -65,15 +70,29 @@ const Home = () => {
           </Card>
         </AbsoluteDiv>
       ) : (
-        <div className="grid sm:grid-cols-2 grid-cols-1 gap-5 mt-5 mx-auto">
-          {wishList.map((wish, index) => (
-            <WishCard
-              key={index}
-              wish={wish}
-              deleteWish={deleteWish}
-              setWishSelected={setWishSelected}
+        <div className="flex flex-col justify-center items-center">
+          <div className="mt-5">
+            <Select
+              selectedValue={filter}
+              items={["Tous", "Achetées", "Non Achetées"]}
+              onSelectionChange={(value) => setFilter(value.currentKey)}
             />
-          ))}
+          </div>
+          <div className="grid sm:grid-cols-2 grid-cols-1 gap-5 m-5 mx-auto">
+            {wishList.map((wish: Wish, index) => {
+              if (filter === FILTERS[1] && !wish.purchased) return
+              else if (filter === FILTERS[2] && wish.purchased) return
+
+              return (
+                <WishCard
+                  key={index}
+                  wish={wish}
+                  deleteWish={deleteWish}
+                  setWishSelected={setWishSelected}
+                />
+              )
+            })}
+          </div>
         </div>
       )}
       <Button
