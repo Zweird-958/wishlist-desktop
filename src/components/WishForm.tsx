@@ -93,7 +93,7 @@ const WishForm = (props: Props) => {
           <input
             type="file"
             hidden
-            accept="image/*"
+            accept="image/png, image/jpeg, image/jpg"
             onChange={handleFileUpload}
           />
         </Button>
