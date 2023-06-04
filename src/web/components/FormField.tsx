@@ -15,7 +15,7 @@ const FormField = (props: Props) => {
     <>
       <Input
         label={label}
-        color="secondary"
+        color="primary"
         variant="bordered"
         size="sm"
         radius="lg"
