@@ -59,7 +59,6 @@ const WishForm = (props: Props) => {
       } = await api.post("/wish", formData)
 
       updateWishList(result)
-      // setWishList((prev) => [...prev, result])
       setIsOpen(false)
     } catch (err) {
       console.log(err)
