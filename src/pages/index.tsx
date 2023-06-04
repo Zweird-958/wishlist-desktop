@@ -6,6 +6,7 @@ import api from "@/web/services/api"
 import { Button, Card, CardBody } from "@nextui-org/react"
 import { useEffect, useState } from "react"
 import WishEditForm from "@/web/components/WishEditForm"
+import WishAddForm from "@/web/components/WishAddForm"
 
 const Home = () => {
   const [wishList, setWishList] = useState([])
@@ -85,11 +86,7 @@ const Home = () => {
         <AddIcon />
       </Button>
       {isOpen && (
-        <WishForm
-          currencies={currencies}
-          setIsOpen={setIsOpen}
-          updateWishList={updateWishList}
-        />
+        <WishAddForm setIsOpen={setIsOpen} updateWishList={updateWishList} />
       )}
       {wishSelected && (
         <WishEditForm

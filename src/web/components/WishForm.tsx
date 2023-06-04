@@ -1,17 +1,12 @@
-import FullDiv from "./FullDiv"
-import FormField from "@/web/components/FormField"
 import Form from "@/web/components/Form"
-import Select from "./Select"
-import { Button } from "@nextui-org/react"
-import * as yup from "yup"
-import { useState } from "react"
+import FormField from "@/web/components/FormField"
 import api from "@/web/services/api"
-
-type Props = {
-  currencies: string[]
-  setIsOpen: (value: boolean) => void
-  updateWishList: (value: any) => void
-}
+import { Button } from "@nextui-org/react"
+import React, { useEffect, useState } from "react"
+import * as yup from "yup"
+import Wish from "../types/Wish"
+import FullDiv from "./FullDiv"
+import Select from "./Select"
 
 type FormProps = {
   name: string
@@ -19,10 +14,12 @@ type FormProps = {
   link: string
 }
 
-const initialValues = {
-  name: "",
-  price: "",
-  link: "",
+type Props = {
+  handleSubmit: (value: any) => void
+  children?: React.ReactNode
+  initialValues: Wish | FormProps
+  button?: string
+  title: string
 }
 
 const validationSchema = yup.object().shape({
@@ -32,17 +29,29 @@ const validationSchema = yup.object().shape({
 })
 
 const WishForm = (props: Props) => {
-  const { currencies, setIsOpen, updateWishList } = props
-  const [image, setImage] = useState(null)
-  const [currency, setCurrency] = useState(currencies[0] ?? "")
+  const { handleSubmit, children, initialValues, button, title } = props
+
+  const [image, setImage] = useState<File | null>(null)
+  const [currencies, setCurrencies] = useState([])
+  const [currency, setCurrency] = useState("")
+
+  useEffect(() => {
+    ;(async () => {
+      const {
+        data: { result: currencies },
+      } = await api.get("/currency")
+
+      setCurrencies(currencies)
+      setCurrency(initialValues.currency ?? currencies[0])
+    })()
+  }, [])
 
   const onSelectionChange = (value: any) => {
     setCurrency(value.currentKey)
   }
 
-  const handleSubmit = async (values: FormProps) => {
+  const createFormData = (values: FormProps) => {
     const { name, price, link } = values
-
     const formData = new FormData()
 
     if (image) {
@@ -60,18 +69,7 @@ const WishForm = (props: Props) => {
     formData.append("name", name)
     formData.append("price", price)
 
-    try {
-      const {
-        data: { result },
-      } = await api.post("/wish", formData)
-
-      updateWishList(result)
-      setIsOpen(false)
-    } catch (err) {
-      console.log(err)
-
-      return
-    }
+    return formData
   }
 
   const handleFileUpload = async (event: any) => {
@@ -82,10 +80,13 @@ const WishForm = (props: Props) => {
   return (
     <FullDiv className="z-10 fixed">
       <Form
-        title="Ajouter à la liste d'envies"
-        button="Créer"
+        title={title}
+        button={button}
         initialValues={initialValues}
-        onSubmit={handleSubmit}
+        onSubmit={(values: FormProps) => {
+          const formData = createFormData(values)
+          handleSubmit(formData)
+        }}
         validationSchema={validationSchema}
       >
         <FormField name="name" type="text" label="Nom" />
@@ -105,6 +106,7 @@ const WishForm = (props: Props) => {
             onChange={handleFileUpload}
           />
         </Button>
+        {children}
       </Form>
     </FullDiv>
   )
