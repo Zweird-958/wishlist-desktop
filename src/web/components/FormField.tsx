@@ -22,7 +22,7 @@ const FormField = (props: Props) => {
       labelPlacement="inside"
       {...field}
       {...otherProps}
-      errorMessage={meta.error}
+      errorMessage={meta.touched && meta.error}
     />
   )
 }
