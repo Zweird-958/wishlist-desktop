@@ -5,11 +5,12 @@ import WishCard from "@/web/components/WishCard"
 import api from "@/web/services/api"
 import { Button, Card, CardBody } from "@nextui-org/react"
 import { useEffect, useState } from "react"
+import WishEditForm from "@/web/components/WishEditForm"
 
 const Home = () => {
   const [wishList, setWishList] = useState([])
   const [isOpen, setIsOpen] = useState(false)
-  // const [wishSelected, setWishSelected] = useState(false)
+  const [wishSelected, setWishSelected] = useState(null)
   const [currencies, setCurrencies] = useState([])
 
   const updateWishList = (newWish: any) => {
@@ -18,23 +19,27 @@ const Home = () => {
 
   useEffect(() => {
     ;(async () => {
-      try {
-        const {
-          data: { result },
-        } = await api.get("/wish")
-
-        setWishList(result)
-
-        const {
-          data: { result: currencies },
-        } = await api.get("/currency")
-        setCurrencies(currencies)
-      } catch (err) {
-        return
-      }
+      getWishList()
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const getWishList = async () => {
+    try {
+      const {
+        data: { result },
+      } = await api.get("/wish")
+
+      setWishList(result)
+
+      const {
+        data: { result: currencies },
+      } = await api.get("/currency")
+      setCurrencies(currencies)
+    } catch (err) {
+      return
+    }
+  }
 
   const deleteWish = async (id: number) => {
     try {
@@ -61,7 +66,12 @@ const Home = () => {
       ) : (
         <div className="grid sm:grid-cols-2 grid-cols-1 gap-5 mt-5 mx-auto">
           {wishList.map((wish, index) => (
-            <WishCard key={index} wish={wish} deleteWish={deleteWish} />
+            <WishCard
+              key={index}
+              wish={wish}
+              deleteWish={deleteWish}
+              setWishSelected={setWishSelected}
+            />
           ))}
         </div>
       )}
@@ -81,9 +91,14 @@ const Home = () => {
           updateWishList={updateWishList}
         />
       )}
-      {/* {wishSelected && (
-        // <SingleWish wish={wishSelected} setWishSelected={setWishSelected} />
-      )} */}
+      {wishSelected && (
+        <WishEditForm
+          currencies={currencies}
+          wish={wishSelected}
+          setWishSelected={setWishSelected}
+          getWishList={getWishList}
+        />
+      )}
     </>
   )
 }
