@@ -9,9 +9,7 @@ import api from "@/web/services/api"
 
 type Props = {
   currencies: string[]
-  // eslint-disable-next-line no-unused-vars
   setIsOpen: (value: boolean) => void
-  // eslint-disable-next-line no-unused-vars
   updateWishList: (value: any) => void
 }
 
