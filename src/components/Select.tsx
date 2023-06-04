@@ -8,8 +8,7 @@ import {
 
 type Props = {
   selectedValue: string
-  // eslint-disable-next-line no-unused-vars
-  onSelectionChange: any
+  onSelectionChange: (value: any) => void
   items: string[]
 }
 
