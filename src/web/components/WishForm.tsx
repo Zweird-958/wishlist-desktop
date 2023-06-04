@@ -53,9 +53,12 @@ const WishForm = (props: Props) => {
       formData.append("currency", currency)
     }
 
+    if (link) {
+      formData.append("link", link)
+    }
+
     formData.append("name", name)
     formData.append("price", price)
-    formData.append("link", link)
 
     try {
       const {
