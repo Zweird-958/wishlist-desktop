@@ -35,7 +35,7 @@ export const AppContextProvider = (props) => {
   useEffect(() => {
     ;(async () => {
       try {
-        // await api.get("/session")
+        await api.get("/session")
 
         const jwt = localStorage.getItem(config.session.localStorageKey)
 
@@ -45,7 +45,7 @@ export const AppContextProvider = (props) => {
           return
         }
       } catch (err) {
-        // return signOut()
+        return signOut()
       }
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
