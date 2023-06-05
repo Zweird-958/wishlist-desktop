@@ -4,7 +4,17 @@ import { createContext, useEffect, useState } from "react"
 import jsonwebtoken from "jsonwebtoken"
 import { useRouter } from "next/router"
 
-const AppContext = createContext()
+type AppContextType = {
+  state: {
+    session: any
+  }
+  actions: {
+    signIn: (email: string, password: string) => Promise<any>
+    signOut: () => void
+  }
+}
+
+const AppContext = createContext<AppContextType>()
 
 export const AppContextProvider = (props) => {
   const [session, setSession] = useState(null)
