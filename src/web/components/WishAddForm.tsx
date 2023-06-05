@@ -1,5 +1,6 @@
 import api from "@/web/services/api"
 import WishForm from "./WishForm"
+import FormData from "../types/FormData"
 
 type Props = {
   setIsOpen: (value: boolean) => void
@@ -15,7 +16,7 @@ const initialValues = {
 const WishAddForm = (props: Props) => {
   const { setIsOpen, updateWishList } = props
 
-  const handleSubmit = async (formData) => {
+  const handleSubmit = async (formData: FormData) => {
     try {
       const {
         data: { result },

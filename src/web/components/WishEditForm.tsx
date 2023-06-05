@@ -1,11 +1,6 @@
-import FullDiv from "./FullDiv"
-import FormField from "@/web/components/FormField"
-import Form from "@/web/components/Form"
-import Select from "./Select"
-import { Button } from "@nextui-org/react"
-import * as yup from "yup"
-import { useState } from "react"
 import api from "@/web/services/api"
+import { Button } from "@nextui-org/react"
+import FormData from "../types/FormData"
 import WishForm from "./WishForm"
 
 type Wish = {
@@ -28,7 +23,7 @@ type Props = {
 const WishEditForm = (props: Props) => {
   const { wish, setWishSelected, getWishList } = props
 
-  const handleSubmit = async (formData) => {
+  const handleSubmit = async (formData: FormData) => {
     try {
       const {
         data: { result },
