@@ -4,9 +4,13 @@ import { createContext, useEffect, useState } from "react"
 import jsonwebtoken from "jsonwebtoken"
 import { useRouter } from "next/router"
 
+type Session = {
+  id: number
+}
+
 type AppContextType = {
   state: {
-    session: any
+    session: { payload: Session }
   }
   actions: {
     signIn: (email: string, password: string) => Promise<any>
@@ -17,7 +21,7 @@ type AppContextType = {
 const AppContext = createContext<AppContextType>()
 
 export const AppContextProvider = (props) => {
-  const [session, setSession] = useState(null)
+  const [session, setSession] = useState<Session | null>(null)
   const router = useRouter()
 
   const signIn = async (email: string, password: string) => {
