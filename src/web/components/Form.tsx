@@ -1,14 +1,22 @@
 import { Button, Card, Spinner } from "@nextui-org/react"
 import { Form as FormFormik, Formik } from "formik"
 import React from "react"
+import Wish from "../types/Wish"
+import InitialValues from "../types/InitialValues"
+
+type ValidationSchema = {
+  name: string
+  price: number
+  link: string
+}
 
 type Props = {
   children: React.ReactNode
   title: string
   button?: string
-  initialValues: any
-  validationSchema: any
-  onSubmit: any
+  initialValues: Wish | InitialValues
+  validationSchema: ValidationSchema
+  onSubmit: (values: InitialValues) => void
   isLoading?: boolean
 }
 

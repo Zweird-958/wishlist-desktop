@@ -1,10 +1,11 @@
 import api from "@/web/services/api"
 import WishForm from "./WishForm"
 import FormData from "../types/FormData"
+import Wish from "../types/Wish"
 
 type Props = {
   setIsOpen: (value: boolean) => void
-  updateWishList: (value: any) => void
+  updateWishList: (value: Wish) => void
 }
 
 const initialValues = {

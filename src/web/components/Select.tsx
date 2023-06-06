@@ -5,10 +5,11 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from "@nextui-org/react"
+import DropdownType from "../types/Dropdown"
 
 type Props = {
   selectedValue: string
-  onSelectionChange: (value: any) => void
+  onSelectionChange: (value: DropdownType) => void
   items: string[]
 }
 

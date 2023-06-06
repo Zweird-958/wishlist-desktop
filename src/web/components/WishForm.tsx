@@ -1,24 +1,20 @@
 import Form from "@/web/components/Form"
 import FormField from "@/web/components/FormField"
 import api from "@/web/services/api"
-import { Button, Spinner } from "@nextui-org/react"
+import { Button } from "@nextui-org/react"
 import React, { useEffect, useState } from "react"
 import * as yup from "yup"
+import FormData from "../types/FormData"
 import Wish from "../types/Wish"
+import Dropdown from "../types/Dropdown"
 import FullDiv from "./FullDiv"
 import Select from "./Select"
-
-type FormProps = {
-  name: string
-  price: string
-  link: string
-  currency?: string
-}
+import InitialValues from "../types/InitialValues"
 
 type Props = {
-  handleSubmit: (value: any) => void
+  handleSubmit: (value: FormData) => void
   children?: React.ReactNode
-  initialValues: Wish | FormProps
+  initialValues: Wish | InitialValues
   button?: string
   title: string
 }
@@ -34,7 +30,7 @@ const WishForm = (props: Props) => {
 
   const [image, setImage] = useState<File | null>(null)
   const [currencies, setCurrencies] = useState([])
-  const [currency, setCurrency] = useState("")
+  const [currency, setCurrency] = useState<string>("")
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
@@ -48,11 +44,11 @@ const WishForm = (props: Props) => {
     })()
   }, [])
 
-  const onSelectionChange = (value: any) => {
+  const onSelectionChange = (value: Dropdown) => {
     setCurrency(value.currentKey)
   }
 
-  const createFormData = (values: FormProps) => {
+  const createFormData = (values: InitialValues) => {
     const { name, price, link } = values
     const formData = new FormData()
 
@@ -74,8 +70,8 @@ const WishForm = (props: Props) => {
     return formData
   }
 
-  const handleFileUpload = async (event: any) => {
-    const file = event.target.files[0]
+  const handleFileUpload = (event: Event) => {
+    const file: File = event.target.files[0]
     setImage(file)
   }
 
@@ -85,7 +81,7 @@ const WishForm = (props: Props) => {
         title={title}
         button={button}
         initialValues={initialValues}
-        onSubmit={async (values: FormProps) => {
+        onSubmit={async (values: InitialValues) => {
           const formData = createFormData(values)
           setIsLoading(true)
           await handleSubmit(formData)
