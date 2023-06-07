@@ -1,29 +1,24 @@
 import api from "@/web/services/api"
-import { Button, Switch } from "@nextui-org/react"
+import { Switch } from "@nextui-org/react"
+import { useContext, useState } from "react"
 import FormData from "../types/FormData"
+import AppContext from "./AppContext"
+import EditIcon from "./EditIcon"
 import WishForm from "./WishForm"
-import { useState } from "react"
-
-type Wish = {
-  name: string
-  image: string
-  currency: string
-  price: number
-  link: string
-  purchased: boolean
-  id: number
-}
+import Wish from "../types/Wish"
 
 type Props = {
-  currencies: string[]
   wish: Wish
-  setWishSelected: (value: Wish | null) => void
-  getWishList: () => void
 }
 
 const WishEditForm = (props: Props) => {
-  const { wish, setWishSelected, getWishList } = props
-  const [purchased, setPurchased] = useState<boolean>(wish.purchased)
+  const { wish } = props
+  const [purchased, setPurchased] = useState<boolean>(
+    wish ? wish.purchased : false
+  )
+  const {
+    actions: { getWishList },
+  } = useContext(AppContext)
 
   const togglePurchased = () => {
     setPurchased(!purchased)
@@ -35,8 +30,7 @@ const WishEditForm = (props: Props) => {
         data: { result },
       } = await api.patch(`/wish/${wish.id}`, formData)
 
-      setWishSelected(null)
-      getWishList()
+      await getWishList()
     } catch (err) {
       return
     }
@@ -44,9 +38,13 @@ const WishEditForm = (props: Props) => {
 
   return (
     <WishForm
+      title="Modifier cette envie"
+      icon={<EditIcon />}
+      color="warning"
+      className="right-0 z-10"
       handleSubmit={handleSubmit}
-      initialValues={{ ...wish, link: wish.link ?? "" }}
-      title="Modifier votre envie"
+      initialValues={wish}
+      buttonTitle="Modifier"
       purchased={purchased}
     >
       <div className="flex justify-between">
@@ -56,14 +54,6 @@ const WishEditForm = (props: Props) => {
           isSelected={purchased}
           onValueChange={togglePurchased}
         />
-      </div>
-      <div className="flex justify-between">
-        <Button color="danger" onPress={() => setWishSelected(null)}>
-          Annuler
-        </Button>
-        <Button type="submit" color="primary">
-          Modifier
-        </Button>
       </div>
     </WishForm>
   )

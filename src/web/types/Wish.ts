@@ -6,7 +6,7 @@ type Wish = {
   link: string
   purchased: boolean
   id: number
-  created_at: string | Date
+  createdAt: string | Date
 }
 
 export default Wish

@@ -3,6 +3,7 @@ import api from "@/web/services/api"
 import { createContext, useEffect, useState } from "react"
 import jsonwebtoken from "jsonwebtoken"
 import { useRouter } from "next/router"
+import Wish from "../types/Wish"
 
 type Session = {
   id: number
@@ -11,10 +12,13 @@ type Session = {
 type AppContextType = {
   state: {
     session: { payload: Session }
+    wishList: Wish[]
   }
   actions: {
-    signIn: (email: string, password: string) => Promise<any>
+    signIn: (email: string, password: string) => Promise<void>
     signOut: () => void
+    getWishList: () => Promise<void>
+    updateWishList: (newWish: Wish) => void
   }
 }
 
@@ -22,6 +26,7 @@ const AppContext = createContext<AppContextType>()
 
 export const AppContextProvider = (props) => {
   const [session, setSession] = useState<Session | null>(null)
+  const [wishList, setWishList] = useState<Wish[]>([])
   const router = useRouter()
 
   const signIn = async (email: string, password: string) => {
@@ -42,6 +47,18 @@ export const AppContextProvider = (props) => {
   const signOut = () => {
     localStorage.removeItem(config.session.localStorageKey)
     setSession(null)
+  }
+
+  const getWishList = async () => {
+    try {
+      const {
+        data: { result },
+      } = await api.get("/wish")
+
+      setWishList(result)
+    } catch (err) {
+      return
+    }
   }
 
   useEffect(() => {
@@ -65,7 +82,10 @@ export const AppContextProvider = (props) => {
 
   return (
     <AppContext.Provider
-      value={{ state: { session }, actions: { signIn, signOut } }}
+      value={{
+        state: { session, wishList },
+        actions: { signIn, signOut, getWishList },
+      }}
       {...props}
     />
   )

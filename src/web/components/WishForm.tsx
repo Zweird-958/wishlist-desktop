@@ -1,24 +1,24 @@
-import Form from "@/web/components/Form"
-import FormField from "@/web/components/FormField"
 import api from "@/web/services/api"
-import { Button } from "@nextui-org/react"
-import React, { useEffect, useState } from "react"
+import {
+  Button,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  Modal,
+  useDisclosure,
+  Colors,
+} from "@nextui-org/react"
+import { Form, Formik } from "formik"
+import React, { ChangeEventHandler, useEffect, useState } from "react"
 import * as yup from "yup"
-import FormDataType from "../types/FormData"
-import Wish from "../types/Wish"
 import Dropdown from "../types/Dropdown"
-import FullDiv from "./FullDiv"
-import Select from "./Select"
+import FormDataType from "../types/FormData"
 import InitialValues from "../types/InitialValues"
-
-type Props = {
-  handleSubmit: (value: FormDataType) => void
-  children?: React.ReactNode
-  initialValues: Wish | InitialValues
-  button?: string
-  title: string
-  purchased?: boolean
-}
+import Wish from "../types/Wish"
+import FormField from "./FormField"
+import Select from "./Select"
+import Color from "../types/Color"
 
 const validationSchema = yup.object().shape({
   name: yup.string().required("Veuillez entrer un nom"),
@@ -26,9 +26,31 @@ const validationSchema = yup.object().shape({
   link: yup.string().url("Veuillez entrer un lien valide"),
 })
 
+type Props = {
+  icon: React.ReactNode
+  className?: string
+  color?: Color
+  children?: React.ReactNode
+  handleSubmit: (value: FormDataType) => void
+  initialValues: Wish | InitialValues
+  buttonTitle: string
+  title: string
+  purchased?: boolean
+}
+
 const WishForm = (props: Props) => {
-  const { handleSubmit, children, initialValues, button, title, purchased } =
-    props
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+  const {
+    icon,
+    className,
+    color,
+    children,
+    handleSubmit,
+    initialValues,
+    title,
+    purchased,
+    buttonTitle,
+  } = props
 
   const [image, setImage] = useState<File | null>(null)
   const [currencies, setCurrencies] = useState([])
@@ -37,14 +59,18 @@ const WishForm = (props: Props) => {
 
   useEffect(() => {
     ;(async () => {
-      const {
-        data: { result: currencies },
-      } = await api.get("/currency")
+      try {
+        const {
+          data: { result },
+        } = await api.get("/currency")
 
-      setCurrencies(currencies)
-      setCurrency(initialValues.currency ?? currencies[0])
+        setCurrencies(result)
+        setCurrency(initialValues.currency ?? result[0])
+      } catch (error) {
+        return
+      }
     })()
-  }, [])
+  }, [initialValues])
 
   const onSelectionChange = (value: Dropdown) => {
     setCurrency(value.currentKey)
@@ -71,7 +97,7 @@ const WishForm = (props: Props) => {
     return formData
   }
 
-  const handleFileUpload = (event: Event) => {
+  const handleFileUpload = (event: ChangeEventHandler<HTMLInputElement>) => {
     const file: File = event.target.files[0]
     setImage(file)
   }
@@ -86,39 +112,57 @@ const WishForm = (props: Props) => {
       return
     } finally {
       setIsLoading(false)
+      onClose()
     }
   }
 
   return (
-    <FullDiv className="z-10 fixed">
-      <Form
-        title={title}
-        button={button}
-        initialValues={initialValues}
-        onSubmit={onSubmit}
-        validationSchema={validationSchema}
-        isLoading={isLoading}
-      >
-        <FormField name="name" type="text" label="Nom" />
-        <FormField name="price" type="number" label="Prix" />
-        <FormField name="link" type="url" label="Lien" />
-        <Select
-          onSelectionChange={onSelectionChange}
-          selectedValue={currency}
-          items={currencies}
-        />
-        <Button as="label" className="truncate" color="primary">
-          {image ? image.name : "Ajouter une image"}
-          <input
-            type="file"
-            hidden
-            accept="image/png, image/jpeg, image/jpg"
-            onChange={handleFileUpload}
-          />
-        </Button>
-        {children}
-      </Form>
-    </FullDiv>
+    <>
+      <Button onPress={onOpen} isIconOnly className={className} color={color}>
+        {icon}
+      </Button>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          <ModalHeader>{title}</ModalHeader>
+          <Formik
+            initialValues={initialValues}
+            onSubmit={onSubmit}
+            validationSchema={validationSchema}
+          >
+            <Form noValidate>
+              <ModalBody className="w-4/5 mx-auto">
+                <FormField name="name" type="text" label="Nom" />
+                <FormField name="price" type="number" label="Prix" />
+                <FormField name="link" type="url" label="Lien" />
+                <Select
+                  onSelectionChange={onSelectionChange}
+                  selectedValue={currency}
+                  items={currencies}
+                />
+                <Button as="label" className="truncate" color="primary">
+                  {image ? image.name : "Ajouter une image"}
+                  <input
+                    type="file"
+                    hidden
+                    accept="image/png, image/jpeg, image/jpg"
+                    onChange={handleFileUpload}
+                  />
+                </Button>
+                {children}
+              </ModalBody>
+              <ModalFooter className="flex justify-between">
+                <Button onPress={onClose} color="danger" variant="flat">
+                  Fermer
+                </Button>
+                <Button type="submit" color="primary" isLoading={isLoading}>
+                  {buttonTitle}
+                </Button>
+              </ModalFooter>
+            </Form>
+          </Formik>
+        </ModalContent>
+      </Modal>
+    </>
   )
 }
 

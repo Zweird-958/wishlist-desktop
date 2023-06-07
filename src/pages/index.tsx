@@ -3,24 +3,28 @@ import AbsoluteDiv from "@/web/components/AbsoluteDiv"
 import AddIcon from "@/web/components/AddIcon"
 import WishCard from "@/web/components/WishCard"
 import api from "@/web/services/api"
-import { Button, Card, CardBody } from "@nextui-org/react"
-import { useEffect, useState } from "react"
+import { Button, Card, CardBody, useDisclosure } from "@nextui-org/react"
+import { useContext, useEffect, useState } from "react"
 import WishEditForm from "@/web/components/WishEditForm"
 import WishAddForm from "@/web/components/WishAddForm"
 import Select from "@/web/components/Select"
 import Wish from "@/web/types/Wish"
 import Dropdown from "@/web/types/Dropdown"
+import Modal from "@/web/components/WishForm"
+import AppContext from "@/web/components/AppContext"
 
 const FILTERS = ["Tous", "Achetées", "Non Achetées"]
 const SORTS = ["Date", "Prix croissant", "Prix décroissant"]
 
 const Home = () => {
-  const [wishList, setWishList] = useState<Wish[]>([])
-  const [isOpen, setIsOpen] = useState(false)
   const [wishSelected, setWishSelected] = useState(null)
-  const [currencies, setCurrencies] = useState([])
   const [filter, setFilter] = useState<string>(FILTERS[0] as string)
   const [sort, setSort] = useState<string>(SORTS[0] as string)
+
+  const {
+    actions: { getWishList },
+    state: { wishList },
+  } = useContext(AppContext)
 
   const updateWishList = (newWish: any) => {
     setWishList((prev: any) => [...prev, newWish])
@@ -49,23 +53,6 @@ const Home = () => {
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  const getWishList = async () => {
-    try {
-      const {
-        data: { result },
-      } = await api.get("/wish")
-
-      setWishList(result)
-
-      const {
-        data: { result: currencies },
-      } = await api.get("/currency")
-      setCurrencies(currencies)
-    } catch (err) {
-      return
-    }
-  }
 
   const deleteWish = async (id: number) => {
     try {
@@ -123,26 +110,7 @@ const Home = () => {
           </div>
         </div>
       )}
-      <Button
-        isIconOnly
-        color="danger"
-        aria-label="Add"
-        className="z-20 fixed right-5 bottom-5"
-        onPress={() => setIsOpen(!isOpen)}
-      >
-        <AddIcon />
-      </Button>
-      {isOpen && (
-        <WishAddForm setIsOpen={setIsOpen} updateWishList={updateWishList} />
-      )}
-      {wishSelected && (
-        <WishEditForm
-          currencies={currencies}
-          wish={wishSelected}
-          setWishSelected={setWishSelected}
-          getWishList={getWishList}
-        />
-      )}
+      <WishAddForm updateWishList={updateWishList} />
     </>
   )
 }
