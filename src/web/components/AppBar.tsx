@@ -9,9 +9,10 @@ import {
 import Link from "next/link"
 import { useContext, useRef } from "react"
 import AppContext from "./AppContext"
+import { useRouter } from "next/router"
 
 const AppBar = () => {
-  const parentRef = useRef(null)
+  const router = useRouter()
   const {
     state: { session },
     actions: { signOut },
@@ -33,7 +34,10 @@ const AppBar = () => {
     {
       label: "Se déconnecter",
       authRequired: true,
-      fn: signOut,
+      fn: async () => {
+        signOut()
+        await router.push("/sign-in")
+      },
       props: { color: "danger" },
     },
     {
@@ -44,7 +48,7 @@ const AppBar = () => {
   ]
 
   return (
-    <Navbar parentRef={parentRef}>
+    <Navbar>
       <NavbarBrand>
         <Link className="font-bold hidden sm:block text-inherit" href="/">
           My Wishlist

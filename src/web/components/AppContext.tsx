@@ -42,8 +42,6 @@ export const AppContextProvider = (props) => {
   const signOut = () => {
     localStorage.removeItem(config.session.localStorageKey)
     setSession(null)
-
-    router.push("/sign-in")
   }
 
   useEffect(() => {
