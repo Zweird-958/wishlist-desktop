@@ -71,14 +71,16 @@ const Home = () => {
         </AbsoluteDiv>
       ) : (
         <div className="flex flex-col justify-center items-center">
-          <div className="mt-5">
-            <Select
-              selectedValue={filter}
-              items={["Tous", "Achetées", "Non Achetées"]}
-              onSelectionChange={(value) => setFilter(value.currentKey)}
-            />
-          </div>
-          <div className="grid sm:grid-cols-2 grid-cols-1 gap-5 m-5 mx-auto">
+          <div className="flex flex-wrap gap-5 md:w-[700px] w-[340px] m-5">
+            <div className="w-full flex justify-end mt-5">
+              <div className="mr-5">
+                <Select
+                  selectedValue={filter}
+                  items={["Tous", "Achetées", "Non Achetées"]}
+                  onSelectionChange={(value) => setFilter(value.currentKey)}
+                />
+              </div>
+            </div>
             {wishList.map((wish: Wish, index) => {
               if (filter === FILTERS[1] && !wish.purchased) return
               else if (filter === FILTERS[2] && wish.purchased) return
