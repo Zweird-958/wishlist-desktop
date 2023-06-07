@@ -24,7 +24,7 @@ const Form = (props: Props) => {
   const { children, title, button, isLoading, ...otherProps } = props
 
   return (
-    <Card className="lg:w-1/5 sm:w-3/4 py-8 w-full mx-3 sm:mx-0 bg-white z-10">
+    <Card className="xs:w-[400px] py-8 w-full mx-3 bg-white z-10">
       {isLoading ? (
         <Spinner size="md" color="primary" className="py-8" />
       ) : (
