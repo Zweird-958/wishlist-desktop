@@ -90,25 +90,26 @@ const Home = () => {
           </Card>
         </AbsoluteDiv>
       ) : (
-        <div className="flex flex-col justify-center items-center">
-          <div className="flex flex-wrap gap-5 md:w-[700px] w-[340px] m-5">
-            <div className="w-full flex justify-end mt-5">
+        <div className="flex justify-center items-center">
+          <div className="flex flex-wrap gap-5 md:w-[700px] w-[340px] m-5 justify-center">
+            <div className="w-full flex justify-between mt-5 mx-[10px]">
               <Select
                 selectedValue={sort}
                 items={SORTS}
                 onSelectionChange={sortWishList}
               />
-              <div className="mr-5">
-                <Select
-                  selectedValue={filter}
-                  items={FILTERS}
-                  onSelectionChange={(value) => setFilter(value.currentKey)}
-                />
-              </div>
+              <Select
+                selectedValue={filter}
+                items={FILTERS}
+                onSelectionChange={(value) => setFilter(value.currentKey)}
+              />
             </div>
             {wishList.map((wish: Wish, index) => {
-              if (filter === FILTERS[1] && !wish.purchased) return
-              else if (filter === FILTERS[2] && wish.purchased) return
+              if (filter === FILTERS[1] && !wish.purchased) {
+                return
+              } else if (filter === FILTERS[2] && wish.purchased) {
+                return
+              }
 
               return (
                 <WishCard
