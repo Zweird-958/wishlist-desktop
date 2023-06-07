@@ -53,25 +53,20 @@ const WishForm = (props: Props) => {
   const createFormData = (values: InitialValues | Wish) => {
     const { name, price, link } = values
     const formData = new FormData()
-
-    if (image) {
-      formData.append("image", image)
+    const data: FormDataType = {
+      name,
+      price: price.toString(),
+      link,
+      purchased: purchased ? purchased.toString() : undefined,
+      currency,
+      image: image ?? undefined,
     }
 
-    if (currency) {
-      formData.append("currency", currency)
+    for (const key in data) {
+      if (data[key]) {
+        formData.append(key, data[key])
+      }
     }
-
-    if (link) {
-      formData.append("link", link)
-    }
-
-    if (purchased) {
-      formData.append("purchased", purchased.toString())
-    }
-
-    formData.append("name", name)
-    formData.append("price", price.toString())
 
     return formData
   }
