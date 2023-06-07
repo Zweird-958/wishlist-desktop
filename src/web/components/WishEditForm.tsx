@@ -37,7 +37,7 @@ const WishEditForm = (props: Props) => {
       color="warning"
       className="right-0 z-10"
       handleSubmit={handleSubmit}
-      initialValues={wish}
+      initialValues={{ ...wish, link: wish.link ?? "" }}
       buttonTitle="Modifier"
       purchased={purchased}
     >
