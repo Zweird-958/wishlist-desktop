@@ -1,17 +1,16 @@
 import formatCurrency from "@/utils/formatCurrency"
-import DeleteIcon from "@/web/components/DeleteIcon"
 import { Button, Card, CardFooter, CardHeader, Image } from "@nextui-org/react"
 import Link from "next/link"
 import WishEditForm from "./WishEditForm"
 import Wish from "@/web/types/Wish"
+import DeletePopover from "./DeletePopOver"
 
 type WishCardProps = {
   wish: Wish
-  deleteWish: (id: number) => void
 }
 
 const WishCard = (props: WishCardProps) => {
-  const { wish, deleteWish } = props
+  const { wish } = props
   const { name, image, currency, price, id, link } = wish
 
   return (
@@ -23,14 +22,7 @@ const WishCard = (props: WishCardProps) => {
       <CardHeader className="z-10">
         <div className="flex flex-col gap-2 w-full">
           <div className="flex justify-between w-full">
-            <Button
-              isIconOnly
-              color="danger"
-              className="right-0 z-10"
-              onPress={() => deleteWish(id)}
-            >
-              <DeleteIcon />
-            </Button>
+            <DeletePopover id={id} />
             <WishEditForm wish={wish} />
           </div>
           <h4 className="text-3xl font-medium text-black">{name}</h4>

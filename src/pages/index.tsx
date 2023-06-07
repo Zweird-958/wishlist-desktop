@@ -17,7 +17,6 @@ const FILTERS = ["Tous", "Achetées", "Non Achetées"]
 const SORTS = ["Date", "Prix croissant", "Prix décroissant"]
 
 const Home = () => {
-  const [wishSelected, setWishSelected] = useState(null)
   const [filter, setFilter] = useState<string>(FILTERS[0] as string)
   const [sort, setSort] = useState<string>(SORTS[0] as string)
 
@@ -49,7 +48,11 @@ const Home = () => {
 
   useEffect(() => {
     ;(async () => {
-      await getWishList()
+      try {
+        await getWishList()
+      } catch (error) {
+        return
+      }
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -98,14 +101,7 @@ const Home = () => {
                 return
               }
 
-              return (
-                <WishCard
-                  key={index}
-                  wish={wish}
-                  deleteWish={deleteWish}
-                  setWishSelected={setWishSelected}
-                />
-              )
+              return <WishCard key={index} wish={wish} />
             })}
           </div>
         </div>
