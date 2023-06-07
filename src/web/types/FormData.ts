@@ -1,10 +1,10 @@
 type FormData = {
-  purchased?: boolean
+  purchased?: string
   name: string
-  image: File
+  image?: File
   currency: string
-  price: number
-  link: string
+  price: string
+  link?: string
 }
 
 export default FormData

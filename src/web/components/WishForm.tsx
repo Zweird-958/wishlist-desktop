@@ -17,6 +17,7 @@ type Props = {
   initialValues: Wish | InitialValues
   button?: string
   title: string
+  purchased?: boolean
 }
 
 const validationSchema = yup.object().shape({
@@ -26,7 +27,8 @@ const validationSchema = yup.object().shape({
 })
 
 const WishForm = (props: Props) => {
-  const { handleSubmit, children, initialValues, button, title } = props
+  const { handleSubmit, children, initialValues, button, title, purchased } =
+    props
 
   const [image, setImage] = useState<File | null>(null)
   const [currencies, setCurrencies] = useState([])
@@ -64,8 +66,12 @@ const WishForm = (props: Props) => {
       formData.append("link", link)
     }
 
+    if (purchased) {
+      formData.append("purchased", purchased.toString())
+    }
+
     formData.append("name", name)
-    formData.append("price", price)
+    formData.append("price", price.toString())
 
     return formData
   }

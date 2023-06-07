@@ -31,8 +31,6 @@ const WishEditForm = (props: Props) => {
 
   const handleSubmit = async (formData: FormData) => {
     try {
-      formData.purchased = purchased
-
       const {
         data: { result },
       } = await api.patch(`/wish/${wish.id}`, formData)
@@ -49,6 +47,7 @@ const WishEditForm = (props: Props) => {
       handleSubmit={handleSubmit}
       initialValues={wish}
       title="Modifier votre envie"
+      purchased={purchased}
     >
       <div className="flex justify-between">
         <p>Acheté(e)</p>
