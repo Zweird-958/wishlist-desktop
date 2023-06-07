@@ -9,18 +9,38 @@ import WishEditForm from "@/web/components/WishEditForm"
 import WishAddForm from "@/web/components/WishAddForm"
 import Select from "@/web/components/Select"
 import Wish from "@/web/types/Wish"
+import Dropdown from "@/web/types/Dropdown"
 
 const FILTERS = ["Tous", "Achetées", "Non Achetées"]
+const SORTS = ["Date", "Prix croissant", "Prix décroissant"]
 
 const Home = () => {
-  const [wishList, setWishList] = useState([])
+  const [wishList, setWishList] = useState<Wish[]>([])
   const [isOpen, setIsOpen] = useState(false)
   const [wishSelected, setWishSelected] = useState(null)
   const [currencies, setCurrencies] = useState([])
   const [filter, setFilter] = useState<string>(FILTERS[0] as string)
+  const [sort, setSort] = useState<string>(SORTS[0] as string)
 
   const updateWishList = (newWish: any) => {
     setWishList((prev: any) => [...prev, newWish])
+  }
+
+  const sortWishList = (value: Dropdown) => {
+    const sortSelected: string = value.currentKey
+    setSort(sortSelected)
+
+    if (sortSelected === SORTS[0]) {
+      setWishList(
+        wishList.sort(
+          (a: Wish, b: Wish) => new Date(a.createdAt) - new Date(b.createdAt)
+        )
+      )
+    } else if (sortSelected === SORTS[1]) {
+      setWishList(wishList.sort((a: Wish, b: Wish) => a.price - b.price))
+    } else {
+      setWishList(wishList.sort((a: Wish, b: Wish) => b.price - a.price))
+    }
   }
 
   useEffect(() => {
@@ -73,10 +93,15 @@ const Home = () => {
         <div className="flex flex-col justify-center items-center">
           <div className="flex flex-wrap gap-5 md:w-[700px] w-[340px] m-5">
             <div className="w-full flex justify-end mt-5">
+              <Select
+                selectedValue={sort}
+                items={SORTS}
+                onSelectionChange={sortWishList}
+              />
               <div className="mr-5">
                 <Select
                   selectedValue={filter}
-                  items={["Tous", "Achetées", "Non Achetées"]}
+                  items={FILTERS}
                   onSelectionChange={(value) => setFilter(value.currentKey)}
                 />
               </div>
