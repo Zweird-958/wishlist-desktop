@@ -4,7 +4,7 @@ import api from "@/web/services/api"
 import { Button } from "@nextui-org/react"
 import React, { useEffect, useState } from "react"
 import * as yup from "yup"
-import FormData from "../types/FormData"
+import FormDataType from "../types/FormData"
 import Wish from "../types/Wish"
 import Dropdown from "../types/Dropdown"
 import FullDiv from "./FullDiv"
@@ -12,7 +12,7 @@ import Select from "./Select"
 import InitialValues from "../types/InitialValues"
 
 type Props = {
-  handleSubmit: (value: FormData) => void
+  handleSubmit: (value: FormDataType) => void
   children?: React.ReactNode
   initialValues: Wish | InitialValues
   button?: string
@@ -48,7 +48,7 @@ const WishForm = (props: Props) => {
     setCurrency(value.currentKey)
   }
 
-  const createFormData = (values: InitialValues) => {
+  const createFormData = (values: InitialValues | Wish) => {
     const { name, price, link } = values
     const formData = new FormData()
 
@@ -75,18 +75,26 @@ const WishForm = (props: Props) => {
     setImage(file)
   }
 
+  const onSubmit = async (values: InitialValues | Wish) => {
+    const formData = createFormData(values)
+    setIsLoading(true)
+
+    try {
+      await handleSubmit(formData)
+    } catch (error) {
+      return
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   return (
     <FullDiv className="z-10 fixed">
       <Form
         title={title}
         button={button}
         initialValues={initialValues}
-        onSubmit={async (values: InitialValues) => {
-          const formData = createFormData(values)
-          setIsLoading(true)
-          await handleSubmit(formData)
-          setIsLoading(false)
-        }}
+        onSubmit={onSubmit}
         validationSchema={validationSchema}
         isLoading={isLoading}
       >

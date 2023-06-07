@@ -1,7 +1,8 @@
 import api from "@/web/services/api"
-import { Button } from "@nextui-org/react"
+import { Button, Switch } from "@nextui-org/react"
 import FormData from "../types/FormData"
 import WishForm from "./WishForm"
+import { useState } from "react"
 
 type Wish = {
   name: string
@@ -22,9 +23,16 @@ type Props = {
 
 const WishEditForm = (props: Props) => {
   const { wish, setWishSelected, getWishList } = props
+  const [purchased, setPurchased] = useState<boolean>(wish.purchased)
+
+  const togglePurchased = () => {
+    setPurchased(!purchased)
+  }
 
   const handleSubmit = async (formData: FormData) => {
     try {
+      formData.purchased = purchased
+
       const {
         data: { result },
       } = await api.patch(`/wish/${wish.id}`, formData)
@@ -32,11 +40,10 @@ const WishEditForm = (props: Props) => {
       setWishSelected(null)
       getWishList()
     } catch (err) {
-      console.log(err)
-
       return
     }
   }
+
   return (
     <WishForm
       handleSubmit={handleSubmit}
@@ -44,11 +51,19 @@ const WishEditForm = (props: Props) => {
       title="Modifier votre envie"
     >
       <div className="flex justify-between">
+        <p>Acheté(e)</p>
+        <Switch
+          color="primary"
+          isSelected={purchased}
+          onValueChange={togglePurchased}
+        />
+      </div>
+      <div className="flex justify-between">
         <Button color="danger" onPress={() => setWishSelected(null)}>
           Annuler
         </Button>
         <Button type="submit" color="primary">
-          Ajouter
+          Modifier
         </Button>
       </div>
     </WishForm>
