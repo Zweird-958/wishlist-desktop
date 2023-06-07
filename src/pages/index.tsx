@@ -60,7 +60,7 @@ const Home = () => {
         data: { result },
       } = await api.delete(`/wish/${id}`)
 
-      setWishList(wishList.filter((wish: any) => wish.id !== result.id))
+      await getWishList()
     } catch (err) {
       return
     }
