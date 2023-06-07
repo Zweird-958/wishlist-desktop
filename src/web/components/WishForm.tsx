@@ -99,7 +99,10 @@ const WishForm = (props: Props) => {
       <Form
         title={title}
         button={button}
-        initialValues={initialValues}
+        initialValues={{
+          ...initialValues,
+          link: initialValues.link === null ? "" : initialValues.link,
+        }}
         onSubmit={onSubmit}
         validationSchema={validationSchema}
         isLoading={isLoading}
