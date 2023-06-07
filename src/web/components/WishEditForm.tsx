@@ -45,7 +45,7 @@ const WishEditForm = (props: Props) => {
   return (
     <WishForm
       handleSubmit={handleSubmit}
-      initialValues={wish}
+      initialValues={{ ...wish, link: wish.link ?? "" }}
       title="Modifier votre envie"
       purchased={purchased}
     >
