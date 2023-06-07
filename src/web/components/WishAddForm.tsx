@@ -1,13 +1,7 @@
 import api from "@/web/services/api"
 import FormData from "../types/FormData"
-import Wish from "../types/Wish"
-import WishForm from "./WishForm"
 import AddIcon from "./AddIcon"
-
-type Props = {
-  setIsOpen: (value: boolean) => void
-  updateWishList: (value: Wish) => void
-}
+import WishForm from "./WishForm"
 
 const initialValues = {
   name: "",
@@ -15,20 +9,11 @@ const initialValues = {
   link: "",
 }
 
-const WishAddForm = (props: Props) => {
-  const { updateWishList } = props
-
+const WishAddForm = () => {
   const handleSubmit = async (formData: FormData) => {
     try {
-      const {
-        data: { result },
-      } = await api.post("/wish", formData)
-      console.log(result)
-
-      updateWishList(result)
+      await api.post("/wish", formData)
     } catch (err) {
-      console.log(err)
-
       return
     }
   }

@@ -1,11 +1,10 @@
 import api from "@/web/services/api"
 import { Switch } from "@nextui-org/react"
-import { useContext, useState } from "react"
+import { useState } from "react"
 import FormData from "../types/FormData"
-import AppContext from "./AppContext"
+import Wish from "../types/Wish"
 import EditIcon from "./EditIcon"
 import WishForm from "./WishForm"
-import Wish from "../types/Wish"
 
 type Props = {
   wish: Wish
@@ -16,9 +15,6 @@ const WishEditForm = (props: Props) => {
   const [purchased, setPurchased] = useState<boolean>(
     wish ? wish.purchased : false
   )
-  const {
-    actions: { getWishList },
-  } = useContext(AppContext)
 
   const togglePurchased = () => {
     setPurchased(!purchased)
@@ -29,8 +25,6 @@ const WishEditForm = (props: Props) => {
       const {
         data: { result },
       } = await api.patch(`/wish/${wish.id}`, formData)
-
-      await getWishList()
     } catch (err) {
       return
     }

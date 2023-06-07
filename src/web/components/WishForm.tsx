@@ -10,7 +10,12 @@ import {
   Colors,
 } from "@nextui-org/react"
 import { Form, Formik } from "formik"
-import React, { ChangeEventHandler, useEffect, useState } from "react"
+import React, {
+  ChangeEventHandler,
+  useContext,
+  useEffect,
+  useState,
+} from "react"
 import * as yup from "yup"
 import Dropdown from "../types/Dropdown"
 import FormDataType from "../types/FormData"
@@ -19,6 +24,7 @@ import Wish from "../types/Wish"
 import FormField from "./FormField"
 import Select from "./Select"
 import Color from "../types/Color"
+import AppContext from "./AppContext"
 
 const validationSchema = yup.object().shape({
   name: yup.string().required("Veuillez entrer un nom"),
@@ -56,6 +62,10 @@ const WishForm = (props: Props) => {
   const [currencies, setCurrencies] = useState([])
   const [currency, setCurrency] = useState<string>("")
   const [isLoading, setIsLoading] = useState(false)
+
+  const {
+    actions: { getWishList },
+  } = useContext(AppContext)
 
   useEffect(() => {
     ;(async () => {
@@ -108,6 +118,7 @@ const WishForm = (props: Props) => {
 
     try {
       await handleSubmit(formData)
+      await getWishList()
     } catch (error) {
       return
     } finally {

@@ -25,10 +25,6 @@ const Home = () => {
     state: { wishList },
   } = useContext(AppContext)
 
-  const updateWishList = (newWish: any) => {
-    setWishList((prev: any) => [...prev, newWish])
-  }
-
   const sortWishList = (value: Dropdown) => {
     const sortSelected: string = value.currentKey
     setSort(sortSelected)
@@ -56,18 +52,6 @@ const Home = () => {
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  const deleteWish = async (id: number) => {
-    try {
-      const {
-        data: { result },
-      } = await api.delete(`/wish/${id}`)
-
-      await getWishList()
-    } catch (err) {
-      return
-    }
-  }
 
   return (
     <>
@@ -106,7 +90,7 @@ const Home = () => {
           </div>
         </div>
       )}
-      <WishAddForm updateWishList={updateWishList} />
+      <WishAddForm />
     </>
   )
 }
