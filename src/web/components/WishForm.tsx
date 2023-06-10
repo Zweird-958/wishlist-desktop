@@ -37,7 +37,7 @@ type Props = {
   className?: string
   color?: Color
   children?: React.ReactNode
-  handleSubmit: (value: FormDataType) => void
+  handleSubmit: (value: FormDataType) => Promise<void>
   initialValues: Wish | InitialValues
   buttonTitle: string
   title: string
@@ -59,7 +59,7 @@ const WishForm = (props: Props) => {
   } = props
 
   const [image, setImage] = useState<File | null>(null)
-  const [currencies, setCurrencies] = useState([])
+  const [currencies, setCurrencies] = useState<string[]>([])
   const [currency, setCurrency] = useState<string>("")
   const [isLoading, setIsLoading] = useState(false)
 
@@ -68,7 +68,7 @@ const WishForm = (props: Props) => {
   } = useContext(AppContext)
 
   useEffect(() => {
-    ;(async () => {
+    void (async () => {
       try {
         const {
           data: { result },
@@ -98,11 +98,9 @@ const WishForm = (props: Props) => {
       image: image ?? undefined,
     }
 
-    for (const key in data) {
-      if (data[key]) {
-        formData.append(key, data[key])
-      }
-    }
+    Object.entries(data).forEach(([key, value]) => {
+      formData.append(key, value)
+    })
 
     return formData
   }

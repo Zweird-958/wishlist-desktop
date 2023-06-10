@@ -1,17 +1,23 @@
 import config from "@/web/config"
-import axios from "axios"
-import deepmerge from "deepmerge"
+import axios, { AxiosRequestConfig } from "axios"
 import FormData from "../types/FormData"
 
+type Method = "get" | "post" | "patch" | "delete"
+
 const call =
-  (method: string) =>
-  (path: string, data: null | FormData = null, options = {}) => {
+  (method: Method) =>
+  (
+    path: string,
+    data: null | FormData = null,
+    options: AxiosRequestConfig = {}
+  ) => {
     const jwt = localStorage.getItem(config.session.localStorageKey)
 
-    options.headers = deepmerge(
-      options.headers,
-      jwt ? { authorization: jwt } : {}
-    )
+    if (jwt) {
+      options.headers = {
+        authorization: jwt,
+      }
+    }
 
     const opts = {
       baseURL: config.api.baseURL,
