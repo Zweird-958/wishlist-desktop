@@ -1,4 +1,6 @@
 import AbsoluteDiv from "@/web/components/AbsoluteDiv"
+import FullDiv from "@/web/components/FullDiv"
+import Loading from "@/web/components/Loading"
 import Select from "@/web/components/Select"
 import WishAddForm from "@/web/components/WishAddForm"
 import WishCard from "@/web/components/WishCard"
@@ -41,13 +43,15 @@ const Home = () => {
 
   const { data: wishList, isLoading } = useQuery<Result>({
     queryKey: ["wishList"],
-    queryFn: () => api.get("/wish").then((res) => res.data),
+    queryFn: () => api.get("/wish"),
   })
 
   return (
     <>
       {isLoading ? (
-        <p>Loading...</p>
+        <FullDiv>
+          <Loading />
+        </FullDiv>
       ) : wishList.result.length === 0 ? (
         <AbsoluteDiv>
           <Card>
