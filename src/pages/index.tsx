@@ -15,9 +15,7 @@ const FILTERS = ["Tous", "Achetées", "Non Achetées"]
 const SORTS = ["Date", "Prix croissant", "Prix décroissant"]
 
 type Result = {
-  data: {
-    result: Wish[]
-  }
+  result: Wish[]
 }
 
 const Home = () => {
