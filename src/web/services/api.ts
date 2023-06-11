@@ -28,7 +28,7 @@ const call =
       path,
       ["get", "delete"].includes(method) ? opts : data,
       opts
-    )
+    ).then((res) => res.data)
   }
 
 const api = {
