@@ -1,29 +1,26 @@
-import WishForm from "@/web/components/WishForm"
 import AbsoluteDiv from "@/web/components/AbsoluteDiv"
-import AddIcon from "@/web/components/AddIcon"
+import Select from "@/web/components/Select"
+import WishAddForm from "@/web/components/WishAddForm"
 import WishCard from "@/web/components/WishCard"
 import api from "@/web/services/api"
-import { Button, Card, CardBody, useDisclosure } from "@nextui-org/react"
-import { useContext, useEffect, useState } from "react"
-import WishEditForm from "@/web/components/WishEditForm"
-import WishAddForm from "@/web/components/WishAddForm"
-import Select from "@/web/components/Select"
-import Wish from "@/web/types/Wish"
 import Dropdown from "@/web/types/Dropdown"
-import Modal from "@/web/components/WishForm"
-import AppContext from "@/web/components/AppContext"
+import Wish from "@/web/types/Wish"
+import { Card, CardBody } from "@nextui-org/react"
+import { useQuery } from "@tanstack/react-query"
+import { useState } from "react"
 
 const FILTERS = ["Tous", "Achetées", "Non Achetées"]
 const SORTS = ["Date", "Prix croissant", "Prix décroissant"]
 
+type Result = {
+  data: {
+    result: Wish[]
+  }
+}
+
 const Home = () => {
   const [filter, setFilter] = useState<string>(FILTERS[0] as string)
   const [sort, setSort] = useState<string>(SORTS[0] as string)
-
-  const {
-    actions: { getWishList },
-    state: { wishList },
-  } = useContext(AppContext)
 
   const sortWishList = (value: Dropdown) => {
     const sortSelected: string = value.currentKey
@@ -42,20 +39,16 @@ const Home = () => {
     }
   }
 
-  useEffect(() => {
-    ;(async () => {
-      try {
-        await getWishList()
-      } catch (error) {
-        return
-      }
-    })()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const { data: wishList, isLoading } = useQuery<Result>({
+    queryKey: ["wishList"],
+    queryFn: () => api.get("/wish").then((res) => res.data),
+  })
 
   return (
     <>
-      {wishList.length === 0 ? (
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : wishList.result.length === 0 ? (
         <AbsoluteDiv>
           <Card>
             <CardBody>
@@ -78,7 +71,7 @@ const Home = () => {
                 onSelectionChange={(value) => setFilter(value.currentKey)}
               />
             </div>
-            {wishList.map((wish: Wish, index) => {
+            {wishList.result.map((wish: Wish, index) => {
               if (filter === FILTERS[1] && !wish.purchased) {
                 return
               } else if (filter === FILTERS[2] && wish.purchased) {
