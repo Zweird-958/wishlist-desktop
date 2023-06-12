@@ -31,7 +31,7 @@ type Props = {
   className?: string
   color?: Color
   children?: React.ReactNode
-  handleSubmit: (value: FormDataType) => Promise<void>
+  handleSubmit: (value: FormDataType) => void
   initialValues: Wish | InitialValues
   buttonTitle: string
   title: string
@@ -108,11 +108,11 @@ const WishForm = (props: Props) => {
     setImage(file)
   }
 
-  const onSubmit = async (values: InitialValues | Wish) => {
+  const onSubmit = (values: InitialValues | Wish) => {
     const formData = createFormData(values)
 
     try {
-      await handleSubmit(formData)
+      handleSubmit(formData)
     } catch (error) {
       return
     }
