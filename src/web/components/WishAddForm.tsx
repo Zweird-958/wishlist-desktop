@@ -39,6 +39,7 @@ const WishAddForm = () => {
       handleSubmit={handleSubmit}
       initialValues={initialValues}
       buttonTitle="Ajouter"
+      isLoading={mutation.isLoading}
     />
   )
 }

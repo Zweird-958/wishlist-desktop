@@ -44,6 +44,7 @@ type Props = {
   buttonTitle: string
   title: string
   purchased?: boolean
+  isLoading: boolean
 }
 
 type Result = {
@@ -62,20 +63,22 @@ const WishForm = (props: Props) => {
     title,
     purchased,
     buttonTitle,
+    isLoading,
   } = props
 
   const [image, setImage] = useState<File | null>(null)
   const [currency, setCurrency] = useState<string>("")
-  const [isLoading, setIsLoading] = useState(false)
-
-  const {
-    actions: { getWishList },
-  } = useContext(AppContext)
 
   const { data: currencies } = useQuery<Result>({
     queryKey: ["currencies"],
     queryFn: () => api.get("/currency"),
   })
+
+  useEffect(() => {
+    if (isLoading === false) {
+      onClose()
+    }
+  }, [isLoading, onClose])
 
   useMemo(() => {
     if (!initialValues.currency) {
@@ -115,16 +118,11 @@ const WishForm = (props: Props) => {
 
   const onSubmit = async (values: InitialValues | Wish) => {
     const formData = createFormData(values)
-    setIsLoading(true)
 
     try {
       await handleSubmit(formData)
-      await getWishList()
     } catch (error) {
       return
-    } finally {
-      setIsLoading(false)
-      onClose()
     }
   }
 

@@ -50,6 +50,7 @@ const WishEditForm = (props: Props) => {
       initialValues={{ ...wish, link: wish.link ?? "" }}
       buttonTitle="Modifier"
       purchased={purchased}
+      isLoading={mutation.isLoading}
     >
       <div className="flex justify-between">
         <p>Acheté(e)</p>
