@@ -5,12 +5,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@nextui-org/react"
-import { useContext } from "react"
-import AppContext from "./AppContext"
-import api from "../services/api"
 import { useMutation } from "@tanstack/react-query"
-import WishResponse from "../types/WishResponse"
 import useWish from "../hooks/useWishlist"
+import api from "../services/api"
+import WishResponse from "../types/WishResponse"
 
 type Props = {
   id: number
