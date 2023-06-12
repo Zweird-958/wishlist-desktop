@@ -1,11 +1,10 @@
 import api from "@/web/services/api"
+import { useMutation } from "@tanstack/react-query"
+import useWish from "../hooks/useWishlist"
 import FormData from "../types/FormData"
+import WishResponse from "../types/WishResponse"
 import AddIcon from "./AddIcon"
 import WishForm from "./WishForm"
-import { useMutation } from "@tanstack/react-query"
-import Wish from "../types/Wish"
-import { addAbortSignal } from "stream"
-import useWish from "../hooks/useWishlist"
 
 const initialValues = {
   name: "",
@@ -18,7 +17,7 @@ const WishAddForm = () => {
     wishStore: { addWish },
   } = useWish()
 
-  const mutation = useMutation<Wish>({
+  const mutation = useMutation<WishResponse>({
     mutationFn: (formData: FormData) => {
       return api.post("/wish", formData)
     },

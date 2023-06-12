@@ -7,13 +7,10 @@ import EditIcon from "./EditIcon"
 import WishForm from "./WishForm"
 import useWish from "../hooks/useWishlist"
 import { useMutation } from "@tanstack/react-query"
+import WishResponse from "../types/WishResponse"
 
 type Props = {
   wish: Wish
-}
-
-type Result = {
-  result: Wish
 }
 
 const WishEditForm = (props: Props) => {
@@ -26,7 +23,7 @@ const WishEditForm = (props: Props) => {
     wishStore: { updateWish },
   } = useWish()
 
-  const mutation = useMutation<Wish>({
+  const mutation = useMutation<WishResponse>({
     mutationFn: (formData: FormData) => {
       return api.patch(`/wish/${wish.id}`, formData)
     },
