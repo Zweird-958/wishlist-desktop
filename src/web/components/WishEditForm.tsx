@@ -12,6 +12,10 @@ type Props = {
   wish: Wish
 }
 
+type Result = {
+  result: Wish
+}
+
 const WishEditForm = (props: Props) => {
   const { wish } = props
   const [purchased, setPurchased] = useState<boolean>(
@@ -26,7 +30,7 @@ const WishEditForm = (props: Props) => {
     mutationFn: (formData: FormData) => {
       return api.patch(`/wish/${wish.id}`, formData)
     },
-    onSuccess: (data) => {
+    onSuccess: (data: Result) => {
       updateWish(data.result)
     },
   })
