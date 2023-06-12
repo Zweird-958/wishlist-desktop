@@ -65,6 +65,7 @@ const DeletePopover = (props: Props) => {
               radius="md"
               variant="bordered"
               onPress={handleDelete}
+              isLoading={mutation.isLoading}
             >
               Supprimer
             </Button>
