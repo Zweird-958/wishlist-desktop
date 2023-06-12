@@ -9,7 +9,7 @@ import Dropdown from "@/web/types/Dropdown"
 import Wish from "@/web/types/Wish"
 import { Card, CardBody } from "@nextui-org/react"
 import { useQuery } from "@tanstack/react-query"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 
 const FILTERS = ["Tous", "Achetées", "Non Achetées"]
 const SORTS = ["Date", "Prix croissant", "Prix décroissant"]
@@ -22,27 +22,31 @@ const Home = () => {
   const [filter, setFilter] = useState<string>(FILTERS[0] as string)
   const [sort, setSort] = useState<string>(SORTS[0] as string)
 
-  const sortWishList = (value: Dropdown) => {
+  const selectSort = (value: Dropdown) => {
     const sortSelected: string = value.currentKey
     setSort(sortSelected)
-
-    if (sortSelected === SORTS[0]) {
-      setWishList(
-        wishList.sort(
-          (a: Wish, b: Wish) => new Date(a.createdAt) - new Date(b.createdAt)
-        )
-      )
-    } else if (sortSelected === SORTS[1]) {
-      setWishList(wishList.sort((a: Wish, b: Wish) => a.price - b.price))
-    } else {
-      setWishList(wishList.sort((a: Wish, b: Wish) => b.price - a.price))
-    }
   }
 
-  const { data: wishList, isLoading } = useQuery<Result>({
+  const { data, isLoading } = useQuery<Result>({
     queryKey: ["wishList"],
     queryFn: () => api.get("/wish"),
   })
+
+  const wishlist = useMemo(() => {
+    if (!data) {
+      return []
+    }
+
+    if (sort === SORTS[0]) {
+      return data.result.sort(
+        (a: Wish, b: Wish) => new Date(a.createdAt) - new Date(b.createdAt)
+      )
+    } else if (sort === SORTS[1]) {
+      return data.result.sort((a: Wish, b: Wish) => a.price - b.price)
+    } else {
+      return data.result.sort((a: Wish, b: Wish) => b.price - a.price)
+    }
+  }, [sort, data])
 
   return (
     <>
@@ -50,7 +54,7 @@ const Home = () => {
         <FullDiv>
           <Loading />
         </FullDiv>
-      ) : wishList.result.length === 0 ? (
+      ) : wishlist.length === 0 ? (
         <AbsoluteDiv>
           <Card>
             <CardBody>
@@ -65,7 +69,7 @@ const Home = () => {
               <Select
                 selectedValue={sort}
                 items={SORTS}
-                onSelectionChange={sortWishList}
+                onSelectionChange={selectSort}
               />
               <Select
                 selectedValue={filter}
@@ -73,7 +77,7 @@ const Home = () => {
                 onSelectionChange={(value) => setFilter(value.currentKey)}
               />
             </div>
-            {wishList.result.map((wish: Wish, index) => {
+            {wishlist.map((wish: Wish, index) => {
               if (filter === FILTERS[1] && !wish.purchased) {
                 return
               } else if (filter === FILTERS[2] && wish.purchased) {
