@@ -38,7 +38,6 @@ export const AppContextProvider = (props) => {
 
       router.push("/")
     } catch (err) {
-      console.log(err)
       return err
     }
   }
