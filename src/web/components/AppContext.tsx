@@ -1,8 +1,9 @@
 import config from "@/web/config"
 import api from "@/web/services/api"
-import { createContext, useEffect, useState } from "react"
+import { useQuery } from "@tanstack/react-query"
 import jsonwebtoken from "jsonwebtoken"
 import { useRouter } from "next/router"
+import { createContext, useState } from "react"
 import Wish from "../types/Wish"
 
 type Session = {
@@ -26,7 +27,6 @@ const AppContext = createContext<AppContextType>()
 
 export const AppContextProvider = (props) => {
   const [session, setSession] = useState<Session | null>(null)
-  const [wishList, setWishList] = useState<Wish[]>([])
   const router = useRouter()
 
   const signIn = async (email: string, password: string) => {
@@ -47,42 +47,26 @@ export const AppContextProvider = (props) => {
     setSession(null)
   }
 
-  const getWishList = async () => {
-    try {
-      const {
-        data: { result },
-      } = await api.get("/wish")
+  useQuery({
+    queryKey: ["session"],
+    queryFn: () => api.get("/session"),
+    onError: () => signOut(),
+    onSuccess: () => {
+      const jwt = localStorage.getItem(config.session.localStorageKey)
 
-      setWishList(result)
-    } catch (err) {
-      return
-    }
-  }
+      if (jwt) {
+        setSession(jsonwebtoken.decode(jwt).payload)
 
-  useEffect(() => {
-    ;(async () => {
-      try {
-        await api.get("/session")
-
-        const jwt = localStorage.getItem(config.session.localStorageKey)
-
-        if (jwt) {
-          setSession(jsonwebtoken.decode(jwt).payload)
-
-          return
-        }
-      } catch (err) {
-        return signOut()
+        return
       }
-    })()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    },
+  })
 
   return (
     <AppContext.Provider
       value={{
-        state: { session, wishList },
-        actions: { signIn, signOut, getWishList },
+        state: { session },
+        actions: { signIn, signOut },
       }}
       {...props}
     />
