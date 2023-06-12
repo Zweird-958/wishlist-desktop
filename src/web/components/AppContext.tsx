@@ -31,15 +31,14 @@ export const AppContextProvider = (props) => {
 
   const signIn = async (email: string, password: string) => {
     try {
-      const {
-        data: { result: jwt },
-      } = await api.post("/sign-in", { email, password })
+      const { result: jwt } = await api.post("/sign-in", { email, password })
 
       localStorage.setItem(config.session.localStorageKey, jwt)
       setSession(jsonwebtoken.decode(jwt).payload)
 
       router.push("/")
     } catch (err) {
+      console.log(err)
       return err
     }
   }
