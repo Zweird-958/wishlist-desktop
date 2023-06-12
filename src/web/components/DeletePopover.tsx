@@ -8,6 +8,9 @@ import {
 import { useContext } from "react"
 import AppContext from "./AppContext"
 import api from "../services/api"
+import { useMutation } from "@tanstack/react-query"
+import WishResponse from "../types/WishResponse"
+import useWish from "../hooks/useWishlist"
 
 type Props = {
   id: number
@@ -17,16 +20,31 @@ const DeletePopover = (props: Props) => {
   const { id } = props
 
   const {
-    actions: { getWishList },
-  } = useContext(AppContext)
+    wishStore: { removeWish },
+  } = useWish()
 
-  const deleteWish = async () => {
-    try {
-      await api.delete(`/wish/${id}`)
-      await getWishList()
-    } catch (error) {
-      return
-    }
+  const mutation = useMutation<WishResponse>({
+    mutationFn: () => {
+      return api.delete(`/wish/${id}22`)
+    },
+    onError: (error) => {
+      const {
+        response: {
+          data: { status },
+        },
+      } = error
+
+      if (status === 404) {
+        console.log("Wish not found")
+      }
+    },
+    onSuccess: (data) => {
+      removeWish(data.result)
+    },
+  })
+
+  const handleDelete = () => {
+    mutation.mutate()
   }
 
   return (
@@ -46,7 +64,7 @@ const DeletePopover = (props: Props) => {
               className="mt-2 text-white"
               radius="md"
               variant="bordered"
-              onPress={deleteWish}
+              onPress={handleDelete}
             >
               Supprimer
             </Button>
