@@ -12,10 +12,6 @@ const useWish = () => {
   const wishStore = useWishStore((state) => state)
   const wishlist = wishStore.wishlist
 
-  // const { data, isFetching } = api.tag.getAll.useQuery(undefined, {
-  //   enabled: tags.length === 0,
-  // })
-
   const { data, isFetching } = useQuery<Result>({
     queryKey: ["wishList"],
     queryFn: () => api.get("/wish"),
