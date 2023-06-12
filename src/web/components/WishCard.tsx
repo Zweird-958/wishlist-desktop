@@ -12,7 +12,6 @@ type WishCardProps = {
 const WishCard = (props: WishCardProps) => {
   const { wish } = props
   const { name, image, currency, price, id, link } = wish
-  console.log("currency", link)
 
   return (
     <Card
