@@ -40,11 +40,11 @@ const WishCard = (props: WishCardProps) => {
         <p className="text-md font-medium text-black/80">
           {formatCurrency(price, currency)}
         </p>
-        {/* {link && (
+        {link && (
           <Button radius="lg" color="primary" as={Link} href={link}>
             Acheter
           </Button>
-        )} */}
+        )}
       </CardFooter>
     </Card>
   )
