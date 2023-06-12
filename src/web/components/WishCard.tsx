@@ -1,9 +1,9 @@
 import formatCurrency from "@/utils/formatCurrency"
+import Wish from "@/web/types/Wish"
 import { Button, Card, CardFooter, CardHeader, Image } from "@nextui-org/react"
 import Link from "next/link"
-import WishEditForm from "./WishEditForm"
-import Wish from "@/web/types/Wish"
 import DeletePopover from "./DeletePopOver"
+import WishEditForm from "./WishEditForm"
 
 type WishCardProps = {
   wish: Wish
@@ -12,6 +12,7 @@ type WishCardProps = {
 const WishCard = (props: WishCardProps) => {
   const { wish } = props
   const { name, image, currency, price, id, link } = wish
+  console.log("currency", link)
 
   return (
     <Card
@@ -40,11 +41,11 @@ const WishCard = (props: WishCardProps) => {
         <p className="text-md font-medium text-black/80">
           {formatCurrency(price, currency)}
         </p>
-        {link && (
+        {/* {link && (
           <Button radius="lg" color="primary" as={Link} href={link}>
             Acheter
           </Button>
-        )}
+        )} */}
       </CardFooter>
     </Card>
   )

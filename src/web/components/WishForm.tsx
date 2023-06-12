@@ -14,6 +14,7 @@ import React, {
   ChangeEventHandler,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react"
 import * as yup from "yup"
@@ -25,6 +26,7 @@ import FormField from "./FormField"
 import Select from "./Select"
 import Color from "../types/Color"
 import AppContext from "./AppContext"
+import { useQuery } from "@tanstack/react-query"
 
 const validationSchema = yup.object().shape({
   name: yup.string().required("Veuillez entrer un nom"),
@@ -44,6 +46,10 @@ type Props = {
   purchased?: boolean
 }
 
+type Result = {
+  result: string[]
+}
+
 const WishForm = (props: Props) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const {
@@ -59,7 +65,6 @@ const WishForm = (props: Props) => {
   } = props
 
   const [image, setImage] = useState<File | null>(null)
-  const [currencies, setCurrencies] = useState<string[]>([])
   const [currency, setCurrency] = useState<string>("")
   const [isLoading, setIsLoading] = useState(false)
 
@@ -67,18 +72,18 @@ const WishForm = (props: Props) => {
     actions: { getWishList },
   } = useContext(AppContext)
 
-  useEffect(() => {
-    void (async () => {
-      try {
-        const { result } = await api.get("/currency")
+  const { data: currencies } = useQuery<Result>({
+    queryKey: ["currencies"],
+    queryFn: () => api.get("/currency"),
+  })
 
-        setCurrencies(result)
-        setCurrency(initialValues.currency ?? result[0])
-      } catch (error) {
-        return
-      }
-    })()
-  }, [initialValues])
+  useMemo(() => {
+    if (!initialValues.currency) {
+      setCurrency(currencies ? currencies.result[0] : "")
+    } else {
+      setCurrency(initialValues.currency)
+    }
+  }, [currencies, initialValues])
 
   const onSelectionChange = (value: Dropdown) => {
     setCurrency(value.currentKey)
@@ -144,7 +149,7 @@ const WishForm = (props: Props) => {
                 <Select
                   onSelectionChange={onSelectionChange}
                   selectedValue={currency}
-                  items={currencies}
+                  items={currencies ? currencies.result : []}
                 />
                 <Button as="label" className="truncate" color="primary">
                   {image ? image.name : "Ajouter une image"}

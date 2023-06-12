@@ -84,6 +84,8 @@ const Home = () => {
                 return
               }
 
+              console.log("wish", wish)
+
               return <WishCard key={index} wish={wish} />
             })}
           </div>

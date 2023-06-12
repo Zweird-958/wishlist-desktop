@@ -7,7 +7,7 @@ import {
   NavbarItem,
 } from "@nextui-org/react"
 import Link from "next/link"
-import { useContext, useRef } from "react"
+import { useContext } from "react"
 import AppContext from "./AppContext"
 import { useRouter } from "next/router"
 
@@ -82,20 +82,6 @@ const AppBar = () => {
             }
           }
         )}
-        {/* {session ? (
-          <NavbarItem as={Link} href="profile">
-            <Avatar />
-          </NavbarItem>
-        ) : (
-          <>
-            <NavbarItem as={Link} href="sign-in">
-              Se connecter
-            </NavbarItem>
-            <NavbarItem as={Link} href="sign-up">
-              S'inscire
-            </NavbarItem>
-          </>
-        )} */}
       </NavbarContent>
     </Navbar>
   )
