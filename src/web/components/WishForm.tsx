@@ -1,32 +1,24 @@
 import api from "@/web/services/api"
 import {
   Button,
+  Modal,
   ModalBody,
   ModalContent,
   ModalFooter,
   ModalHeader,
-  Modal,
   useDisclosure,
-  Colors,
 } from "@nextui-org/react"
+import { useQuery } from "@tanstack/react-query"
 import { Form, Formik } from "formik"
-import React, {
-  ChangeEventHandler,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react"
+import React, { ChangeEventHandler, useEffect, useMemo, useState } from "react"
 import * as yup from "yup"
+import Color from "../types/Color"
 import Dropdown from "../types/Dropdown"
 import FormDataType from "../types/FormData"
 import InitialValues from "../types/InitialValues"
 import Wish from "../types/Wish"
 import FormField from "./FormField"
 import Select from "./Select"
-import Color from "../types/Color"
-import AppContext from "./AppContext"
-import { useQuery } from "@tanstack/react-query"
 
 const validationSchema = yup.object().shape({
   name: yup.string().required("Veuillez entrer un nom"),
