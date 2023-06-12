@@ -5,6 +5,8 @@ import FormData from "../types/FormData"
 import Wish from "../types/Wish"
 import EditIcon from "./EditIcon"
 import WishForm from "./WishForm"
+import useWish from "../hooks/useWishlist"
+import { useMutation } from "@tanstack/react-query"
 
 type Props = {
   wish: Wish
@@ -16,18 +18,25 @@ const WishEditForm = (props: Props) => {
     wish ? wish.purchased : false
   )
 
+  const {
+    wishStore: { updateWish },
+  } = useWish()
+
+  const mutation = useMutation<Wish>({
+    mutationFn: (formData: FormData) => {
+      return api.patch(`/wish/${wish.id}`, formData)
+    },
+    onSuccess: (data) => {
+      updateWish(data.result)
+    },
+  })
+
   const togglePurchased = () => {
     setPurchased(!purchased)
   }
 
-  const handleSubmit = async (formData: FormData) => {
-    try {
-      const {
-        data: { result },
-      } = await api.patch(`/wish/${wish.id}`, formData)
-    } catch (err) {
-      return
-    }
+  const handleSubmit = (formData: FormData) => {
+    mutation.mutate(formData)
   }
 
   return (

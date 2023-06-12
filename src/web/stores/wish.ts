@@ -20,6 +20,18 @@ export const useWishStore = create<WishState>((set) => ({
     set((state) => ({
       wishlist: state.wishlist.filter((w) => w.id !== wish.id),
     })),
+  updateWish: (wish) => {
+    const { wishlist, setWishlist } = useWishStore.getState()
+    setWishlist(
+      wishlist.map((w) => {
+        if (w.id === wish.id) {
+          return wish
+        }
+
+        return w
+      })
+    )
+  },
   sort: SORTS[0] as string,
   sortWishlist: (sort) => {
     const { wishlist, setWishlist } = useWishStore.getState()
