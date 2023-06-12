@@ -25,7 +25,7 @@ const DeletePopover = (props: Props) => {
 
   const mutation = useMutation<WishResponse>({
     mutationFn: () => {
-      return api.delete(`/wish/${id}22`)
+      return api.delete(`/wish/${id}`)
     },
     onError: (error) => {
       const {
