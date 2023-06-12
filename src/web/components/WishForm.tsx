@@ -70,9 +70,7 @@ const WishForm = (props: Props) => {
   useEffect(() => {
     void (async () => {
       try {
-        const {
-          data: { result },
-        } = await api.get("/currency")
+        const { result } = await api.get("/currency")
 
         setCurrencies(result)
         setCurrency(initialValues.currency ?? result[0])
