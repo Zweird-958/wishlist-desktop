@@ -1,9 +1,16 @@
 import AbsoluteDiv from "@/web/components/AbsoluteDiv"
-import AppContext from "@/web/components/AppContext"
 import Form from "@/web/components/Form"
 import FormField from "@/web/components/FormField"
-import { useContext } from "react"
+import useSession from "@/web/hooks/useSession"
+import api from "@/web/services/api"
+import { useMutation } from "@tanstack/react-query"
+import { useRouter } from "next/router"
 import * as yup from "yup"
+
+type SignInMutation = {
+  email: string
+  password: string
+}
 
 const initialValues = {
   email: "",
@@ -27,16 +34,25 @@ type Values = {
 }
 
 const SignUp = () => {
-  const {
-    actions: { signIn },
-  } = useContext(AppContext)
+  const signInMutation = useMutation({
+    mutationFn: (credentials: SignInMutation) => {
+      return api.post("/sign-in", credentials)
+    },
+  })
 
-  const handleSubmit = async ({ email, password }: Values) => {
-    const err = await signIn(email, password)
+  const router = useRouter()
+  const { signIn } = useSession()
 
-    if (err) {
-      console.log("Invalid credentials")
-    }
+  const handleSubmit = ({ email, password }: Values) => {
+    signInMutation.mutate(
+      { email, password },
+      {
+        onSuccess: (response) => {
+          signIn(response)
+          router.push("/")
+        },
+      }
+    )
   }
 
   return (

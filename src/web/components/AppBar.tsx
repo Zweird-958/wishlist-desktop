@@ -7,16 +7,13 @@ import {
   NavbarItem,
 } from "@nextui-org/react"
 import Link from "next/link"
-import { useContext } from "react"
-import AppContext from "./AppContext"
 import { useRouter } from "next/router"
+import useSession from "../hooks/useSession"
 
 const AppBar = () => {
   const router = useRouter()
-  const {
-    state: { session },
-    actions: { signOut },
-  } = useContext(AppContext)
+
+  const { session, signOut } = useSession()
 
   const pages = [
     {
