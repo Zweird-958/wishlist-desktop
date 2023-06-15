@@ -1,13 +1,14 @@
 import api from "@/web/services/api"
 import { Switch } from "@nextui-org/react"
+import { useMutation } from "@tanstack/react-query"
 import { useState } from "react"
+import useHandleErrors from "../hooks/useHandleErrors"
+import useWish from "../hooks/useWishlist"
 import FormData from "../types/FormData"
 import Wish from "../types/Wish"
+import WishResponse from "../types/WishResponse"
 import EditIcon from "./EditIcon"
 import WishForm from "./WishForm"
-import useWish from "../hooks/useWishlist"
-import { useMutation } from "@tanstack/react-query"
-import WishResponse from "../types/WishResponse"
 
 type Props = {
   wish: Wish
@@ -18,6 +19,7 @@ const WishEditForm = (props: Props) => {
   const [purchased, setPurchased] = useState<boolean>(
     wish ? wish.purchased : false
   )
+  const { handleError } = useHandleErrors()
 
   const {
     wishStore: { updateWish },
@@ -30,6 +32,7 @@ const WishEditForm = (props: Props) => {
     onSuccess: (data: Result) => {
       updateWish(data.result)
     },
+    onError: handleError,
   })
 
   const togglePurchased = () => {

@@ -1,8 +1,10 @@
 import { useQuery } from "@tanstack/react-query"
-import { useWishStore } from "../stores/wish"
 import { useEffect } from "react"
-import Wish from "../types/Wish"
 import api from "../services/api"
+import { useWishStore } from "../stores/wish"
+import Wish from "../types/Wish"
+import useHandleErrors from "./useHandleErrors"
+import useSession from "./useSession"
 
 type Result = {
   result: Wish[]
@@ -12,10 +14,14 @@ const useWish = () => {
   const wishStore = useWishStore((state) => state)
   const wishlist = wishStore.wishlist
 
+  const { handleError } = useHandleErrors()
+  const { session } = useSession()
+
   const { data, isFetching } = useQuery<Result>({
     queryKey: ["wishList"],
     queryFn: () => api.get("/wish"),
-    enabled: wishlist.length === 0,
+    enabled: wishlist.length === 0 && session !== null,
+    onError: handleError,
   })
 
   useEffect(() => {

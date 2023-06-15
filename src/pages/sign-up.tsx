@@ -1,9 +1,16 @@
 import AbsoluteDiv from "@/web/components/AbsoluteDiv"
 import Form from "@/web/components/Form"
 import FormField from "@/web/components/FormField"
+import useHandleErrors from "@/web/hooks/useHandleErrors"
 import api from "@/web/services/api"
+import { useMutation } from "@tanstack/react-query"
 import { useRouter } from "next/router"
 import * as yup from "yup"
+
+type SignUnMutation = {
+  email: string
+  password: string
+}
 
 const initialValues = {
   email: "",
@@ -23,15 +30,24 @@ const signUpSchema = yup.object().shape({
 
 const SignUp = () => {
   const router = useRouter()
+  const { handleError } = useHandleErrors()
 
-  const handleSubmit = async (values: any) => {
-    try {
-      await api.post("/sign-up", values)
+  const signUpMutation = useMutation({
+    mutationFn: (credentials: SignUnMutation) => {
+      return api.post("/sign-up", credentials)
+    },
+    onError: handleError,
+  })
 
-      router.push("/sign-in")
-    } catch (err) {
-      return
-    }
+  const handleSubmit = ({ email, password }: SignUnMutation) => {
+    signUpMutation.mutate(
+      { email, password },
+      {
+        onSuccess: () => {
+          router.push("/sign-in")
+        },
+      }
+    )
   }
 
   return (

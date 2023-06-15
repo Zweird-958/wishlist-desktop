@@ -12,6 +12,7 @@ import { useQuery } from "@tanstack/react-query"
 import { Form, Formik } from "formik"
 import React, { ChangeEventHandler, useEffect, useMemo, useState } from "react"
 import * as yup from "yup"
+import useHandleErrors from "../hooks/useHandleErrors"
 import Color from "../types/Color"
 import Dropdown from "../types/Dropdown"
 import FormDataType from "../types/FormData"
@@ -60,10 +61,12 @@ const WishForm = (props: Props) => {
 
   const [image, setImage] = useState<File | null>(null)
   const [currency, setCurrency] = useState<string>("")
+  const { handleError } = useHandleErrors()
 
   const { data: currencies } = useQuery<Result>({
     queryKey: ["currencies"],
     queryFn: () => api.get("/currency"),
+    onError: handleError,
   })
 
   useEffect(() => {

@@ -6,6 +6,7 @@ import {
   PopoverTrigger,
 } from "@nextui-org/react"
 import { useMutation } from "@tanstack/react-query"
+import useHandleErrors from "../hooks/useHandleErrors"
 import useWish from "../hooks/useWishlist"
 import api from "../services/api"
 import WishResponse from "../types/WishResponse"
@@ -16,6 +17,7 @@ type Props = {
 
 const DeletePopover = (props: Props) => {
   const { id } = props
+  const { handleError } = useHandleErrors()
 
   const {
     wishStore: { removeWish },
@@ -25,17 +27,7 @@ const DeletePopover = (props: Props) => {
     mutationFn: () => {
       return api.delete(`/wish/${id}`)
     },
-    onError: (error) => {
-      const {
-        response: {
-          data: { status },
-        },
-      } = error
-
-      if (status === 404) {
-        console.log("Wish not found")
-      }
-    },
+    onError: handleError,
     onSuccess: (data) => {
       removeWish(data.result)
     },

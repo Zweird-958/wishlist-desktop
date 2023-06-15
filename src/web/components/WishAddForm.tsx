@@ -1,5 +1,6 @@
 import api from "@/web/services/api"
 import { useMutation } from "@tanstack/react-query"
+import useHandleErrors from "../hooks/useHandleErrors"
 import useWish from "../hooks/useWishlist"
 import FormData from "../types/FormData"
 import WishResponse from "../types/WishResponse"
@@ -16,6 +17,7 @@ const WishAddForm = () => {
   const {
     wishStore: { addWish },
   } = useWish()
+  const { handleError } = useHandleErrors()
 
   const mutation = useMutation<WishResponse>({
     mutationFn: (formData: FormData) => {
@@ -24,6 +26,7 @@ const WishAddForm = () => {
     onSuccess: (data) => {
       addWish(data.result)
     },
+    onError: handleError,
   })
 
   const handleSubmit = (formData: FormData) => {

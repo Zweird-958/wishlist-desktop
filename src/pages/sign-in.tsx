@@ -1,6 +1,7 @@
 import AbsoluteDiv from "@/web/components/AbsoluteDiv"
 import Form from "@/web/components/Form"
 import FormField from "@/web/components/FormField"
+import useHandleErrors from "@/web/hooks/useHandleErrors"
 import useSession from "@/web/hooks/useSession"
 import api from "@/web/services/api"
 import { useMutation } from "@tanstack/react-query"
@@ -34,10 +35,13 @@ type Values = {
 }
 
 const SignUp = () => {
+  const { handleError } = useHandleErrors()
+
   const signInMutation = useMutation({
     mutationFn: (credentials: SignInMutation) => {
       return api.post("/sign-in", credentials)
     },
+    onError: handleError,
   })
 
   const router = useRouter()
