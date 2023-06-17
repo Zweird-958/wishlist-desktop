@@ -12,10 +12,6 @@ type Session = {
 const getPayload = (jwt: string) => {
   const payload = jsonwebtoken.decode(jwt) as jsonwebtoken.JwtPayload
 
-  if (!payload || typeof payload === "string") {
-    return
-  }
-
   return payload
 }
 
