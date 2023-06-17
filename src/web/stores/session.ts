@@ -1,4 +1,4 @@
-import jsonwebtoken, { JwtPayload } from "jsonwebtoken"
+import jsonwebtoken from "jsonwebtoken"
 import { create } from "zustand"
 import config from "../config"
 import SignInResponse from "../types/SignInResponse"
