@@ -4,14 +4,11 @@ import FormField from "@/web/components/FormField"
 import useHandleErrors from "@/web/hooks/useHandleErrors"
 import useSession from "@/web/hooks/useSession"
 import api from "@/web/services/api"
+import AuthForm from "@/web/types/AuthForm"
+import SignInResponse from "@/web/types/SignInResponse"
 import { useMutation } from "@tanstack/react-query"
 import { useRouter } from "next/router"
 import * as yup from "yup"
-
-type SignInMutation = {
-  email: string
-  password: string
-}
 
 const initialValues = {
   email: "",
@@ -29,16 +26,11 @@ const signUpSchema = yup.object().shape({
     .required("Veuillez entrer un mot de passe"),
 })
 
-type Values = {
-  email: string
-  password: string
-}
-
 const SignUp = () => {
   const { handleError } = useHandleErrors()
 
   const signInMutation = useMutation({
-    mutationFn: (credentials: SignInMutation) => {
+    mutationFn: (credentials: AuthForm) => {
       return api.post("/sign-in", credentials)
     },
     onError: handleError,
@@ -47,13 +39,14 @@ const SignUp = () => {
   const router = useRouter()
   const { signIn } = useSession()
 
-  const handleSubmit = ({ email, password }: Values) => {
+  const handleSubmit = ({ email, password }: AuthForm) => {
     signInMutation.mutate(
       { email, password },
       {
-        onSuccess: (response) => {
+        onSuccess: (response: SignInResponse) => {
           signIn(response)
-          router.push("/")
+
+          void router.push("/")
         },
       }
     )

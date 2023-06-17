@@ -3,6 +3,7 @@ import { Form as FormFormik, Formik } from "formik"
 import React from "react"
 import Wish from "../types/Wish"
 import InitialValues from "../types/InitialValues"
+import AuthForm from "../types/AuthForm"
 
 type ValidationSchema = {
   name: string
@@ -10,13 +11,18 @@ type ValidationSchema = {
   link: string
 }
 
+type AuthUndefined = {
+  email: undefined
+  password: undefined
+}
+
 type Props = {
   children: React.ReactNode
   title: string
   button?: string
-  initialValues: Wish | InitialValues
-  validationSchema: ValidationSchema
-  onSubmit: (values: InitialValues) => void
+  initialValues: Wish | InitialValues | AuthForm
+  validationSchema: ValidationSchema | AuthForm | AuthUndefined
+  onSubmit: (values: InitialValues | AuthForm) => void
   isLoading?: boolean
 }
 
