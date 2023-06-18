@@ -44,7 +44,7 @@ const SignUp = () => {
       { email, password },
       {
         onSuccess: () => {
-          router.push("/sign-in")
+          void router.push("/sign-in")
         },
       }
     )
