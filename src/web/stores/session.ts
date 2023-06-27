@@ -1,6 +1,7 @@
 import jsonwebtoken from "jsonwebtoken"
 import { create } from "zustand"
 import config from "../config"
+import { Store } from "tauri-plugin-store-api"
 
 type Session = {
   payload: {
@@ -22,23 +23,31 @@ interface SessionState {
   setToken: () => void
 }
 
+const store = new Store(".settings.dat")
+
 export const useSessionStore = create<SessionState>((set) => ({
   session: null,
   setSession: (session) => set({ session }),
-  signIn: (response: string) => {
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  signIn: async (response: string) => {
     const jwt = response
 
-    localStorage.setItem(config.session.localStorageKey, jwt)
+    await store.set(config.session.localStorageKey, jwt)
+    await store.save()
+
     const payload = getPayload(jwt)
 
     set({ session: payload })
   },
-  signOut: () => {
-    localStorage.removeItem(config.session.localStorageKey)
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  signOut: async () => {
+    await store.set(config.session.localStorageKey, null)
+    await store.save()
     set({ session: null })
   },
-  setToken: () => {
-    const jwt = localStorage.getItem(config.session.localStorageKey)
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  setToken: async () => {
+    const jwt: string | null = await store.get(config.session.localStorageKey)
 
     if (jwt) {
       const payload = getPayload(jwt)

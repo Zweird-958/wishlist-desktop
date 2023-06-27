@@ -1,8 +1,11 @@
 import config from "@/web/config"
 import axios, { AxiosRequestConfig } from "axios"
+import { Store } from "tauri-plugin-store-api"
 
 type Method = "get" | "post" | "patch" | "delete"
 type ApiResult<T> = { result: T }
+
+const store = new Store(".settings.dat")
 
 const call =
   (method: Method) =>
@@ -11,7 +14,7 @@ const call =
     data: unknown = null,
     options: AxiosRequestConfig = {}
   ) => {
-    const jwt = localStorage.getItem(config.session.localStorageKey)
+    const jwt: string | null = await store.get(config.session.localStorageKey)
 
     if (jwt) {
       options.headers = {
