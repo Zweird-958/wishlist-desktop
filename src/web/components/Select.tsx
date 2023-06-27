@@ -3,15 +3,14 @@ import {
   Dropdown,
   DropdownItem,
   DropdownMenu,
+  DropdownMenuProps,
   DropdownTrigger,
 } from "@nextui-org/react"
-import DropdownType from "../types/Dropdown"
 
 type Props = {
   selectedValue: string
-  onSelectionChange: (value: DropdownType) => void
   items: string[]
-}
+} & Pick<DropdownMenuProps, "onSelectionChange">
 
 const Select = (props: Props) => {
   const { selectedValue, onSelectionChange, items } = props

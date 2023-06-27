@@ -4,9 +4,7 @@ import { useMutation } from "@tanstack/react-query"
 import { useState } from "react"
 import useHandleErrors from "../hooks/useHandleErrors"
 import useWish from "../hooks/useWishlist"
-import FormData from "../types/FormData"
 import Wish from "../types/Wish"
-import WishResponse from "../types/WishResponse"
 import EditIcon from "./EditIcon"
 import WishForm from "./WishForm"
 
@@ -25,11 +23,11 @@ const WishEditForm = (props: Props) => {
     wishStore: { updateWish },
   } = useWish()
 
-  const mutation = useMutation<WishResponse>({
+  const mutation = useMutation({
     mutationFn: (formData: FormData) => {
-      return api.patch(`/wish/${wish.id}`, formData)
+      return api.patch<Wish>(`/wish/${wish.id}`, formData)
     },
-    onSuccess: (data: Result) => {
+    onSuccess: (data) => {
       updateWish(data.result)
     },
     onError: handleError,

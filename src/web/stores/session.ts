@@ -1,7 +1,6 @@
 import jsonwebtoken from "jsonwebtoken"
 import { create } from "zustand"
 import config from "../config"
-import SignInResponse from "../types/SignInResponse"
 
 type Session = {
   payload: {
@@ -18,7 +17,7 @@ const getPayload = (jwt: string) => {
 interface SessionState {
   session: Session | null | jsonwebtoken.JwtPayload
   setSession: (session: Session) => void
-  signIn: (response: SignInResponse) => void
+  signIn: (response: string) => void
   signOut: () => void
   setToken: () => void
 }
@@ -26,8 +25,8 @@ interface SessionState {
 export const useSessionStore = create<SessionState>((set) => ({
   session: null,
   setSession: (session) => set({ session }),
-  signIn: (response: SignInResponse) => {
-    const { result: jwt } = response
+  signIn: (response) => {
+    const jwt = response
 
     localStorage.setItem(config.session.localStorageKey, jwt)
     const payload = getPayload(jwt)

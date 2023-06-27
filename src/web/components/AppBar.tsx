@@ -31,9 +31,9 @@ const AppBar = () => {
     {
       label: "Se déconnecter",
       authRequired: true,
-      fn: async () => {
+      fn: () => {
         signOut()
-        await router.push("/sign-in")
+        void router.push("/sign-in")
       },
       props: { color: "danger" },
     },

@@ -9,7 +9,7 @@ import { useMutation } from "@tanstack/react-query"
 import useHandleErrors from "../hooks/useHandleErrors"
 import useWish from "../hooks/useWishlist"
 import api from "../services/api"
-import WishResponse from "../types/WishResponse"
+import Wish from "../types/Wish"
 
 type Props = {
   id: number
@@ -23,9 +23,9 @@ const DeletePopover = (props: Props) => {
     wishStore: { removeWish },
   } = useWish()
 
-  const mutation = useMutation<WishResponse>({
+  const mutation = useMutation({
     mutationFn: () => {
-      return api.delete(`/wish/${id}`)
+      return api.delete<Wish>(`/wish/${id}`)
     },
     onError: handleError,
     onSuccess: (data) => {

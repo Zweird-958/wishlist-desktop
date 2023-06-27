@@ -6,10 +6,6 @@ import Wish from "../types/Wish"
 import useHandleErrors from "./useHandleErrors"
 import useSession from "./useSession"
 
-type Result = {
-  result: Wish[]
-}
-
 const useWish = () => {
   const wishStore = useWishStore((state) => state)
   const wishlist = wishStore.wishlist
@@ -17,18 +13,20 @@ const useWish = () => {
   const { handleError } = useHandleErrors()
   const { session } = useSession()
 
-  const { data, isFetching } = useQuery<Result>({
-    queryKey: ["wishList"],
-    queryFn: () => api.get("/wish"),
+  const { data, isFetching } = useQuery({
+    queryKey: ["wish"],
+    queryFn: () => api.get<Wish[]>("/wish"),
+    select: (data) => data.result,
     enabled: wishlist.length === 0 && session !== null,
     onError: handleError,
   })
 
   useEffect(() => {
     if (wishlist.length === 0 && data) {
-      wishStore.setWishlist(data.result)
+      wishStore.setWishlist(data)
     }
-  }, [data, wishStore, wishlist.length])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, wishlist.length])
 
   return { wishlist, wishStore, isFetching }
 }

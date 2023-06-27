@@ -1,32 +1,15 @@
 import { Button, Card, Spinner } from "@nextui-org/react"
-import { Form as FormFormik, Formik } from "formik"
+import { Form as FormFormik, Formik, FormikConfig, FormikValues} from "formik"
 import React from "react"
-import Wish from "../types/Wish"
-import InitialValues from "../types/InitialValues"
-import AuthForm from "../types/AuthForm"
 
-type ValidationSchema = {
-  name: string
-  price: number
-  link: string
-}
-
-type AuthUndefined = {
-  email: undefined
-  password: undefined
-}
-
-type Props = {
-  children: React.ReactNode
+type Props<T> = {
   title: string
   button?: string
-  initialValues: Wish | InitialValues | AuthForm
-  validationSchema: ValidationSchema | AuthForm | AuthUndefined
-  onSubmit: (values: InitialValues | AuthForm) => void
   isLoading?: boolean
-}
+  children: React.ReactNode
+} & FormikConfig<T>
 
-const Form = (props: Props) => {
+const Form = <T extends FormikValues>(props: Props<T>) => {
   const { children, title, button, isLoading, ...otherProps } = props
 
   return (
@@ -34,7 +17,7 @@ const Form = (props: Props) => {
       {isLoading ? (
         <Spinner size="md" color="primary" className="py-8" />
       ) : (
-        <Formik {...otherProps}>
+        <Formik<T> {...otherProps}>
           <FormFormik noValidate className="w-2/3 mx-auto gap-4 flex flex-col">
             <p className="text-center">{title}</p>
             {children}
