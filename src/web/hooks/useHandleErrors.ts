@@ -5,9 +5,7 @@ const useHandleErrors = () => {
   const { signOut } = useSession()
 
   const handleError = (error: AxiosError) => {
-    const {
-      response: { status },
-    } = error
+    const { status } = error
 
     if (status === 403) {
       signOut()
