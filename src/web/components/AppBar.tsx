@@ -33,7 +33,8 @@ const AppBar = () => {
       authRequired: true,
       fn: () => {
         signOut()
-        // void router.push("/sign-in")
+
+        void router.push("/sign-in")
       },
       props: { color: "danger" },
     },
