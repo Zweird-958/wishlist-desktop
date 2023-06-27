@@ -7,7 +7,7 @@
     "distDir": "../out"
   },
   "package": {
-    "productName": "wishlist-desktop",
+    "productName": "My Wishlist",
     "version": "0.1.0"
   },
   "tauri": {
