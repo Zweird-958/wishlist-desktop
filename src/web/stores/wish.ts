@@ -8,6 +8,7 @@ interface WishState {
   setWishlist: (wishlist: Wish[]) => void
   addWish: (wish: Wish) => void
   removeWish: (wish: Wish) => void
+  updateWish: (wish: Wish) => void
   sort: string
   sortWishlist: (sort: string) => void
 }
@@ -20,7 +21,7 @@ export const useWishStore = create<WishState>((set) => ({
     set((state) => ({
       wishlist: state.wishlist.filter((w) => w.id !== wish.id),
     })),
-  updateWish: (wish: Wish) => {
+  updateWish: (wish) => {
     const { wishlist, setWishlist } = useWishStore.getState()
     setWishlist(
       wishlist.map((w) => {
@@ -40,13 +41,13 @@ export const useWishStore = create<WishState>((set) => ({
     if (sort === SORTS[0]) {
       setWishlist(
         wishlist.sort(
-          (a: Wish, b: Wish) => new Date(a.createdAt) - new Date(b.createdAt)
+          (a, b) => new Date(a.createdAt).getSeconds() - new Date(b.createdAt).getSeconds()
         )
       )
     } else if (sort === SORTS[1]) {
-      setWishlist(wishlist.sort((a: Wish, b: Wish) => a.price - b.price))
+      setWishlist(wishlist.sort((a, b) => a.price - b.price))
     } else {
-      setWishlist(wishlist.sort((a: Wish, b: Wish) => b.price - a.price))
+      setWishlist(wishlist.sort((a, b) => b.price - a.price))
     }
   },
 }))

@@ -10,11 +10,10 @@ import {
 } from "@nextui-org/react"
 import { useQuery } from "@tanstack/react-query"
 import { Form, Formik } from "formik"
-import React, { ChangeEventHandler, useEffect, useMemo, useState } from "react"
+import { ChangeEventHandler, useEffect, useMemo, useState } from "react"
 import * as yup from "yup"
 import useHandleErrors from "../hooks/useHandleErrors"
 import Color from "../types/Color"
-import Dropdown from "../types/Dropdown"
 import FormDataType from "../types/FormData"
 import InitialValues from "../types/InitialValues"
 import Wish from "../types/Wish"
@@ -32,16 +31,12 @@ type Props = {
   className?: string
   color?: Color
   children?: React.ReactNode
-  handleSubmit: (value: FormDataType) => void
+  handleSubmit: (value: FormData) => void
   initialValues: Wish | InitialValues
   buttonTitle: string
   title: string
   purchased?: boolean
   isLoading: boolean
-}
-
-type Result = {
-  result: string[]
 }
 
 const WishForm = (props: Props) => {
@@ -60,12 +55,21 @@ const WishForm = (props: Props) => {
   } = props
 
   const [image, setImage] = useState<File | null>(null)
-  const [currency, setCurrency] = useState<string>("")
+  const [currency, setCurrency] = useState<string | Set<React.Key>>(new Set([]))
   const { handleError } = useHandleErrors()
 
-  const { data: currencies } = useQuery<Result>({
+  const selectedCurrency = useMemo(
+      () =>
+         Array.from(currency)
+           .map((key) => key.toString().replace("_", " "))
+           .join(", "),
+       [currency],
+     )
+
+  const { data: currencies } = useQuery({
     queryKey: ["currencies"],
-    queryFn: () => api.get("/currency"),
+    queryFn: () => api.get<string[]>("/currency"),
+    select: (data) => data.result,
     onError: handleError,
   })
 
@@ -77,15 +81,11 @@ const WishForm = (props: Props) => {
 
   useMemo(() => {
     if (!initialValues.currency) {
-      setCurrency(currencies ? currencies.result[0] : "")
+      setCurrency(currencies && currencies[0] ? new Set([currencies[0]]) : "")
     } else {
-      setCurrency(initialValues.currency)
+      setCurrency(new Set([initialValues.currency]))
     }
   }, [currencies, initialValues])
-
-  const onSelectionChange = (value: Dropdown) => {
-    setCurrency(value.currentKey)
-  }
 
   const createFormData = (values: InitialValues | Wish) => {
     const { name, price, link } = values
@@ -95,7 +95,7 @@ const WishForm = (props: Props) => {
       price: price.toString(),
       link,
       purchased: purchased ? purchased.toString() : undefined,
-      currency,
+      currency: selectedCurrency,
       image: image ?? undefined,
     }
 
@@ -106,9 +106,12 @@ const WishForm = (props: Props) => {
     return formData
   }
 
-  const handleFileUpload = (event: ChangeEventHandler<HTMLInputElement>) => {
-    const file: File = event.target.files[0]
-    setImage(file)
+  const handleFileUpload: ChangeEventHandler<HTMLInputElement> = (event) => {
+    const file = event.target.files
+
+    if (file?.item(0)) {
+      setImage(file.item(0))
+    }
   }
 
   const onSubmit = (values: InitialValues | Wish) => {
@@ -140,9 +143,9 @@ const WishForm = (props: Props) => {
                 <FormField name="price" type="number" label="Prix" />
                 <FormField name="link" type="url" label="Lien" />
                 <Select
-                  onSelectionChange={onSelectionChange}
-                  selectedValue={currency}
-                  items={currencies ? currencies.result : []}
+                  onSelectionChange={setCurrency}
+                  selectedValue={selectedCurrency}
+                  items={currencies ?? []}
                 />
                 <Button as="label" className="truncate" color="primary">
                   {image ? image.name : "Ajouter une image"}

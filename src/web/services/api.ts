@@ -1,15 +1,14 @@
 import config from "@/web/config"
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios"
-import FormData from "../types/FormData"
-import AuthForm from "../types/AuthForm"
+import axios, { AxiosRequestConfig } from "axios"
 
 type Method = "get" | "post" | "patch" | "delete"
+type ApiResult<T> = { result: T }
 
 const call =
   (method: Method) =>
-  async (
+  async <T>(
     path: string,
-    data: null | FormData | AuthForm = null,
+    data: unknown = null,
     options: AxiosRequestConfig = {}
   ) => {
     const jwt = localStorage.getItem(config.session.localStorageKey)
@@ -25,13 +24,13 @@ const call =
       ...options,
     }
 
-    const res = await axios[method](
+    const res = await axios[method]<ApiResult<T>>(
       path,
       ["get", "delete"].includes(method) ? opts : data,
       opts
     )
 
-    return res.data as AxiosResponse
+    return res.data
   }
 
 const api = {

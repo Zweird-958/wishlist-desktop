@@ -6,24 +6,30 @@ import WishAddForm from "@/web/components/WishAddForm"
 import WishCard from "@/web/components/WishCard"
 import useWish from "@/web/hooks/useWishlist"
 import { SORTS } from "@/web/stores/wish"
-import Dropdown from "@/web/types/Dropdown"
 import Wish from "@/web/types/Wish"
 import { Card, CardBody } from "@nextui-org/react"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 
 const FILTERS = ["Tous", "Achetées", "Non Achetées"]
 
 const Home = () => {
-  const [filter, setFilter] = useState<string>(FILTERS[0] as string)
+  const [filter, setFilter] = useState<string | Set<React.Key>>(new Set([FILTERS[0] as string]))
+  const selectedFilter = useMemo(
+    () =>
+       Array.from(filter)
+         .map((key) => key.toString().replace("_", " "))
+         .join(", "),
+     [filter],
+   )
 
-  const {
+   const {
     wishlist,
     isFetching,
     wishStore: { sort, sortWishlist },
   } = useWish()
-  const selectSort = (value: Dropdown) => {
-    const sortSelected: string = value.currentKey
-    sortWishlist(sortSelected)
+  const setSort = (value: string | Set<React.Key>) => {
+    const selectedSort = Array.from(value).at(0) as string
+    sortWishlist(selectedSort)
   }
 
   return (
@@ -47,18 +53,18 @@ const Home = () => {
               <Select
                 selectedValue={sort}
                 items={SORTS}
-                onSelectionChange={selectSort}
+                onSelectionChange={setSort}
               />
               <Select
-                selectedValue={filter}
+                selectedValue={selectedFilter}
                 items={FILTERS}
-                onSelectionChange={(value) => setFilter(value.currentKey)}
+                onSelectionChange={setFilter}
               />
             </div>
             {wishlist.map((wish: Wish, index) => {
-              if (filter === FILTERS[1] && !wish.purchased) {
+              if (selectedFilter === FILTERS[1] && !wish.purchased) {
                 return
-              } else if (filter === FILTERS[2] && wish.purchased) {
+              } else if (selectedFilter === FILTERS[2] && wish.purchased) {
                 return
               }
 
