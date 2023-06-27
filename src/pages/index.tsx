@@ -13,20 +13,23 @@ import { useMemo, useState } from "react"
 const FILTERS = ["Tous", "Achetées", "Non Achetées"]
 
 const Home = () => {
-  const [filter, setFilter] = useState<string | Set<React.Key>>(new Set([FILTERS[0] as string]))
+  const [filter, setFilter] = useState<string | Set<React.Key>>(
+    new Set([FILTERS[0] as string])
+  )
   const selectedFilter = useMemo(
     () =>
-       Array.from(filter)
-         .map((key) => key.toString().replace("_", " "))
-         .join(", "),
-     [filter],
-   )
+      Array.from(filter)
+        .map((key) => key.toString().replace("_", " "))
+        .join(", "),
+    [filter]
+  )
 
-   const {
+  const {
     wishlist,
     isFetching,
     wishStore: { sort, sortWishlist },
   } = useWish()
+
   const setSort = (value: string | Set<React.Key>) => {
     const selectedSort = Array.from(value).at(0) as string
     sortWishlist(selectedSort)

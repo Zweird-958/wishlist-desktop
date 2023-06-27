@@ -25,7 +25,7 @@ const useWish = () => {
     if (wishlist.length === 0 && data) {
       wishStore.setWishlist(data)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, wishlist.length])
 
   return { wishlist, wishStore, isFetching }

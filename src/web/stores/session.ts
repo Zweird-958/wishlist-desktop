@@ -25,7 +25,7 @@ interface SessionState {
 export const useSessionStore = create<SessionState>((set) => ({
   session: null,
   setSession: (session) => set({ session }),
-  signIn: (response) => {
+  signIn: (response: string) => {
     const jwt = response
 
     localStorage.setItem(config.session.localStorageKey, jwt)

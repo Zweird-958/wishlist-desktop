@@ -9,7 +9,7 @@ const useSession = () => {
     if (!session) {
       setToken()
     }
-  })
+  }, [session, setToken])
 
   return { session, signOut, signIn, sessionRouter }
 }

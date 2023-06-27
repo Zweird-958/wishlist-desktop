@@ -5,7 +5,6 @@ import useHandleErrors from "@/web/hooks/useHandleErrors"
 import useSession from "@/web/hooks/useSession"
 import api from "@/web/services/api"
 import AuthForm from "@/web/types/AuthForm"
-import SignInResponse from "@/web/types/SignInResponse"
 import { useMutation } from "@tanstack/react-query"
 import { useRouter } from "next/router"
 import * as yup from "yup"
@@ -31,7 +30,7 @@ const SignUp = () => {
 
   const signInMutation = useMutation({
     mutationFn: (credentials: AuthForm) => {
-      return api.post("/sign-in", credentials)
+      return api.post<string>("/sign-in", credentials)
     },
     onError: handleError,
   })
@@ -43,8 +42,8 @@ const SignUp = () => {
     signInMutation.mutate(
       { email, password },
       {
-        onSuccess: (response: SignInResponse) => {
-          signIn(response)
+        onSuccess: (response) => {
+          signIn(response.result)
 
           void router.push("/")
         },
