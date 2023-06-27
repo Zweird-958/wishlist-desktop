@@ -2,8 +2,8 @@ import formatCurrency from "@/utils/formatCurrency"
 import Wish from "@/web/types/Wish"
 import { Button, Card, CardFooter, CardHeader, Image } from "@nextui-org/react"
 import Link from "next/link"
-import DeletePopover from "./DeletePopOver"
 import WishEditForm from "./WishEditForm"
+import DeletePopover from "./DeletePopover"
 
 type WishCardProps = {
   wish: Wish
