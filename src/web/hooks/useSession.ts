@@ -3,7 +3,7 @@ import { useWishStore } from "../stores/wish"
 
 const useSession = () => {
   const { session, clearSession, setToken, signIn, ...sessionRouter } =
-    useSessionStore((state) => state)
+    useSessionStore()
 
   const { setWishlist } = useWishStore()
 

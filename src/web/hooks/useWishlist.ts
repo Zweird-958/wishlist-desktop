@@ -6,9 +6,7 @@ import useHandleErrors from "./useHandleErrors"
 import useSession from "./useSession"
 
 const useWishlist = () => {
-  const { wishlist, setWishlist, ...wishlistProps } = useWishStore(
-    (state) => state
-  )
+  const { wishlist, setWishlist, ...wishlistProps } = useWishStore()
 
   const { handleError } = useHandleErrors()
   const { session } = useSession()
