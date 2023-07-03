@@ -6,9 +6,10 @@ import Wish from "../types/Wish"
 import useHandleErrors from "./useHandleErrors"
 import useSession from "./useSession"
 
-const useWish = () => {
-  const wishStore = useWishStore((state) => state)
-  const wishlist = wishStore.wishlist
+const useWishlist = () => {
+  const { wishlist, setWishlist, ...wishlistProps } = useWishStore(
+    (state) => state
+  )
 
   const { handleError } = useHandleErrors()
   const { session } = useSession()
@@ -23,12 +24,12 @@ const useWish = () => {
 
   useEffect(() => {
     if (wishlist.length === 0 && data) {
-      wishStore.setWishlist(data)
+      setWishlist(data)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, wishlist.length])
 
-  return { wishlist, wishStore, isFetching }
+  return { wishlist, isFetching, setWishlist, ...wishlistProps }
 }
 
-export default useWish
+export default useWishlist

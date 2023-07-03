@@ -4,7 +4,7 @@ import Loading from "@/web/components/Loading"
 import Select from "@/web/components/Select"
 import WishAddForm from "@/web/components/WishAddForm"
 import WishCard from "@/web/components/WishCard"
-import useWish from "@/web/hooks/useWishlist"
+import useWishlist from "@/web/hooks/useWishlist"
 import { SORTS } from "@/web/stores/wish"
 import Wish from "@/web/types/Wish"
 import { Card, CardBody } from "@nextui-org/react"
@@ -24,11 +24,7 @@ const Home = () => {
     [filter]
   )
 
-  const {
-    wishlist,
-    isFetching,
-    wishStore: { sort, sortWishlist },
-  } = useWish()
+  const { wishlist, isFetching, sort, sortWishlist } = useWishlist()
 
   const setSort = (value: string | Set<React.Key>) => {
     const selectedSort = Array.from(value).at(0) as string

@@ -1,10 +1,10 @@
 import api from "@/web/services/api"
 import { useMutation } from "@tanstack/react-query"
 import useHandleErrors from "../hooks/useHandleErrors"
-import useWish from "../hooks/useWishlist"
+import useWishlist from "../hooks/useWishlist"
+import Wish from "../types/Wish"
 import AddIcon from "./AddIcon"
 import WishForm from "./WishForm"
-import Wish from "../types/Wish"
 
 const initialValues = {
   name: "",
@@ -13,9 +13,7 @@ const initialValues = {
 }
 
 const WishAddForm = () => {
-  const {
-    wishStore: { addWish },
-  } = useWish()
+  const { addWish } = useWishlist()
   const { handleError } = useHandleErrors()
 
   const mutation = useMutation({

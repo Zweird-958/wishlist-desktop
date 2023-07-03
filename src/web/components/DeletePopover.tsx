@@ -7,7 +7,7 @@ import {
 } from "@nextui-org/react"
 import { useMutation } from "@tanstack/react-query"
 import useHandleErrors from "../hooks/useHandleErrors"
-import useWish from "../hooks/useWishlist"
+import useWishlist from "../hooks/useWishlist"
 import api from "../services/api"
 import Wish from "../types/Wish"
 
@@ -19,9 +19,7 @@ const DeletePopover = (props: Props) => {
   const { id } = props
   const { handleError } = useHandleErrors()
 
-  const {
-    wishStore: { removeWish },
-  } = useWish()
+  const { removeWish } = useWishlist()
 
   const mutation = useMutation({
     mutationFn: () => {
