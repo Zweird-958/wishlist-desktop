@@ -1,9 +1,17 @@
 import { useEffect } from "react"
 import { useSessionStore } from "../stores/session"
+import useWishlist from "./useWishlist"
 
 const useSession = () => {
-  const { session, signOut, setToken, signIn, ...sessionRouter } =
+  const { session, clearSession, setToken, signIn, ...sessionRouter } =
     useSessionStore((state) => state)
+
+  const { setWishlist } = useWishlist()
+
+  const signOut = async () => {
+    setWishlist([])
+    await clearSession()
+  }
 
   useEffect(() => {
     if (!session) {

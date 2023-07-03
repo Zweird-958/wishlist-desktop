@@ -19,7 +19,7 @@ interface SessionState {
   session: Session | null | jsonwebtoken.JwtPayload
   setSession: (session: Session) => void
   signIn: (response: string) => Promise<void>
-  signOut: () => Promise<void>
+  clearSession: () => Promise<void>
   setToken: () => Promise<void>
 }
 
@@ -38,7 +38,7 @@ export const useSessionStore = create<SessionState>((set) => ({
 
     set({ session: payload })
   },
-  signOut: async () => {
+  clearSession: async () => {
     await store.set(config.session.localStorageKey, null)
     await store.save()
 
