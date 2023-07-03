@@ -1,23 +1,20 @@
-import { useEffect } from "react"
 import { useSessionStore } from "../stores/session"
-import useWishlist from "./useWishlist"
+import { useWishStore } from "../stores/wish"
 
 const useSession = () => {
   const { session, clearSession, setToken, signIn, ...sessionRouter } =
     useSessionStore((state) => state)
 
-  const { setWishlist } = useWishlist()
+  const { setWishlist } = useWishStore()
 
   const signOut = async () => {
-    setWishlist([])
     await clearSession()
+    setWishlist([])
   }
 
-  useEffect(() => {
-    if (!session) {
-      void setToken()
-    }
-  }, [session, setToken])
+  if (!session) {
+    void setToken()
+  }
 
   return { session, signOut, signIn, sessionRouter }
 }

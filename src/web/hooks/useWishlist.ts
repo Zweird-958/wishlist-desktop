@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query"
-import { useEffect } from "react"
 import api from "../services/api"
 import { useWishStore } from "../stores/wish"
 import Wish from "../types/Wish"
@@ -22,12 +21,9 @@ const useWishlist = () => {
     onError: handleError,
   })
 
-  useEffect(() => {
-    if (wishlist.length === 0 && data) {
-      setWishlist(data)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, wishlist.length])
+  if (wishlist.length === 0 && data && session) {
+    setWishlist(data)
+  }
 
   return { wishlist, isFetching, setWishlist, ...wishlistProps }
 }
