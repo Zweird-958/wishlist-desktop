@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Button,
   Navbar,
   NavbarBrand,
@@ -36,9 +35,9 @@ const AppBar = () => {
                 Se déconnecter
               </Button>
             </NavbarItem>
-            <NavbarItem as={Link} href="/profile">
+            {/* <NavbarItem as={Link} href="/profile">
               <Avatar />
-            </NavbarItem>
+            </NavbarItem> */}
           </>
         ) : (
           <>
