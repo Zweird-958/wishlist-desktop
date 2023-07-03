@@ -31,7 +31,7 @@ const AppBar = () => {
         {session ? (
           <>
             <NavbarItem>
-              <Button color="danger" onPress={() => handleSignOut}>
+              <Button color="danger" onPress={handleSignOut}>
                 Se déconnecter
               </Button>
             </NavbarItem>
