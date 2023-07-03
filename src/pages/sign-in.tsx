@@ -43,8 +43,7 @@ const SignUp = () => {
       { email, password },
       {
         onSuccess: (response) => {
-          signIn(response.result)
-
+          void signIn(response.result)
           void router.push("/")
         },
       }

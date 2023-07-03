@@ -15,8 +15,8 @@ const AppBar = () => {
 
   const { session, signOut } = useSession()
 
-  const handleSignOut = () => {
-    signOut()
+  const handleSignOut = async () => {
+    await signOut()
     void router.push("/sign-in")
   }
 
@@ -32,7 +32,7 @@ const AppBar = () => {
         {session ? (
           <>
             <NavbarItem>
-              <Button color="danger" onPress={handleSignOut}>
+              <Button color="danger" onPress={() => handleSignOut}>
                 Se déconnecter
               </Button>
             </NavbarItem>

@@ -7,7 +7,7 @@ const useSession = () => {
 
   useEffect(() => {
     if (!session) {
-      setToken()
+      void setToken()
     }
   }, [session, setToken])
 

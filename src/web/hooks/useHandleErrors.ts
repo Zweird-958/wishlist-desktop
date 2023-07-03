@@ -8,7 +8,7 @@ const useHandleErrors = () => {
     const { status } = error
 
     if (status === 403) {
-      signOut()
+      void signOut()
     }
   }
 
