@@ -12,6 +12,8 @@ Download the project and create .env.local file in the root directory of the pro
 NEXT_PUBLIC_API_BASE_URL=http://localhost:3000
 ```
 
+Read the docs of tauri to install the dependencies for your OS: [tauri docs](https://tauri.app/v1/guides/getting-started prerequisites)
+
 Then run the following command in the root directory of the project:
 
 ```
