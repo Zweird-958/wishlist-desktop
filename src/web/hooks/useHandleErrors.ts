@@ -2,24 +2,26 @@ import { AxiosError } from "axios"
 import useSession from "./useSession"
 import toast from "react-hot-toast"
 
+type ApiError = {
+  error: string
+}
+
 const useHandleErrors = () => {
   const { signOut } = useSession()
 
-  const handleError = (error: AxiosError) => {
+  const handleError = (error: AxiosError<ApiError>) => {
     const { response } = error
 
     if (response) {
-      const { status } = response
+      const {
+        status,
+        data: { error: errorMessage },
+      } = response
 
-      if (status === 401) {
-        toast.error("Identifiants incorrects.")
-      } else if (status === 403) {
-        toast.error("Votre session a expiré, veuillez vous reconnecter.")
+      toast.error(errorMessage)
+
+      if (status == 403) {
         void signOut()
-      } else if (status === 404) {
-        toast.error("La ressource demandée n'a pas été trouvée.")
-      } else if (status === 500) {
-        toast.error("Une erreur interne est survenue. Veuillez réessayer.")
       }
     }
   }
