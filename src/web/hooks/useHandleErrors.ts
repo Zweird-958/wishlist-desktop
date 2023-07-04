@@ -11,7 +11,9 @@ const useHandleErrors = () => {
     if (response) {
       const { status } = response
 
-      if (status === 403) {
+      if (status === 401) {
+        toast.error("Identifiants incorrects.")
+      } else if (status === 403) {
         toast.error("Votre session a expiré, veuillez vous reconnecter.")
         void signOut()
       } else if (status === 404) {
