@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { useSessionStore } from "../stores/session"
 import { useWishStore } from "../stores/wish"
 
@@ -12,9 +13,11 @@ const useSession = () => {
     setWishlist([])
   }
 
-  if (!session) {
-    void setToken()
-  }
+  useEffect(() => {
+    if (!session) {
+      void setToken()
+    }
+  }, [session, setToken])
 
   return { session, signOut, signIn, sessionRouter }
 }

@@ -4,6 +4,7 @@ import { useWishStore } from "../stores/wish"
 import Wish from "../types/Wish"
 import useHandleErrors from "./useHandleErrors"
 import useSession from "./useSession"
+import { useEffect } from "react"
 
 const useWishlist = () => {
   const { wishlist, setWishlist, ...wishlistProps } = useWishStore()
@@ -19,9 +20,11 @@ const useWishlist = () => {
     onError: handleError,
   })
 
-  if (wishlist.length === 0 && data && session) {
-    setWishlist(data)
-  }
+  useEffect(() => {
+    if (wishlist.length === 0 && data && session) {
+      setWishlist(data)
+    }
+  }, [wishlist, data, session, setWishlist])
 
   return { wishlist, isFetching, setWishlist, ...wishlistProps }
 }
