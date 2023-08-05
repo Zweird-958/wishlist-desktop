@@ -5,6 +5,7 @@ import useHandleErrors from "@/web/hooks/useHandleErrors"
 import api from "@/web/services/api"
 import { useMutation } from "@tanstack/react-query"
 import { useRouter } from "next/router"
+import { useState } from "react"
 import * as yup from "yup"
 
 type SignUnMutation = {
@@ -31,23 +32,25 @@ const signUpSchema = yup.object().shape({
 const SignUp = () => {
   const router = useRouter()
   const { handleError } = useHandleErrors()
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const signUpMutation = useMutation({
     mutationFn: (credentials: SignUnMutation) => {
+      setIsLoading(true)
+
       return api.post("/sign-up", credentials)
     },
     onError: handleError,
+    onSettled: () => {
+      setIsLoading(false)
+    },
+    onSuccess: () => {
+      void router.push("/sign-in")
+    },
   })
 
   const handleSubmit = ({ email, password }: SignUnMutation) => {
-    signUpMutation.mutate(
-      { email, password },
-      {
-        onSuccess: () => {
-          void router.push("/sign-in")
-        },
-      }
-    )
+    signUpMutation.mutate({ email, password })
   }
 
   return (
@@ -56,6 +59,7 @@ const SignUp = () => {
         initialValues={initialValues}
         validationSchema={signUpSchema}
         onSubmit={handleSubmit}
+        isLoading={isLoading}
         title="Inscription"
         button="S'inscrire"
       >

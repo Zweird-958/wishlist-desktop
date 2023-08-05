@@ -1,5 +1,5 @@
 import { Button, Card, Spinner } from "@nextui-org/react"
-import { Form as FormFormik, Formik, FormikConfig, FormikValues} from "formik"
+import { Form as FormFormik, Formik, FormikConfig, FormikValues } from "formik"
 import React from "react"
 
 type Props<T> = {
@@ -14,21 +14,22 @@ const Form = <T extends FormikValues>(props: Props<T>) => {
 
   return (
     <Card className="xs:w-[400px] py-8 w-full mx-3 bg-white z-10">
-      {isLoading ? (
-        <Spinner size="md" color="primary" className="py-8" />
-      ) : (
-        <Formik<T> {...otherProps}>
-          <FormFormik noValidate className="w-2/3 mx-auto gap-4 flex flex-col">
-            <p className="text-center">{title}</p>
-            {children}
-            {button && (
-              <Button type="submit" fullWidth color="primary">
-                {button}
-              </Button>
-            )}
-          </FormFormik>
-        </Formik>
-      )}
+      <Formik<T> {...otherProps}>
+        <FormFormik noValidate className="w-2/3 mx-auto gap-4 flex flex-col">
+          <p className="text-center">{title}</p>
+          {children}
+          {button && (
+            <Button
+              type="submit"
+              fullWidth
+              color="primary"
+              isLoading={isLoading}
+            >
+              {button}
+            </Button>
+          )}
+        </FormFormik>
+      </Formik>
     </Card>
   )
 }

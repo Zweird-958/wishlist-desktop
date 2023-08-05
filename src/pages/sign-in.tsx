@@ -7,6 +7,7 @@ import api from "@/web/services/api"
 import AuthForm from "@/web/types/AuthForm"
 import { useMutation } from "@tanstack/react-query"
 import { useRouter } from "next/router"
+import { useState } from "react"
 import * as yup from "yup"
 
 const initialValues = {
@@ -27,27 +28,28 @@ const signUpSchema = yup.object().shape({
 
 const SignUp = () => {
   const { handleError } = useHandleErrors()
-
-  const signInMutation = useMutation({
-    mutationFn: (credentials: AuthForm) => {
-      return api.post<string>("/sign-in", credentials)
-    },
-    onError: handleError,
-  })
-
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const router = useRouter()
   const { signIn } = useSession()
 
+  const signInMutation = useMutation({
+    mutationFn: (credentials: AuthForm) => {
+      setIsLoading(true)
+
+      return api.post<string>("/sign-in", credentials)
+    },
+    onError: handleError,
+    onSettled: () => {
+      setIsLoading(false)
+    },
+    onSuccess: (response) => {
+      void signIn(response.result)
+      void router.push("/")
+    },
+  })
+
   const handleSubmit = ({ email, password }: AuthForm) => {
-    signInMutation.mutate(
-      { email, password },
-      {
-        onSuccess: (response) => {
-          void signIn(response.result)
-          void router.push("/")
-        },
-      }
-    )
+    signInMutation.mutate({ email, password })
   }
 
   return (
@@ -55,6 +57,7 @@ const SignUp = () => {
       <Form
         initialValues={initialValues}
         validationSchema={signUpSchema}
+        isLoading={isLoading}
         onSubmit={handleSubmit}
         title="Connexion"
         button="Se connecter"
