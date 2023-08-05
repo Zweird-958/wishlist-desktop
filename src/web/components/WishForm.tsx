@@ -59,12 +59,12 @@ const WishForm = (props: Props) => {
   const { handleError } = useHandleErrors()
 
   const selectedCurrency = useMemo(
-      () =>
-         Array.from(currency)
-           .map((key) => key.toString().replace("_", " "))
-           .join(", "),
-       [currency],
-     )
+    () =>
+      Array.from(currency)
+        .map((key) => key.toString().replace("_", " "))
+        .join(", "),
+    [currency]
+  )
 
   const { data: currencies } = useQuery({
     queryKey: ["currencies"],
@@ -119,6 +119,8 @@ const WishForm = (props: Props) => {
 
     try {
       handleSubmit(formData)
+      setImage(null)
+      setCurrency(currencies && currencies[0] ? new Set([currencies[0]]) : "")
     } catch (error) {
       return
     }
