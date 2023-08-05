@@ -25,7 +25,7 @@ const WishCard = (props: WishCardProps) => {
             <DeletePopover id={id} />
             <WishEditForm wish={wish} />
           </div>
-          <h4 className="text-3xl font-medium text-black">{name}</h4>
+          <h4 className="text-3xl font-medium text-black truncate">{name}</h4>
         </div>
       </CardHeader>
       <div className="flex justify-center items-center px-5">
