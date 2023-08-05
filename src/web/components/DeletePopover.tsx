@@ -4,6 +4,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
+  useDisclosure,
 } from "@nextui-org/react"
 import { useMutation } from "@tanstack/react-query"
 import useHandleErrors from "../hooks/useHandleErrors"
@@ -16,6 +17,7 @@ type Props = {
 }
 
 const DeletePopover = (props: Props) => {
+  const { onOpenChange, onClose } = useDisclosure()
   const { id } = props
   const { handleError } = useHandleErrors()
 
@@ -27,6 +29,7 @@ const DeletePopover = (props: Props) => {
     },
     onError: handleError,
     onSuccess: (data) => {
+      onClose()
       removeWish(data.result)
     },
   })
@@ -36,7 +39,12 @@ const DeletePopover = (props: Props) => {
   }
 
   return (
-    <Popover placement="top" color="danger" backdropVariant="opaque">
+    <Popover
+      placement="top"
+      color="danger"
+      backdropVariant="opaque"
+      onOpenChange={onOpenChange}
+    >
       <PopoverTrigger>
         <Button isIconOnly color="danger">
           <DeleteIcon />
