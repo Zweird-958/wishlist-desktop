@@ -11,5 +11,8 @@
   "notBought": "Non achetés",
   "date": "Date",
   "priceAscending": "Prix Croissant",
-  "priceDescending": "Price Décroissant"
+  "priceDescending": "Price Décroissant",
+  "logout": "Se déconnecter",
+  "login": "Se connecter",
+  "register": "S'inscrire"
 }

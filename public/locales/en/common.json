@@ -11,5 +11,8 @@
   "notBought": "Not Bought",
   "date": "Date",
   "priceAscending": "Price Ascending",
-  "priceDescending": "Price Descending"
+  "priceDescending": "Price Descending",
+  "logout": "Logout",
+  "login": "Sign In",
+  "register": "Sign Up"
 }

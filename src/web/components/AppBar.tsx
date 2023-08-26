@@ -5,12 +5,14 @@ import {
   NavbarContent,
   NavbarItem,
 } from "@nextui-org/react"
+import { useTranslation } from "next-i18next"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import useSession from "../hooks/useSession"
 
 const AppBar = () => {
   const router = useRouter()
+  const { t } = useTranslation()
 
   const { session, signOut } = useSession()
 
@@ -32,7 +34,7 @@ const AppBar = () => {
           <>
             <NavbarItem>
               <Button color="danger" onPress={() => void handleSignOut()}>
-                Se déconnecter
+                {t("logout")}
               </Button>
             </NavbarItem>
             {/* <NavbarItem as={Link} href="/profile">
@@ -43,11 +45,11 @@ const AppBar = () => {
           <>
             <NavbarItem as={Link} href="/sign-in">
               <Button color="primary" variant="bordered">
-                Se connecter
+                {t("login")}
               </Button>
             </NavbarItem>
             <NavbarItem as={Link} href="/sign-up">
-              <Button color="success">S'inscrire</Button>
+              <Button color="success">{t("register")}</Button>
             </NavbarItem>
           </>
         )}

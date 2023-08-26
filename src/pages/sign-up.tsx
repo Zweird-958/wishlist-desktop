@@ -2,6 +2,7 @@ import i18nConfig from "@/../next-i18next.config.js"
 import AbsoluteDiv from "@/web/components/AbsoluteDiv"
 import Form from "@/web/components/Form"
 import FormField from "@/web/components/FormField"
+import Page from "@/web/components/Page"
 import useHandleErrors from "@/web/hooks/useHandleErrors"
 import api from "@/web/services/api"
 import { useMutation } from "@tanstack/react-query"
@@ -59,19 +60,21 @@ const SignUp = () => {
   }
 
   return (
-    <AbsoluteDiv>
-      <Form
-        initialValues={initialValues}
-        validationSchema={signUpSchema}
-        onSubmit={handleSubmit}
-        isLoading={isLoading}
-        title={t("forms:signUp.title")}
-        button={t("forms:signUp.button")}
-      >
-        <FormField name="email" type="text" label={t("email")} />
-        <FormField name="password" type="password" label={t("password")} />
-      </Form>
-    </AbsoluteDiv>
+    <Page>
+      <AbsoluteDiv>
+        <Form
+          initialValues={initialValues}
+          validationSchema={signUpSchema}
+          onSubmit={handleSubmit}
+          isLoading={isLoading}
+          title={t("forms:signUp.title")}
+          button={t("forms:signUp.button")}
+        >
+          <FormField name="email" type="text" label={t("email")} />
+          <FormField name="password" type="password" label={t("password")} />
+        </Form>
+      </AbsoluteDiv>
+    </Page>
   )
 }
 
@@ -80,6 +83,7 @@ export default SignUp
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
   props: {
     ...(await serverSideTranslations(locale ?? i18nConfig.i18n.defaultLocale, [
+      "common",
       "fields",
       "forms",
     ])),

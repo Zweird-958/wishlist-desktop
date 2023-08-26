@@ -2,6 +2,7 @@ import i18nConfig from "@/../next-i18next.config.js"
 import AbsoluteDiv from "@/web/components/AbsoluteDiv"
 import FullDiv from "@/web/components/FullDiv"
 import Loading from "@/web/components/Loading"
+import Page from "@/web/components/Page"
 import Select from "@/web/components/Select"
 import WishAddForm from "@/web/components/WishAddForm"
 import WishCard from "@/web/components/WishCard"
@@ -30,7 +31,7 @@ const Home = () => {
   }
 
   return (
-    <>
+    <Page>
       {isFetching ? (
         <FullDiv>
           <Loading />
@@ -71,7 +72,7 @@ const Home = () => {
         </div>
       )}
       <WishAddForm />
-    </>
+    </Page>
   )
 }
 
