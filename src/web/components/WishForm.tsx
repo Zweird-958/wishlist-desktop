@@ -58,7 +58,7 @@ const WishForm = (props: Props) => {
   } = props
 
   const [image, setImage] = useState<File | null>(null)
-  const [currency, setCurrency] = useState<string | Set<React.Key>>(new Set([]))
+  const [currency, setCurrency] = useState<string>("")
   const { handleError } = useHandleErrors()
 
   const selectedCurrency = useMemo(
@@ -84,9 +84,9 @@ const WishForm = (props: Props) => {
 
   useMemo(() => {
     if (!initialValues.currency) {
-      setCurrency(currencies && currencies[0] ? new Set([currencies[0]]) : "")
+      setCurrency(currencies && currencies[0] ? currencies[0] : "")
     } else {
-      setCurrency(new Set([initialValues.currency]))
+      setCurrency(initialValues.currency)
     }
   }, [currencies, initialValues])
 
@@ -123,7 +123,7 @@ const WishForm = (props: Props) => {
     try {
       handleSubmit(formData)
       setImage(null)
-      setCurrency(currencies && currencies[0] ? new Set([currencies[0]]) : "")
+      setCurrency(currencies && currencies[0] ? currencies[0] : "")
     } catch (error) {
       return
     }
@@ -152,7 +152,7 @@ const WishForm = (props: Props) => {
                 />
                 <FormField name="link" type="url" label={t("fields:link")} />
                 <Select
-                  onSelectionChange={setCurrency}
+                  onSelectionChange={(value) => setCurrency(value as string)}
                   selectedValue={selectedCurrency}
                   items={currencies ?? []}
                 />

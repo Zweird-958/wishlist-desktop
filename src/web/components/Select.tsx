@@ -11,8 +11,8 @@ import Filter from "../types/Filter"
 import Sort from "../types/Sort"
 
 type Props = {
-  selectedValue: Filter | Sort
-  items: Filter[] | Sort[]
+  selectedValue: Filter | Sort | string
+  items: Filter[] | Sort[] | string[]
   onSelectionChange: (value: Key | undefined) => void
 }
 
@@ -23,7 +23,11 @@ const Select = (props: Props) => {
   return (
     <Dropdown>
       <DropdownTrigger>
-        <Button>{t([selectedValue])}</Button>
+        <Button>
+          {typeof selectedValue === "string"
+            ? selectedValue
+            : t([selectedValue])}
+        </Button>
       </DropdownTrigger>
       <DropdownMenu
         disallowEmptySelection
@@ -33,8 +37,10 @@ const Select = (props: Props) => {
         selectionMode="single"
         onSelectionChange={(e) => onSelectionChange(Array.from(e)[0])}
       >
-        {items.map((item: Filter | Sort) => (
-          <DropdownItem key={item}>{t(item)}</DropdownItem>
+        {items.map((item: Filter | Sort | string) => (
+          <DropdownItem key={item}>
+            {typeof item === "string" ? item : t(item)}
+          </DropdownItem>
         ))}
       </DropdownMenu>
     </Dropdown>
