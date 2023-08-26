@@ -21,12 +21,6 @@ import Wish from "../types/Wish"
 import FormField from "./FormField"
 import Select from "./Select"
 
-const validationSchema = yup.object().shape({
-  name: yup.string().required("Veuillez entrer un nom"),
-  price: yup.number().required("Veuillez entrer un prix"),
-  link: yup.string().url("Veuillez entrer un lien valide"),
-})
-
 type Props = {
   icon: React.ReactNode
   className?: string
@@ -60,6 +54,12 @@ const WishForm = (props: Props) => {
   const [image, setImage] = useState<File | null>(null)
   const [currency, setCurrency] = useState<string>("")
   const { handleError } = useHandleErrors()
+
+  const validationSchema = yup.object().shape({
+    name: yup.string().required(t("forms:wish.name.required")),
+    price: yup.number().required(t("forms:wish.price.required")),
+    link: yup.string().url(t("forms:wish.link.invalid")),
+  })
 
   const selectedCurrency = useMemo(
     () =>

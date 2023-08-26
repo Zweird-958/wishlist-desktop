@@ -24,6 +24,15 @@
       "title": "Modifier votre liste d'envie",
       "button": "Modifier"
     },
+    "name": {
+      "required": "Veuillez entrer un nom"
+    },
+    "price": {
+      "required": "Veuillez entrer un prix"
+    },
+    "link": {
+      "invalid": "Veuillez entrer un lien valide"
+    },
     "close": "Fermer"
   }
 }
