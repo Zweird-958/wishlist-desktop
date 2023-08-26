@@ -16,6 +16,18 @@ type Props = {
   onSelectionChange: (value: Key | undefined) => void
 }
 
+const isFilter = (value: string): value is Filter => {
+  return value === "all" || value === "bought" || value === "notBought"
+}
+
+const isSort = (value: string): value is Sort => {
+  return (
+    value === "date" ||
+    value === "priceAscending" ||
+    value === "priceDescending"
+  )
+}
+
 const Select = (props: Props) => {
   const { selectedValue, onSelectionChange, items } = props
   const { t } = useTranslation("common")
@@ -24,9 +36,9 @@ const Select = (props: Props) => {
     <Dropdown>
       <DropdownTrigger>
         <Button>
-          {typeof selectedValue === "string"
-            ? selectedValue
-            : t([selectedValue])}
+          {isFilter(selectedValue) || isSort(selectedValue)
+            ? t(selectedValue)
+            : selectedValue}
         </Button>
       </DropdownTrigger>
       <DropdownMenu
@@ -39,7 +51,7 @@ const Select = (props: Props) => {
       >
         {items.map((item: Filter | Sort | string) => (
           <DropdownItem key={item}>
-            {typeof item === "string" ? item : t(item)}
+            {isFilter(item) || isSort(item) ? t(item) : item}
           </DropdownItem>
         ))}
       </DropdownMenu>
