@@ -18,7 +18,7 @@ const WishCard = (props: WishCardProps) => {
   return (
     <Card
       className="sm:w-[330px] w-full bg-zinc-100 dark:bg-zinc-100"
-      radius="xl"
+      radius="lg"
       shadow="lg"
     >
       <CardHeader className="z-10">

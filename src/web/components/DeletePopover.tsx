@@ -44,7 +44,7 @@ const DeletePopover = (props: Props) => {
     <Popover
       placement="top"
       color="danger"
-      backdropVariant="opaque"
+      backdrop="opaque"
       onOpenChange={onOpenChange}
     >
       <PopoverTrigger>
@@ -58,7 +58,7 @@ const DeletePopover = (props: Props) => {
           <p className="text-xs">{t("delete.subtitle")}</p>
           <div className="flex justify-end">
             <Button
-              size="xs"
+              size="sm"
               className="mt-2 text-white"
               radius="md"
               variant="bordered"
