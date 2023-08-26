@@ -44,10 +44,15 @@ const Select = (props: Props) => {
       <DropdownMenu
         disallowEmptySelection
         aria-label="Actions"
-        // color={color}
-        // selectedKeys={selected}
         selectionMode="single"
-        onSelectionChange={(e) => onSelectionChange(Array.from(e)[0])}
+        onSelectionChange={(e) => {
+          if (typeof e !== "undefined" && Symbol.iterator in Object(e)) {
+            const firstItem = Array.from(
+              e as Iterable<unknown> | ArrayLike<unknown>
+            )[0] as string
+            onSelectionChange(firstItem)
+          }
+        }}
       >
         {items.map((item: Filter | Sort | string) => (
           <DropdownItem key={item}>
