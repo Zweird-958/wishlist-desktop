@@ -1,6 +1,7 @@
 import api from "@/web/services/api"
 import { Switch } from "@nextui-org/react"
 import { useMutation } from "@tanstack/react-query"
+import { useTranslation } from "next-i18next"
 import { useState } from "react"
 import useHandleErrors from "../hooks/useHandleErrors"
 import useWishlist from "../hooks/useWishlist"
@@ -14,6 +15,8 @@ type Props = {
 
 const WishEditForm = (props: Props) => {
   const { wish } = props
+  const { t } = useTranslation(["forms", "fields"])
+
   const [purchased, setPurchased] = useState<boolean>(
     wish ? wish.purchased : false
   )
@@ -41,18 +44,18 @@ const WishEditForm = (props: Props) => {
 
   return (
     <WishForm
-      title="Modifier cette envie"
+      title={t("wish.edit.title")}
       icon={<EditIcon />}
       color="warning"
       className="right-0 z-10"
       handleSubmit={handleSubmit}
       initialValues={{ ...wish, link: wish.link ?? "" }}
-      buttonTitle="Modifier"
+      buttonTitle={t("wish.edit.button")}
       purchased={purchased}
       isLoading={mutation.isLoading}
     >
       <div className="flex justify-between">
-        <p>Acheté(e)</p>
+        <p>{t("fields:bought")}</p>
         <Switch
           color="primary"
           isSelected={purchased}

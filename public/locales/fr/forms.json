@@ -1,0 +1,29 @@
+{
+  "signIn": {
+    "title": "Connexion",
+    "button": "Se connecter"
+  },
+  "email": {
+    "invalid": "Veuillez entrer un email valide",
+    "required": "Veuillez entrer un email"
+  },
+  "password": {
+    "length": "Votre mot de passe doit contenir au moins 8 caractères",
+    "required": "Veuillez entrer un mot de passe"
+  },
+  "signUp": {
+    "title": "Inscription",
+    "button": "S'inscrire"
+  },
+  "wish": {
+    "add": {
+      "title": "Ajouter à votre liste d'envie",
+      "button": "Ajouter"
+    },
+    "edit": {
+      "title": "Modifier votre liste d'envie",
+      "button": "Modifier"
+    },
+    "close": "Fermer"
+  }
+}

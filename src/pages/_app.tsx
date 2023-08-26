@@ -4,6 +4,7 @@ import AppBar from "@/web/components/AppBar"
 import { NextUIProvider } from "@nextui-org/react"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { Toaster } from "react-hot-toast"
+import { appWithTranslation } from "next-i18next"
 
 const queryClient = new QueryClient()
 
@@ -21,4 +22,4 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   )
 }
 
-export default MyApp
+export default appWithTranslation(MyApp)

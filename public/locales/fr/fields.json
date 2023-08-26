@@ -1,0 +1,9 @@
+{
+  "email": "Email",
+  "password": "Mot de passe",
+  "name": "Nom",
+  "price": "Prix",
+  "link": "Lien",
+  "image": "Ajouter une image",
+  "bought": "Acheté(e)"
+}

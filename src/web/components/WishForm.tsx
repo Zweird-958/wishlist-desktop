@@ -10,6 +10,7 @@ import {
 } from "@nextui-org/react"
 import { useQuery } from "@tanstack/react-query"
 import { Form, Formik } from "formik"
+import { useTranslation } from "next-i18next"
 import { ChangeEventHandler, useEffect, useMemo, useState } from "react"
 import * as yup from "yup"
 import useHandleErrors from "../hooks/useHandleErrors"
@@ -40,6 +41,8 @@ type Props = {
 }
 
 const WishForm = (props: Props) => {
+  const { t } = useTranslation(["forms", "fields"])
+
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const {
     icon,
@@ -141,16 +144,20 @@ const WishForm = (props: Props) => {
           >
             <Form noValidate>
               <ModalBody className="w-4/5 mx-auto">
-                <FormField name="name" type="text" label="Nom" />
-                <FormField name="price" type="number" label="Prix" />
-                <FormField name="link" type="url" label="Lien" />
+                <FormField name="name" type="text" label={t("fields:name")} />
+                <FormField
+                  name="price"
+                  type="number"
+                  label={t("fields:price")}
+                />
+                <FormField name="link" type="url" label={t("fields:link")} />
                 <Select
                   onSelectionChange={setCurrency}
                   selectedValue={selectedCurrency}
                   items={currencies ?? []}
                 />
                 <Button as="label" className="truncate" color="primary">
-                  {image ? image.name : "Ajouter une image"}
+                  {image ? image.name : t("fields:image")}
                   <input
                     type="file"
                     hidden
@@ -162,7 +169,7 @@ const WishForm = (props: Props) => {
               </ModalBody>
               <ModalFooter className="flex justify-between">
                 <Button onPress={onClose} color="danger" variant="flat">
-                  Fermer
+                  {t("forms:wish.close")}
                 </Button>
                 <Button type="submit" color="primary" isLoading={isLoading}>
                   {buttonTitle}

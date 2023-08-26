@@ -1,7 +1,8 @@
 import { create } from "zustand"
 import Wish from "../types/Wish"
+import Sort from "../types/Sort"
 
-export const SORTS = ["Date", "Prix croissant", "Prix décroissant"]
+export const SORTS: Sort[] = ["date", "priceAscending", "priceDescending"]
 
 interface WishState {
   wishlist: Wish[]
@@ -9,8 +10,8 @@ interface WishState {
   addWish: (wish: Wish) => void
   removeWish: (wish: Wish) => void
   updateWish: (wish: Wish) => void
-  sort: string
-  sortWishlist: (sort: string) => void
+  sort: Sort
+  sortWishlist: (sort: Sort) => void
 }
 
 export const useWishStore = create<WishState>((set) => ({
@@ -33,15 +34,16 @@ export const useWishStore = create<WishState>((set) => ({
       })
     )
   },
-  sort: SORTS[0] as string,
-  sortWishlist: (sort) => {
+  sort: SORTS[0] as Sort,
+  sortWishlist: (sort: Sort) => {
     const { wishlist, setWishlist } = useWishStore.getState()
     set({ sort })
 
     if (sort === SORTS[0]) {
       setWishlist(
         wishlist.sort(
-          (a, b) => new Date(a.createdAt).getSeconds() - new Date(b.createdAt).getSeconds()
+          (a, b) =>
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
         )
       )
     } else if (sort === SORTS[1]) {

@@ -1,3 +1,4 @@
+import i18nConfig from "@/../next-i18next.config.js"
 import AbsoluteDiv from "@/web/components/AbsoluteDiv"
 import FullDiv from "@/web/components/FullDiv"
 import Loading from "@/web/components/Loading"
@@ -6,28 +7,25 @@ import WishAddForm from "@/web/components/WishAddForm"
 import WishCard from "@/web/components/WishCard"
 import useWishlist from "@/web/hooks/useWishlist"
 import { SORTS } from "@/web/stores/wish"
+import Filter from "@/web/types/Filter"
+import Sort from "@/web/types/Sort"
 import Wish from "@/web/types/Wish"
 import { Card, CardBody } from "@nextui-org/react"
-import { useMemo, useState } from "react"
+import { type GetStaticProps } from "next"
+import { useTranslation } from "next-i18next"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import { Key, useState } from "react"
 
-const FILTERS = ["Tous", "Achetées", "Non Achetées"]
+const FILTERS: Filter[] = ["all", "bought", "notBought"]
 
 const Home = () => {
-  const [filter, setFilter] = useState<string | Set<React.Key>>(
-    new Set([FILTERS[0] as string])
-  )
-  const selectedFilter = useMemo(
-    () =>
-      Array.from(filter)
-        .map((key) => key.toString().replace("_", " "))
-        .join(", "),
-    [filter]
-  )
+  const { t } = useTranslation()
+  const [filter, setFilter] = useState<Filter>(FILTERS[0] as Filter)
 
   const { wishlist, isFetching, sort, sortWishlist } = useWishlist()
 
-  const setSort = (value: string | Set<React.Key>) => {
-    const selectedSort = Array.from(value).at(0) as string
+  const setSort = (value: Key | undefined) => {
+    const selectedSort = value as Sort
     sortWishlist(selectedSort)
   }
 
@@ -41,7 +39,7 @@ const Home = () => {
         <AbsoluteDiv>
           <Card>
             <CardBody>
-              <p>Vous n'avez pas encore de liste d'envies.</p>
+              <p>{t("empty")}</p>
             </CardBody>
           </Card>
         </AbsoluteDiv>
@@ -55,15 +53,15 @@ const Home = () => {
                 onSelectionChange={setSort}
               />
               <Select
-                selectedValue={selectedFilter}
+                selectedValue={filter}
                 items={FILTERS}
-                onSelectionChange={setFilter}
+                onSelectionChange={(value) => setFilter(value as Filter)}
               />
             </div>
             {wishlist.map((wish: Wish, index) => {
-              if (selectedFilter === FILTERS[1] && !wish.purchased) {
+              if (filter === FILTERS[1] && !wish.purchased) {
                 return
-              } else if (selectedFilter === FILTERS[2] && wish.purchased) {
+              } else if (filter === FILTERS[2] && wish.purchased) {
                 return
               }
 
@@ -78,3 +76,13 @@ const Home = () => {
 }
 
 export default Home
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? i18nConfig.i18n.defaultLocale, [
+      "common",
+      "fields",
+      "forms",
+    ])),
+  },
+})

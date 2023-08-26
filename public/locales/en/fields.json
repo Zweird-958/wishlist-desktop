@@ -1,0 +1,9 @@
+{
+  "email": "Email",
+  "password": "Password",
+  "name": "Name",
+  "price": "Price",
+  "link": "Link",
+  "image": "Add an image",
+  "bought": "Bought"
+}

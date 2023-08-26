@@ -1,0 +1,29 @@
+{
+  "signIn": {
+    "title": "Sign In",
+    "button": "Login"
+  },
+  "email": {
+    "invalid": "Invalid email address",
+    "required": "Email address is required"
+  },
+  "password": {
+    "length": "Password must be at least 8 characters long",
+    "required": "Password is required"
+  },
+  "signUp": {
+    "title": "Sign Up",
+    "button": "Sign Up"
+  },
+  "wish": {
+    "add": {
+      "title": "Add Wish",
+      "button": "Add"
+    },
+    "edit": {
+      "title": "Edit Wish",
+      "button": "Save"
+    },
+    "close": "Close"
+  }
+}

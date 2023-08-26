@@ -1,0 +1,15 @@
+{
+  "empty": "Your wishlist is empty",
+  "buy": "Buy",
+  "delete": {
+    "title": "Are you sure?",
+    "subtitle": "This will remove the item from your wishlist",
+    "confirm": "Delete"
+  },
+  "all": "All",
+  "bought": "Bought",
+  "notBought": "Not Bought",
+  "date": "Date",
+  "priceAscending": "Price Ascending",
+  "priceDescending": "Price Descending"
+}

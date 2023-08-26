@@ -3,22 +3,27 @@ import {
   Dropdown,
   DropdownItem,
   DropdownMenu,
-  DropdownMenuProps,
   DropdownTrigger,
 } from "@nextui-org/react"
+import { useTranslation } from "next-i18next"
+import { Key } from "react"
+import Filter from "../types/Filter"
+import Sort from "../types/Sort"
 
 type Props = {
-  selectedValue: string
-  items: string[]
-} & Pick<DropdownMenuProps, "onSelectionChange">
+  selectedValue: Filter | Sort
+  items: Filter[] | Sort[]
+  onSelectionChange: (value: Key | undefined) => void
+}
 
 const Select = (props: Props) => {
   const { selectedValue, onSelectionChange, items } = props
+  const { t } = useTranslation("common")
 
   return (
     <Dropdown>
       <DropdownTrigger>
-        <Button>{selectedValue}</Button>
+        <Button>{t([selectedValue])}</Button>
       </DropdownTrigger>
       <DropdownMenu
         disallowEmptySelection
@@ -26,10 +31,10 @@ const Select = (props: Props) => {
         // color={color}
         // selectedKeys={selected}
         selectionMode="single"
-        onSelectionChange={onSelectionChange}
+        onSelectionChange={(e) => onSelectionChange(Array.from(e)[0])}
       >
-        {items.map((item: string) => (
-          <DropdownItem key={item}>{item}</DropdownItem>
+        {items.map((item: Filter | Sort) => (
+          <DropdownItem key={item}>{t(item)}</DropdownItem>
         ))}
       </DropdownMenu>
     </Dropdown>

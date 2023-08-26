@@ -2,6 +2,7 @@ import formatCurrency from "@/utils/formatCurrency"
 import Wish from "@/web/types/Wish"
 import { Button, Card, CardFooter, CardHeader, Image } from "@nextui-org/react"
 import { open } from "@tauri-apps/api/shell"
+import { useTranslation } from "next-i18next"
 import DeletePopover from "./DeletePopover"
 import WishEditForm from "./WishEditForm"
 
@@ -12,6 +13,7 @@ type WishCardProps = {
 const WishCard = (props: WishCardProps) => {
   const { wish } = props
   const { name, image, currency, price, id, link } = wish
+  const { t } = useTranslation("common")
 
   return (
     <Card
@@ -49,7 +51,7 @@ const WishCard = (props: WishCardProps) => {
               void open(link)
             }}
           >
-            Acheter
+            {t("buy")}
           </Button>
         )}
       </CardFooter>

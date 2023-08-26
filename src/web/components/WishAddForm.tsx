@@ -5,6 +5,7 @@ import useWishlist from "../hooks/useWishlist"
 import Wish from "../types/Wish"
 import AddIcon from "./AddIcon"
 import WishForm from "./WishForm"
+import { useTranslation } from "next-i18next"
 
 const initialValues = {
   name: "",
@@ -15,6 +16,7 @@ const initialValues = {
 const WishAddForm = () => {
   const { addWish } = useWishlist()
   const { handleError } = useHandleErrors()
+  const { t } = useTranslation("forms")
 
   const mutation = useMutation({
     mutationFn: (formData: FormData) => {
@@ -32,13 +34,13 @@ const WishAddForm = () => {
 
   return (
     <WishForm
-      title="Ajouter à votre liste d'envie"
+      title={t("wish.add.title")}
       icon={<AddIcon />}
       color="danger"
       className="z-20 fixed right-5 bottom-5"
       handleSubmit={handleSubmit}
       initialValues={initialValues}
-      buttonTitle="Ajouter"
+      buttonTitle={t("wish.add.button")}
       isLoading={mutation.isLoading}
     />
   )
