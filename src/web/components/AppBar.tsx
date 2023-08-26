@@ -9,6 +9,7 @@ import { useTranslation } from "next-i18next"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import useSession from "../hooks/useSession"
+import SelectLanguage from "./SelectLanguage"
 
 const AppBar = () => {
   const router = useRouter()
@@ -30,6 +31,9 @@ const AppBar = () => {
       </NavbarBrand>
 
       <NavbarContent justify="end">
+        <NavbarItem>
+          <SelectLanguage />
+        </NavbarItem>
         {session ? (
           <>
             <NavbarItem>
