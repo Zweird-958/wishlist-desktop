@@ -61,14 +61,6 @@ const WishForm = (props: Props) => {
     link: yup.string().url(t("forms:wish.link.invalid")),
   })
 
-  const selectedCurrency = useMemo(
-    () =>
-      Array.from(currency)
-        .map((key) => key.toString().replace("_", " "))
-        .join(", "),
-    [currency]
-  )
-
   const { data: currencies } = useQuery({
     queryKey: ["currencies"],
     queryFn: () => api.get<string[]>("/currency"),
@@ -98,7 +90,7 @@ const WishForm = (props: Props) => {
       price: price.toString(),
       link,
       purchased: purchased ? purchased.toString() : undefined,
-      currency: selectedCurrency,
+      currency: currency,
       image: image ?? undefined,
     }
 
@@ -153,7 +145,7 @@ const WishForm = (props: Props) => {
                 <FormField name="link" type="url" label={t("fields:link")} />
                 <Select
                   onSelectionChange={(value) => setCurrency(value as string)}
-                  selectedValue={selectedCurrency}
+                  selectedValue={currency}
                   items={currencies ?? []}
                 />
                 <Button as="label" className="truncate" color="primary">
