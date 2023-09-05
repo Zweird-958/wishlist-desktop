@@ -1,22 +1,17 @@
-import i18nConfig from "@/../next-i18next.config.js"
 import AbsoluteDiv from "@/web/components/AbsoluteDiv"
 import Form from "@/web/components/Form"
 import FormField from "@/web/components/FormField"
 import Page from "@/web/components/Page"
 import useHandleErrors from "@/web/hooks/useHandleErrors"
+import useSession from "@/web/hooks/useSession"
 import api from "@/web/services/api"
+import AuthForm from "@/web/types/AuthForm"
 import { useMutation } from "@tanstack/react-query"
-import { type GetStaticProps } from "next"
-import { useTranslation } from "next-i18next"
-import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import * as yup from "yup"
-
-type SignUnMutation = {
-  email: string
-  password: string
-}
+import { getStaticPaths, makeStaticProps } from "i18next-ssg/server"
+import { localize, useTranslation } from "i18next-ssg"
 
 const initialValues = {
   email: "",
@@ -24,12 +19,13 @@ const initialValues = {
 }
 
 const SignUp = () => {
-  const router = useRouter()
   const { handleError } = useHandleErrors()
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const router = useRouter()
+  const { signIn } = useSession()
   const { t } = useTranslation(["fields", "forms"])
 
-  const signUpSchema = yup.object().shape({
+  const signInSchema = yup.object().shape({
     email: yup
       .string()
       .email(t("forms:email.invalid"))
@@ -40,23 +36,24 @@ const SignUp = () => {
       .required(t("forms:password.required")),
   })
 
-  const signUpMutation = useMutation({
-    mutationFn: (credentials: SignUnMutation) => {
+  const signInMutation = useMutation({
+    mutationFn: (credentials: AuthForm) => {
       setIsLoading(true)
 
-      return api.post("/sign-up", credentials)
+      return api.post<string>("/sign-in", credentials)
     },
     onError: handleError,
     onSettled: () => {
       setIsLoading(false)
     },
-    onSuccess: () => {
-      void router.push("/sign-in")
+    onSuccess: (response) => {
+      void signIn(response.result)
+      void router.push(localize("/"))
     },
   })
 
-  const handleSubmit = ({ email, password }: SignUnMutation) => {
-    signUpMutation.mutate({ email, password })
+  const handleSubmit = ({ email, password }: AuthForm) => {
+    signInMutation.mutate({ email, password })
   }
 
   return (
@@ -64,11 +61,11 @@ const SignUp = () => {
       <AbsoluteDiv>
         <Form
           initialValues={initialValues}
-          validationSchema={signUpSchema}
-          onSubmit={handleSubmit}
+          validationSchema={signInSchema}
           isLoading={isLoading}
-          title={t("forms:signUp.title")}
-          button={t("forms:signUp.button")}
+          onSubmit={handleSubmit}
+          title={t("forms:signIn.button")}
+          button={t("forms:signIn.button")}
         >
           <FormField name="email" type="text" label={t("email")} />
           <FormField name="password" type="password" label={t("password")} />
@@ -80,12 +77,5 @@ const SignUp = () => {
 
 export default SignUp
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => ({
-  props: {
-    ...(await serverSideTranslations(locale ?? i18nConfig.i18n.defaultLocale, [
-      "common",
-      "fields",
-      "forms",
-    ])),
-  },
-})
+const getStaticProps = makeStaticProps(["common", "fields", "forms"])
+export { getStaticPaths, getStaticProps }

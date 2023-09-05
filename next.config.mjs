@@ -2,7 +2,10 @@
 import i18nConfig from "./next-i18next.config.js"
 
 const config = {
-  i18n: i18nConfig.i18n,
+  env: {
+    NEXT_PUBLIC_I18N: i18nConfig.i18n,
+  },
+  output: "export",
 }
 
 export default config

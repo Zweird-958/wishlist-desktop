@@ -15,11 +15,17 @@ const call =
     options: AxiosRequestConfig = {}
   ) => {
     const jwt: string | null = await store.get(config.session.localStorageKey)
+    const locale: string | null = await store.get(config.languageKey)
 
     if (jwt) {
       options.headers = {
         authorization: jwt,
       }
+    }
+
+    options.headers = {
+      ...options.headers,
+      "Accept-Language": locale,
     }
 
     const opts = {

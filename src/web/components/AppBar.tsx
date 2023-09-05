@@ -5,8 +5,8 @@ import {
   NavbarContent,
   NavbarItem,
 } from "@nextui-org/react"
+import { I18NLink, localize } from "i18next-ssg"
 import { useTranslation } from "next-i18next"
-import Link from "next/link"
 import { useRouter } from "next/router"
 import useSession from "../hooks/useSession"
 import SelectLanguage from "./SelectLanguage"
@@ -19,15 +19,13 @@ const AppBar = () => {
 
   const handleSignOut = async () => {
     await signOut()
-    void router.push("/sign-in")
+    void router.push(localize("/sign-in"))
   }
 
   return (
     <Navbar>
-      <NavbarBrand>
-        <Link className="font-bold hidden sm:block text-inherit" href="/">
-          My Wishlist
-        </Link>
+      <NavbarBrand as={I18NLink} href={"/"}>
+        <p className="font-bold hidden sm:block text-inherit">My Wishlist</p>
       </NavbarBrand>
 
       <NavbarContent justify="end">
@@ -47,12 +45,12 @@ const AppBar = () => {
           </>
         ) : (
           <>
-            <NavbarItem as={Link} href="/sign-in">
+            <NavbarItem as={I18NLink} href="/sign-in">
               <Button color="primary" variant="bordered">
                 {t("login")}
               </Button>
             </NavbarItem>
-            <NavbarItem as={Link} href="/sign-up">
+            <NavbarItem as={I18NLink} href="/sign-up">
               <Button color="success">{t("register")}</Button>
             </NavbarItem>
           </>

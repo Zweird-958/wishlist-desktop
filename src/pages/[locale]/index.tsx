@@ -1,4 +1,3 @@
-import i18nConfig from "@/../next-i18next.config.js"
 import AbsoluteDiv from "@/web/components/AbsoluteDiv"
 import FullDiv from "@/web/components/FullDiv"
 import Loading from "@/web/components/Loading"
@@ -12,15 +11,14 @@ import Filter from "@/web/types/Filter"
 import Sort from "@/web/types/Sort"
 import Wish from "@/web/types/Wish"
 import { Card, CardBody } from "@nextui-org/react"
-import { type GetStaticProps } from "next"
-import { useTranslation } from "next-i18next"
-import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import { useTranslation } from "i18next-ssg"
+import { getStaticPaths, makeStaticProps } from "i18next-ssg/server"
 import { Key, useState } from "react"
 
 const FILTERS: Filter[] = ["all", "bought", "notBought"]
 
 const Home = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslation("common")
   const [filter, setFilter] = useState<Filter>(FILTERS[0] as Filter)
 
   const { wishlist, isFetching, sort, sortWishlist } = useWishlist()
@@ -78,12 +76,5 @@ const Home = () => {
 
 export default Home
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => ({
-  props: {
-    ...(await serverSideTranslations(locale ?? i18nConfig.i18n.defaultLocale, [
-      "common",
-      "fields",
-      "forms",
-    ])),
-  },
-})
+const getStaticProps = makeStaticProps(["common", "fields", "forms"])
+export { getStaticPaths, getStaticProps }

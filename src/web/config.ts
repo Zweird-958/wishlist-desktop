@@ -5,6 +5,7 @@ const config = {
   session: {
     localStorageKey: "token",
   },
+  languageKey: "language",
 }
 
 export default config
