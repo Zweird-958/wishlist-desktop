@@ -7,6 +7,7 @@ type Wish = {
   purchased: boolean
   id: number
   createdAt: string | Date
+  priceFormatted: string
 }
 
 export default Wish

@@ -1,4 +1,3 @@
-import formatCurrency from "@/utils/formatCurrency"
 import Wish from "@/web/types/Wish"
 import { Button, Card, CardFooter, CardHeader, Image } from "@nextui-org/react"
 import { open } from "@tauri-apps/api/shell"
@@ -12,7 +11,7 @@ type WishCardProps = {
 
 const WishCard = (props: WishCardProps) => {
   const { wish } = props
-  const { name, image, currency, price, id, link } = wish
+  const { name, image, id, link, priceFormatted } = wish
   const { t } = useTranslation("common")
 
   return (
@@ -39,9 +38,7 @@ const WishCard = (props: WishCardProps) => {
         />
       </div>
       <CardFooter className="justify-between">
-        <p className="text-md font-medium text-black/80">
-          {formatCurrency(price, currency)}
-        </p>
+        <p className="text-md font-medium text-black/80">{priceFormatted}</p>
 
         {link && (
           <Button
