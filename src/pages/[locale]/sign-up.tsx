@@ -6,19 +6,21 @@ import useHandleErrors from "@/web/hooks/useHandleErrors"
 import api from "@/web/services/api"
 import { useMutation } from "@tanstack/react-query"
 import { getStaticPaths, makeStaticProps } from "i18next-ssg/server"
-import { useTranslation } from "i18next-ssg"
+import { localize, useTranslation } from "i18next-ssg"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import * as yup from "yup"
 
-type SignUnMutation = {
+type SignUpMutation = {
   email: string
   password: string
+  username: string
 }
 
 const initialValues = {
   email: "",
   password: "",
+  username: "",
 }
 
 const SignUp = () => {
@@ -36,10 +38,14 @@ const SignUp = () => {
       .string()
       .min(8, t("forms:password.length"))
       .required(t("forms:password.required")),
+    username: yup
+      .string()
+      .min(3, t("forms:username.length"))
+      .required(t("forms:username.required")),
   })
 
   const signUpMutation = useMutation({
-    mutationFn: (credentials: SignUnMutation) => {
+    mutationFn: (credentials: SignUpMutation) => {
       setIsLoading(true)
 
       return api.post("/sign-up", credentials)
@@ -49,12 +55,12 @@ const SignUp = () => {
       setIsLoading(false)
     },
     onSuccess: () => {
-      void router.push("/sign-in")
+      void router.push(localize("/sign-in"))
     },
   })
 
-  const handleSubmit = ({ email, password }: SignUnMutation) => {
-    signUpMutation.mutate({ email, password })
+  const handleSubmit = ({ email, password, username }: SignUpMutation) => {
+    signUpMutation.mutate({ email, password, username })
   }
 
   return (
@@ -68,6 +74,7 @@ const SignUp = () => {
           title={t("forms:signUp.title")}
           button={t("forms:signUp.button")}
         >
+          <FormField name="username" type="text" label={t("username")} />
           <FormField name="email" type="text" label={t("email")} />
           <FormField name="password" type="password" label={t("password")} />
         </Form>

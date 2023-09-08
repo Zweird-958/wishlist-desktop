@@ -15,6 +15,10 @@
     "title": "Sign Up",
     "button": "Sign Up"
   },
+  "username": {
+    "required": "Username is required",
+    "length": "Username must be at least 8 characters long"
+  },
   "wish": {
     "add": {
       "title": "Add Wish",

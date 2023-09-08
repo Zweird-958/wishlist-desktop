@@ -15,6 +15,10 @@
     "title": "Inscription",
     "button": "S'inscrire"
   },
+  "username": {
+    "required": "Veuillez entrer un nom d'utilisateur",
+    "length": "Votre nom d'utilisateur doit contenir au moins 3 caractères"
+  },
   "wish": {
     "add": {
       "title": "Ajouter à votre liste d'envie",
