@@ -7,7 +7,8 @@ import {
   useDisclosure,
 } from "@nextui-org/react"
 import { useMutation } from "@tanstack/react-query"
-import { useTranslation } from "next-i18next"
+import { useAtom } from "jotai"
+import { commonAtom } from "../atom/language"
 import useHandleErrors from "../hooks/useHandleErrors"
 import useWishlist from "../hooks/useWishlist"
 import api from "../services/api"
@@ -21,7 +22,7 @@ const DeletePopover = (props: Props) => {
   const { onOpenChange, onClose } = useDisclosure()
   const { id } = props
   const { handleError } = useHandleErrors()
-  const { t } = useTranslation("common")
+  const [common] = useAtom(commonAtom)
 
   const { removeWish } = useWishlist()
 
@@ -54,8 +55,8 @@ const DeletePopover = (props: Props) => {
       </PopoverTrigger>
       <PopoverContent>
         <div className="px-1 py-2">
-          <p className="text-sm font-bold">{t("delete.title")}</p>
-          <p className="text-xs">{t("delete.subtitle")}</p>
+          <p className="text-sm font-bold">{common.delete.title}</p>
+          <p className="text-xs">{common.delete.subtitle}</p>
           <div className="flex justify-end">
             <Button
               size="sm"
@@ -65,7 +66,7 @@ const DeletePopover = (props: Props) => {
               onPress={handleDelete}
               isLoading={mutation.isLoading}
             >
-              {t("delete.confirm")}
+              {common.delete.confirm}
             </Button>
           </div>
         </div>

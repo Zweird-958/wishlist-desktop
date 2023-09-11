@@ -1,3 +1,4 @@
+import { commonAtom } from "@/web/atom/language"
 import AbsoluteDiv from "@/web/components/AbsoluteDiv"
 import FullDiv from "@/web/components/FullDiv"
 import Loading from "@/web/components/Loading"
@@ -11,15 +12,14 @@ import Filter from "@/web/types/Filter"
 import Sort from "@/web/types/Sort"
 import Wish from "@/web/types/Wish"
 import { Card, CardBody } from "@nextui-org/react"
-import { useTranslation } from "i18next-ssg"
-import { getStaticPaths, makeStaticProps } from "i18next-ssg/server"
+import { useAtom } from "jotai"
 import { Key, useState } from "react"
 
 const FILTERS: Filter[] = ["all", "bought", "notBought"]
 
 const Home = () => {
-  const { t } = useTranslation("common")
   const [filter, setFilter] = useState<Filter>(FILTERS[0] as Filter)
+  const [common] = useAtom(commonAtom)
 
   const { wishlist, isFetching, sort, sortWishlist } = useWishlist()
 
@@ -38,7 +38,7 @@ const Home = () => {
         <AbsoluteDiv>
           <Card>
             <CardBody>
-              <p>{t("empty")}</p>
+              <p>{common.empty}</p>
             </CardBody>
           </Card>
         </AbsoluteDiv>
@@ -75,6 +75,3 @@ const Home = () => {
 }
 
 export default Home
-
-const getStaticProps = makeStaticProps(["common", "fields", "forms"])
-export { getStaticPaths, getStaticProps }

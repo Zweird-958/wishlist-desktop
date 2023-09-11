@@ -1,3 +1,4 @@
+import { fieldsAtom, formsAtom } from "@/web/atom/language"
 import AbsoluteDiv from "@/web/components/AbsoluteDiv"
 import Form from "@/web/components/Form"
 import FormField from "@/web/components/FormField"
@@ -5,8 +6,7 @@ import Page from "@/web/components/Page"
 import useHandleErrors from "@/web/hooks/useHandleErrors"
 import api from "@/web/services/api"
 import { useMutation } from "@tanstack/react-query"
-import { getStaticPaths, makeStaticProps } from "i18next-ssg/server"
-import { localize, useTranslation } from "i18next-ssg"
+import { useAtom } from "jotai"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import * as yup from "yup"
@@ -27,21 +27,22 @@ const SignUp = () => {
   const router = useRouter()
   const { handleError } = useHandleErrors()
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const { t } = useTranslation(["fields", "forms"])
+  const [forms] = useAtom(formsAtom)
+  const [fields] = useAtom(fieldsAtom)
 
   const signUpSchema = yup.object().shape({
     email: yup
       .string()
-      .email(t("forms:email.invalid"))
-      .required(t("forms:email.required")),
+      .email(forms.email.invalid)
+      .required(forms.email.required),
     password: yup
       .string()
-      .min(8, t("forms:password.length"))
-      .required(t("forms:password.required")),
+      .min(8, forms.password.length)
+      .required(forms.password.required),
     username: yup
       .string()
-      .min(3, t("forms:username.length"))
-      .required(t("forms:username.required")),
+      .min(3, forms.username.length)
+      .required(forms.username.required),
   })
 
   const signUpMutation = useMutation({
@@ -55,7 +56,7 @@ const SignUp = () => {
       setIsLoading(false)
     },
     onSuccess: () => {
-      void router.push(localize("/sign-in"))
+      void router.push("/sign-in")
     },
   })
 
@@ -71,12 +72,12 @@ const SignUp = () => {
           validationSchema={signUpSchema}
           onSubmit={handleSubmit}
           isLoading={isLoading}
-          title={t("forms:signUp.title")}
-          button={t("forms:signUp.button")}
+          title={forms.signUp.title}
+          button={forms.signUp.button}
         >
-          <FormField name="username" type="text" label={t("username")} />
-          <FormField name="email" type="text" label={t("email")} />
-          <FormField name="password" type="password" label={t("password")} />
+          <FormField name="username" type="text" label={fields.username} />
+          <FormField name="email" type="text" label={fields.email} />
+          <FormField name="password" type="password" label={fields.password} />
         </Form>
       </AbsoluteDiv>
     </Page>
@@ -84,6 +85,3 @@ const SignUp = () => {
 }
 
 export default SignUp
-
-const getStaticProps = makeStaticProps(["common", "fields", "forms"])
-export { getStaticPaths, getStaticProps }

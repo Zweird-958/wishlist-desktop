@@ -1,8 +1,9 @@
 import api from "@/web/services/api"
 import { Switch } from "@nextui-org/react"
 import { useMutation } from "@tanstack/react-query"
-import { useTranslation } from "next-i18next"
+import { useAtom } from "jotai"
 import { useState } from "react"
+import { fieldsAtom, formsAtom } from "../atom/language"
 import useHandleErrors from "../hooks/useHandleErrors"
 import useWishlist from "../hooks/useWishlist"
 import Wish from "../types/Wish"
@@ -15,7 +16,8 @@ type Props = {
 
 const WishEditForm = (props: Props) => {
   const { wish } = props
-  const { t } = useTranslation(["forms", "fields"])
+  const [forms] = useAtom(formsAtom)
+  const [fields] = useAtom(fieldsAtom)
 
   const [purchased, setPurchased] = useState<boolean>(
     wish ? wish.purchased : false
@@ -44,18 +46,18 @@ const WishEditForm = (props: Props) => {
 
   return (
     <WishForm
-      title={t("wish.edit.title")}
+      title={forms.wish.edit.title}
       icon={<EditIcon />}
       color="warning"
       className="right-0 z-10"
       handleSubmit={handleSubmit}
       initialValues={{ ...wish, link: wish.link ?? "" }}
-      buttonTitle={t("wish.edit.button")}
+      buttonTitle={forms.wish.edit.button}
       purchased={purchased}
       isLoading={mutation.isLoading}
     >
       <div className="flex justify-between">
-        <p>{t("fields:bought")}</p>
+        <p>{fields.bought}</p>
         <Switch
           color="primary"
           isSelected={purchased}

@@ -10,9 +10,10 @@ import {
 } from "@nextui-org/react"
 import { useQuery } from "@tanstack/react-query"
 import { Form, Formik } from "formik"
-import { useTranslation } from "next-i18next"
+import { useAtom } from "jotai"
 import { ChangeEventHandler, useEffect, useMemo, useState } from "react"
 import * as yup from "yup"
+import { fieldsAtom, formsAtom } from "../atom/language"
 import useHandleErrors from "../hooks/useHandleErrors"
 import Color from "../types/Color"
 import FormDataType from "../types/FormData"
@@ -35,7 +36,8 @@ type Props = {
 }
 
 const WishForm = (props: Props) => {
-  const { t } = useTranslation(["forms", "fields"])
+  const [forms] = useAtom(formsAtom)
+  const [fields] = useAtom(fieldsAtom)
 
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const {
@@ -56,9 +58,9 @@ const WishForm = (props: Props) => {
   const { handleError } = useHandleErrors()
 
   const validationSchema = yup.object().shape({
-    name: yup.string().required(t("forms:wish.name.required")),
-    price: yup.number().required(t("forms:wish.price.required")),
-    link: yup.string().url(t("forms:wish.link.invalid")),
+    name: yup.string().required(forms.wish.name.required),
+    price: yup.number().required(forms.wish.price.required),
+    link: yup.string().url(forms.wish.link.invalid),
   })
 
   const { data: currencies } = useQuery({
@@ -136,20 +138,16 @@ const WishForm = (props: Props) => {
           >
             <Form noValidate>
               <ModalBody className="w-4/5 mx-auto">
-                <FormField name="name" type="text" label={t("fields:name")} />
-                <FormField
-                  name="price"
-                  type="number"
-                  label={t("fields:price")}
-                />
-                <FormField name="link" type="url" label={t("fields:link")} />
+                <FormField name="name" type="text" label={fields.name} />
+                <FormField name="price" type="number" label={fields.price} />
+                <FormField name="link" type="url" label={fields.link} />
                 <Select
                   onSelectionChange={(value) => setCurrency(value as string)}
                   selectedValue={currency}
                   items={currencies ?? []}
                 />
                 <Button as="label" className="truncate" color="primary">
-                  {image ? image.name : t("fields:image")}
+                  {image ? image.name : fields.image}
                   <input
                     type="file"
                     hidden
@@ -161,7 +159,7 @@ const WishForm = (props: Props) => {
               </ModalBody>
               <ModalFooter className="flex justify-between">
                 <Button onPress={onClose} color="danger" variant="flat">
-                  {t("forms:wish.close")}
+                  {forms.wish.close}
                 </Button>
                 <Button type="submit" color="primary" isLoading={isLoading}>
                   {buttonTitle}

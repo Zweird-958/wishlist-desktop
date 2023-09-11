@@ -5,8 +5,9 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from "@nextui-org/react"
-import { useTranslation } from "next-i18next"
+import { useAtom } from "jotai"
 import { Key } from "react"
+import { commonAtom } from "../atom/language"
 import Filter from "../types/Filter"
 import Sort from "../types/Sort"
 
@@ -30,14 +31,14 @@ const isSort = (value: string): value is Sort => {
 
 const Select = (props: Props) => {
   const { selectedValue, onSelectionChange, items } = props
-  const { t } = useTranslation("common")
+  const [common] = useAtom(commonAtom)
 
   return (
     <Dropdown>
       <DropdownTrigger>
         <Button>
           {isFilter(selectedValue) || isSort(selectedValue)
-            ? t(selectedValue)
+            ? common[selectedValue]
             : selectedValue}
         </Button>
       </DropdownTrigger>
@@ -56,7 +57,7 @@ const Select = (props: Props) => {
       >
         {items.map((item: Filter | Sort | string) => (
           <DropdownItem key={item}>
-            {isFilter(item) || isSort(item) ? t(item) : item}
+            {isFilter(item) || isSort(item) ? common[item] : item}
           </DropdownItem>
         ))}
       </DropdownMenu>

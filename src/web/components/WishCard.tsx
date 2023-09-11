@@ -1,7 +1,8 @@
 import Wish from "@/web/types/Wish"
 import { Button, Card, CardFooter, CardHeader, Image } from "@nextui-org/react"
 import { open } from "@tauri-apps/api/shell"
-import { useTranslation } from "next-i18next"
+import { useAtom } from "jotai"
+import { commonAtom } from "../atom/language"
 import DeletePopover from "./DeletePopover"
 import WishEditForm from "./WishEditForm"
 
@@ -12,7 +13,7 @@ type WishCardProps = {
 const WishCard = (props: WishCardProps) => {
   const { wish } = props
   const { name, image, id, link, priceFormatted } = wish
-  const { t } = useTranslation("common")
+  const [common] = useAtom(commonAtom)
 
   return (
     <Card
@@ -48,7 +49,7 @@ const WishCard = (props: WishCardProps) => {
               void open(link)
             }}
           >
-            {t("buy")}
+            {common.buy}
           </Button>
         )}
       </CardFooter>

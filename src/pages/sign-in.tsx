@@ -1,3 +1,4 @@
+import { fieldsAtom, formsAtom } from "@/web/atom/language"
 import AbsoluteDiv from "@/web/components/AbsoluteDiv"
 import Form from "@/web/components/Form"
 import FormField from "@/web/components/FormField"
@@ -7,11 +8,10 @@ import useSession from "@/web/hooks/useSession"
 import api from "@/web/services/api"
 import AuthForm from "@/web/types/AuthForm"
 import { useMutation } from "@tanstack/react-query"
+import { useAtom } from "jotai"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import * as yup from "yup"
-import { getStaticPaths, makeStaticProps } from "i18next-ssg/server"
-import { localize, useTranslation } from "i18next-ssg"
 
 const initialValues = {
   email: "",
@@ -23,17 +23,18 @@ const SignUp = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const router = useRouter()
   const { signIn } = useSession()
-  const { t } = useTranslation(["fields", "forms"])
+  const [forms] = useAtom(formsAtom)
+  const [fields] = useAtom(fieldsAtom)
 
   const signInSchema = yup.object().shape({
     email: yup
       .string()
-      .email(t("forms:email.invalid"))
-      .required(t("forms:email.required")),
+      .email(forms.email.invalid)
+      .required(forms.email.required),
     password: yup
       .string()
-      .min(8, t("forms:password.length"))
-      .required(t("forms:password.required")),
+      .min(8, forms.password.length)
+      .required(forms.password.required),
   })
 
   const signInMutation = useMutation({
@@ -48,7 +49,7 @@ const SignUp = () => {
     },
     onSuccess: (response) => {
       void signIn(response.result)
-      void router.push(localize("/"))
+      void router.push("/")
     },
   })
 
@@ -64,11 +65,11 @@ const SignUp = () => {
           validationSchema={signInSchema}
           isLoading={isLoading}
           onSubmit={handleSubmit}
-          title={t("forms:signIn.button")}
-          button={t("forms:signIn.button")}
+          title={forms.signIn.button}
+          button={forms.signIn.button}
         >
-          <FormField name="email" type="text" label={t("email")} />
-          <FormField name="password" type="password" label={t("password")} />
+          <FormField name="email" type="text" label={fields.email} />
+          <FormField name="password" type="password" label={fields.password} />
         </Form>
       </AbsoluteDiv>
     </Page>
@@ -76,6 +77,3 @@ const SignUp = () => {
 }
 
 export default SignUp
-
-const getStaticProps = makeStaticProps(["common", "fields", "forms"])
-export { getStaticPaths, getStaticProps }
