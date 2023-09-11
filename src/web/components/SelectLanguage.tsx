@@ -9,6 +9,8 @@ import { useAtom } from "jotai"
 import { useMemo } from "react"
 import { languageAtom } from "../atom/language"
 import Locale from "../types/Locale"
+import { store } from "../services/api"
+import config from "../config"
 
 type Language = {
   name: string
@@ -52,6 +54,7 @@ const SelectLanguage = () => {
         selectionMode="single"
         onAction={(key) => {
           setLanguage(key as Locale)
+          void store.set(config.languageKey, key as Locale)
         }}
       >
         {languages.map((language) => (

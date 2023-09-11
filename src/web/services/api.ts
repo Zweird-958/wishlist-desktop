@@ -5,7 +5,7 @@ import { Store } from "tauri-plugin-store-api"
 type Method = "get" | "post" | "patch" | "delete"
 type ApiResult<T> = { result: T }
 
-const store = new Store(".settings.dat")
+export const store = new Store(".settings.dat")
 
 const call =
   (method: Method) =>
