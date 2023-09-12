@@ -4,7 +4,7 @@ import { useWishStore } from "../stores/wish"
 import Wish from "../types/Wish"
 import useHandleErrors from "./useHandleErrors"
 import useSession from "./useSession"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 
 const useWishlist = () => {
   const { wishlist, setWishlist, ...wishlistProps } = useWishStore()
@@ -25,6 +25,13 @@ const useWishlist = () => {
       setWishlist(data)
     }
   }, [wishlist, data, session, setWishlist])
+
+  // const previousValue = useRef(wishlist)
+
+  // if (previousValue.current !== data && data && session) {
+  //   previousValue.current = data
+  //   setWishlist(data)
+  // }
 
   return { wishlist, isFetching, setWishlist, ...wishlistProps }
 }

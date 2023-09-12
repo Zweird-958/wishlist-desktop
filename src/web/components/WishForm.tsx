@@ -159,7 +159,7 @@ const WishForm = (props: Props) => {
               </ModalBody>
               <ModalFooter className="flex justify-between">
                 <Button onPress={onClose} color="danger" variant="flat">
-                  {forms.wish.close}
+                  {forms.close}
                 </Button>
                 <Button type="submit" color="primary" isLoading={isLoading}>
                   {buttonTitle}

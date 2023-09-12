@@ -8,10 +8,11 @@ import WishEditForm from "./WishEditForm"
 
 type WishCardProps = {
   wish: Wish
+  canEdit?: boolean
 }
 
 const WishCard = (props: WishCardProps) => {
-  const { wish } = props
+  const { wish, canEdit } = props
   const { name, image, id, link, priceFormatted } = wish
   const [common] = useAtom(commonAtom)
 
@@ -23,10 +24,12 @@ const WishCard = (props: WishCardProps) => {
     >
       <CardHeader className="z-10">
         <div className="flex flex-col gap-2 w-full">
-          <div className="flex justify-between w-full">
-            <DeletePopover id={id} />
-            <WishEditForm wish={wish} />
-          </div>
+          {canEdit && (
+            <div className="flex justify-between w-full">
+              <DeletePopover id={id} />
+              <WishEditForm wish={wish} />
+            </div>
+          )}
           <h4 className="text-3xl font-medium text-black truncate">{name}</h4>
         </div>
       </CardHeader>

@@ -17,6 +17,12 @@ const translation = {
       logout: "Logout",
       login: "Sign In",
       register: "Sign Up",
+      share: "Share",
+      myWishlist: "My wishlist",
+      sharedWishlist: "Shared wishlists",
+      shareWishlist: "Share wishlist",
+      emptyShared: "This wishlist is empty.",
+      seeMore: "See more",
     },
     forms: {
       signIn: {
@@ -57,8 +63,15 @@ const translation = {
         link: {
           invalid: "Invalid link",
         },
-        close: "Close",
       },
+      share: {
+        title: "Share your wishlist",
+        button: "Share",
+        username: {
+          required: "Username is required",
+        },
+      },
+      close: "Close",
     },
     fields: {
       email: "Email",
@@ -69,6 +82,7 @@ const translation = {
       image: "Add an image",
       bought: "Bought",
       username: "Username",
+      usernameToShare: "Username to share with",
     },
   },
   fr: {
@@ -89,6 +103,12 @@ const translation = {
       logout: "Se déconnecter",
       login: "Se connecter",
       register: "S'inscrire",
+      share: "Partager",
+      myWishlist: "Ma liste d'envie",
+      sharedWishlist: "Liste(s) d'envie(s) partagée(s)",
+      shareWishlist: "Partager ma liste d'envie",
+      emptyShared: "Cette liste d'envie est vide.",
+      seeMore: "Voir plus",
     },
     forms: {
       signIn: {
@@ -129,8 +149,15 @@ const translation = {
         link: {
           invalid: "Veuillez entrer un lien valide",
         },
-        close: "Fermer",
       },
+      share: {
+        title: "Partager votre liste d'envie",
+        button: "Partager",
+        username: {
+          required: "Nom d'utilisateur requis",
+        },
+      },
+      close: "Fermer",
     },
     fields: {
       email: "Email",
@@ -141,6 +168,7 @@ const translation = {
       image: "Ajouter une image",
       bought: "Acheté(e)",
       username: "Nom d'utilisateur",
+      usernameToShare: "Nom d'utilisateur à partager avec",
     },
   },
 }
