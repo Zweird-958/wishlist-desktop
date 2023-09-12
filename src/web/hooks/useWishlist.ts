@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query"
+import { useEffect } from "react"
 import api from "../services/api"
 import { useWishStore } from "../stores/wish"
 import Wish from "../types/Wish"
 import useHandleErrors from "./useHandleErrors"
 import useSession from "./useSession"
-import { useEffect, useRef } from "react"
 
 const useWishlist = () => {
   const { wishlist, setWishlist, ...wishlistProps } = useWishStore()

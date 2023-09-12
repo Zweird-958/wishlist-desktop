@@ -1,11 +1,11 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { useEffect, useRef, useState } from "react"
+import { useEffect } from "react"
 import api from "../services/api"
 import { useWishlistSharedStore } from "../stores/wishlistShared"
 import User from "../types/User"
+import Wish from "../types/Wish"
 import useHandleErrors from "./useHandleErrors"
 import useSession from "./useSession"
-import Wish from "../types/Wish"
 
 const useWishlistShared = () => {
   const {

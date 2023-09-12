@@ -13,15 +13,14 @@ import {
   Spinner,
   useDisclosure,
 } from "@nextui-org/react"
-import { useRouter } from "next/router"
-import useSession from "../hooks/useSession"
-import SelectLanguage from "./SelectLanguage"
-import Link from "next/link"
 import { useAtom } from "jotai"
+import Link from "next/link"
+import { useRouter } from "next/router"
 import { commonAtom } from "../atom/language"
-import ShareWishlist from "./ShareWishlist"
+import useSession from "../hooks/useSession"
 import useWishlistShared from "../hooks/useWishlistShared"
-import { D } from "@tauri-apps/api/path-c062430b"
+import SelectLanguage from "./SelectLanguage"
+import ShareWishlist from "./ShareWishlist"
 
 const AppBar = () => {
   const router = useRouter()
