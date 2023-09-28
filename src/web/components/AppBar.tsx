@@ -14,19 +14,24 @@ import {
   useDisclosure,
 } from "@nextui-org/react"
 import { useAtom } from "jotai"
+import { Moon } from "lucide-react"
+import { useTheme } from "next-themes"
 import Link from "next/link"
 import { useRouter } from "next/router"
+import { useState } from "react"
 import { commonAtom } from "../atom/language"
 import useSession from "../hooks/useSession"
 import useWishlistShared from "../hooks/useWishlistShared"
 import SelectLanguage from "./SelectLanguage"
 import ShareWishlist from "./ShareWishlist"
+import { Theme } from "../types/Theme"
 
 const AppBar = () => {
   const router = useRouter()
   const [common] = useAtom(commonAtom)
 
   const { session, signOut } = useSession()
+  const { theme, setTheme } = useTheme()
 
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
   const {
@@ -40,6 +45,8 @@ const AppBar = () => {
     await signOut()
     void router.push("/sign-in")
   }
+
+  const [selectedKeys, setSelectedKeys] = useState(new Set([theme ?? "system"]))
 
   return (
     <>
@@ -138,6 +145,30 @@ const AppBar = () => {
               </NavbarItem>
             </>
           )}
+          <Dropdown>
+            <NavbarItem>
+              <DropdownTrigger>
+                <Button isIconOnly>
+                  <Moon className="w-6" />
+                </Button>
+              </DropdownTrigger>
+            </NavbarItem>
+            <DropdownMenu
+              aria-label="theme"
+              variant="flat"
+              disallowEmptySelection
+              selectionMode="single"
+              selectedKeys={selectedKeys}
+              onAction={(key) => {
+                setSelectedKeys(new Set([key as Theme]))
+                setTheme(key as Theme)
+              }}
+            >
+              <DropdownItem key="system">System</DropdownItem>
+              <DropdownItem key="dark">Dark</DropdownItem>
+              <DropdownItem key="light">Light</DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
         </NavbarContent>
       </Navbar>
       <ShareWishlist

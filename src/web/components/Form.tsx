@@ -13,7 +13,7 @@ const Form = <T extends FormikValues>(props: Props<T>) => {
   const { children, title, button, isLoading, ...otherProps } = props
 
   return (
-    <Card className="xs:w-[400px] py-8 w-full mx-3 bg-white z-10">
+    <Card className="xs:w-[400px] py-8 w-full mx-3 z-10 bg-content1">
       <Formik<T> {...otherProps}>
         <FormFormik noValidate className="w-2/3 mx-auto gap-4 flex flex-col">
           <p className="text-center">{title}</p>

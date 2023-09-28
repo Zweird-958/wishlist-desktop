@@ -17,11 +17,7 @@ const WishCard = (props: WishCardProps) => {
   const [common] = useAtom(commonAtom)
 
   return (
-    <Card
-      className="sm:w-[330px] w-full bg-zinc-100 dark:bg-zinc-100"
-      radius="lg"
-      shadow="lg"
-    >
+    <Card className="sm:w-[330px] w-full" radius="lg" shadow="lg">
       <CardHeader className="z-10">
         <div className="flex flex-col gap-2 w-full">
           {canEdit && (
@@ -30,7 +26,9 @@ const WishCard = (props: WishCardProps) => {
               <WishEditForm wish={wish} />
             </div>
           )}
-          <h4 className="text-3xl font-medium text-black truncate">{name}</h4>
+          <h4 className="text-3xl font-medium text-foreground truncate">
+            {name}
+          </h4>
         </div>
       </CardHeader>
       <div className="flex justify-center items-center px-5">
@@ -42,7 +40,7 @@ const WishCard = (props: WishCardProps) => {
         />
       </div>
       <CardFooter className="justify-between">
-        <p className="text-md font-medium text-black/80">{priceFormatted}</p>
+        <p className="text-md font-medium text-foreground">{priceFormatted}</p>
 
         {link && (
           <Button
