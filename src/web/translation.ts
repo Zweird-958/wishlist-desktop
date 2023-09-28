@@ -23,6 +23,9 @@ const translation = {
       shareWishlist: "Share wishlist",
       emptyShared: "This wishlist is empty.",
       seeMore: "See more",
+      dark: "Dark",
+      light: "Light",
+      system: "System",
     },
     forms: {
       signIn: {
@@ -109,6 +112,9 @@ const translation = {
       shareWishlist: "Partager ma liste d'envie",
       emptyShared: "Cette liste d'envie est vide.",
       seeMore: "Voir plus",
+      dark: "Sombre",
+      light: "Clair",
+      system: "Système",
     },
     forms: {
       signIn: {

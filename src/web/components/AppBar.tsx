@@ -164,9 +164,9 @@ const AppBar = () => {
                 setTheme(key as Theme)
               }}
             >
-              <DropdownItem key="system">System</DropdownItem>
-              <DropdownItem key="dark">Dark</DropdownItem>
-              <DropdownItem key="light">Light</DropdownItem>
+              <DropdownItem key="system">{common.system}</DropdownItem>
+              <DropdownItem key="dark">{common.dark}</DropdownItem>
+              <DropdownItem key="light">{common.light}</DropdownItem>
             </DropdownMenu>
           </Dropdown>
         </NavbarContent>
