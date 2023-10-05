@@ -4,14 +4,11 @@ import {
   Dropdown,
   DropdownItem,
   DropdownMenu,
-  DropdownSection,
   DropdownTrigger,
   Navbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  Spinner,
-  useDisclosure,
 } from "@nextui-org/react"
 import { useAtom } from "jotai"
 import { Moon } from "lucide-react"
@@ -21,10 +18,8 @@ import { useRouter } from "next/router"
 import { useState } from "react"
 import { commonAtom } from "../atom/language"
 import useSession from "../hooks/useSession"
-import useWishlistShared from "../hooks/useWishlistShared"
-import SelectLanguage from "./SelectLanguage"
-import ShareWishlist from "./ShareWishlist"
 import { Theme } from "../types/Theme"
+import SelectLanguage from "./SelectLanguage"
 
 const AppBar = () => {
   const router = useRouter()
@@ -32,14 +27,6 @@ const AppBar = () => {
 
   const { session, signOut } = useSession()
   const { theme, setTheme } = useTheme()
-
-  const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
-  const {
-    isFetching,
-    usersShared,
-    setCurrentWishlistShared,
-    wishlistMutation,
-  } = useWishlistShared()
 
   const handleSignOut = async () => {
     await signOut()
@@ -51,11 +38,7 @@ const AppBar = () => {
   return (
     <>
       <Navbar>
-        <NavbarBrand
-          as={Link}
-          href={"/"}
-          onClick={() => void setCurrentWishlistShared(null)}
-        >
+        <NavbarBrand as={Link} href={"/"}>
           <p className="font-bold hidden sm:block text-inherit">My Wishlist</p>
         </NavbarBrand>
 
@@ -70,65 +53,12 @@ const AppBar = () => {
                   {common.logout}
                 </Button>
               </NavbarItem>
-              <Dropdown>
-                <NavbarItem>
-                  <DropdownTrigger>
-                    <Button isIconOnly>
-                      <ShareIcon className="w-6" />
-                    </Button>
-                  </DropdownTrigger>
-                </NavbarItem>
-                <DropdownMenu
-                  aria-label="actions"
-                  onAction={(key) => {
-                    if (key === "myWishlist") {
-                      setCurrentWishlistShared(null)
-                      setTimeout(() => {
-                        void router.push("/")
-                      }, 1000)
-                    } else if (key === "more") {
-                      setTimeout(() => {
-                        void router.push("/share")
-                      }, 1000)
-                    } else if (key !== "shareWishlist") {
-                      wishlistMutation.mutate(key as string)
-                    }
-                  }}
-                >
-                  <DropdownSection showDivider>
-                    <DropdownItem key={"myWishlist"}>
-                      {common.myWishlist}
-                    </DropdownItem>
-                  </DropdownSection>
-                  <DropdownSection title={common.sharedWishlist} showDivider>
-                    {isFetching ? (
-                      <DropdownItem key={"spinner"}>
-                        <Spinner size="sm" />
-                      </DropdownItem>
-                    ) : (
-                      usersShared
-                        .slice(0, 2)
-                        .map((user) => (
-                          <DropdownItem key={user.id}>
-                            {user.username}
-                          </DropdownItem>
-                        ))
-                    )}
-                  </DropdownSection>
-                  <DropdownSection showDivider>
-                    <DropdownItem key={"more"}>{common.seeMore}</DropdownItem>
-                  </DropdownSection>
-                  <DropdownSection title={common.share}>
-                    <DropdownItem
-                      key={"shareWishlist"}
-                      onClick={onOpen}
-                      className="text-primary"
-                    >
-                      {common.shareWishlist}
-                    </DropdownItem>
-                  </DropdownSection>
-                </DropdownMenu>
-              </Dropdown>
+              <NavbarItem>
+                <Button isIconOnly as={Link} href="/share">
+                  <ShareIcon className="w-6" />
+                </Button>
+              </NavbarItem>
+
               {/* <NavbarItem as={Link} href="/profile">
               <Avatar />
             </NavbarItem> */}
@@ -171,11 +101,6 @@ const AppBar = () => {
           </Dropdown>
         </NavbarContent>
       </Navbar>
-      <ShareWishlist
-        isOpen={isOpen}
-        onClose={onClose}
-        onOpenChange={onOpenChange}
-      />
     </>
   )
 }

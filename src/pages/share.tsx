@@ -1,14 +1,24 @@
 import { commonAtom } from "@/web/atom/language"
+import AddIcon from "@/web/components/AddIcon"
+import Loading from "@/web/components/Loading"
 import Page from "@/web/components/Page"
+import ShareWishlist from "@/web/components/ShareWishlist"
 import useWishlistShared from "@/web/hooks/useWishlistShared"
-import { Listbox, ListboxItem, ListboxSection } from "@nextui-org/react"
+import {
+  Button,
+  Listbox,
+  ListboxItem,
+  ListboxSection,
+  useDisclosure,
+} from "@nextui-org/react"
 import { useAtom } from "jotai"
 import { useRouter } from "next/router"
 
 const Share = () => {
-  const { usersShared, wishlistMutation } = useWishlistShared()
+  const { usersShared, isFetching } = useWishlistShared()
   const router = useRouter()
   const [common] = useAtom(commonAtom)
+  const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
 
   return (
     <Page>
@@ -17,18 +27,36 @@ const Share = () => {
           <Listbox
             aria-label="users"
             onAction={(key) => {
-              wishlistMutation.mutate(key as string)
-              void router.push("/")
+              void router.push(`/wishlist/${key}`)
             }}
           >
             <ListboxSection title={common.sharedWishlist}>
-              {usersShared.map((user) => (
-                <ListboxItem key={user.id}>{user.username}</ListboxItem>
-              ))}
+              {isFetching ? (
+                <ListboxItem key={"loader"}>
+                  <Loading />
+                </ListboxItem>
+              ) : (
+                usersShared.map((user) => (
+                  <ListboxItem key={user.id}>{user.username}</ListboxItem>
+                ))
+              )}
             </ListboxSection>
           </Listbox>
         </div>
       </div>
+      <ShareWishlist
+        isOpen={isOpen}
+        onClose={onClose}
+        onOpenChange={onOpenChange}
+      />
+      <Button
+        onPress={onOpen}
+        isIconOnly
+        className="z-20 fixed right-5 bottom-5"
+        color={"primary"}
+      >
+        <AddIcon />
+      </Button>
     </Page>
   )
 }

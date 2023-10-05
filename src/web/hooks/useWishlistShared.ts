@@ -1,20 +1,14 @@
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import { useEffect } from "react"
 import api from "../services/api"
 import { useWishlistSharedStore } from "../stores/wishlistShared"
 import User from "../types/User"
-import Wish from "../types/Wish"
 import useHandleErrors from "./useHandleErrors"
 import useSession from "./useSession"
 
 const useWishlistShared = () => {
-  const {
-    usersShared,
-    setUsersShared,
-    setCurrentWishlistShared,
-    setFetchingWishlist,
-    ...otherProps
-  } = useWishlistSharedStore()
+  const { usersShared, setUsersShared, ...otherProps } =
+    useWishlistSharedStore()
 
   const { handleError } = useHandleErrors()
   const { session } = useSession()
@@ -27,16 +21,6 @@ const useWishlistShared = () => {
     select: (data) => data.result,
     enabled: usersShared.length === 0 && session !== null,
     onError: handleError,
-  })
-
-  const wishlistMutation = useMutation({
-    mutationFn: (userId: string) => api.get<Wish[]>(`/share/wish/${userId}`),
-    onMutate: () => setFetchingWishlist(true),
-    onError: handleError,
-    onSettled: () => setFetchingWishlist(false),
-    onSuccess: (data) => {
-      setCurrentWishlistShared(data.result || [])
-    },
   })
 
   // const previousValue = useRef(usersShared)
@@ -57,9 +41,6 @@ const useWishlistShared = () => {
     isFetching,
     usersShared,
     setUsersShared,
-    setCurrentWishlistShared,
-    wishlistMutation,
-    setFetchingWishlist,
     ...otherProps,
   }
 }

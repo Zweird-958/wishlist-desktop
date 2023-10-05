@@ -1,10 +1,7 @@
 import { AxiosError } from "axios"
 import useSession from "./useSession"
 import toast from "react-hot-toast"
-
-type ApiError = {
-  error: string
-}
+import { ApiError } from "../types/Api"
 
 const useHandleErrors = () => {
   const { signOut } = useSession()
