@@ -21,8 +21,14 @@ npm install
 npm run tauri build
 ```
 
-## TO DO
+## Bugs
 
-- [ ] Profile Page
-- [ ] Translations
-- [x] Handle Errors Pop Up
+### Mac
+
+If you have the following error when you do `npm run tauri build`:
+
+```
+Error failed to bundle project: error running bundle_dmg.sh
+```
+
+You can try to run the following command: `sudo npx tauri build`
