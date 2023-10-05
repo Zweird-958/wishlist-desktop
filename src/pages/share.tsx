@@ -1,5 +1,5 @@
 import { commonAtom } from "@/web/atom/language"
-import AddIcon from "@/web/components/AddIcon"
+import { PlusIcon } from "@heroicons/react/24/outline"
 import Loading from "@/web/components/Loading"
 import Page from "@/web/components/Page"
 import ShareWishlist from "@/web/components/ShareWishlist"
@@ -55,7 +55,7 @@ const Share = () => {
         className="z-20 fixed right-5 bottom-5"
         color={"primary"}
       >
-        <AddIcon />
+        <PlusIcon className="w-6" />
       </Button>
     </Page>
   )

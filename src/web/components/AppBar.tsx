@@ -11,7 +11,7 @@ import {
   NavbarItem,
 } from "@nextui-org/react"
 import { useAtom } from "jotai"
-import { Moon } from "lucide-react"
+import { MoonIcon } from "@heroicons/react/24/outline"
 import { useTheme } from "next-themes"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -79,7 +79,7 @@ const AppBar = () => {
             <NavbarItem>
               <DropdownTrigger>
                 <Button isIconOnly>
-                  <Moon className="w-6" />
+                  <MoonIcon className="w-6" />
                 </Button>
               </DropdownTrigger>
             </NavbarItem>

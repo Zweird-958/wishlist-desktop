@@ -1,4 +1,4 @@
-import DeleteIcon from "@/web/components/DeleteIcon"
+import { TrashIcon } from "@heroicons/react/24/outline"
 import {
   Button,
   Popover,
@@ -50,7 +50,7 @@ const DeletePopover = (props: Props) => {
     >
       <PopoverTrigger>
         <Button isIconOnly color="danger">
-          <DeleteIcon />
+          <TrashIcon className="w-6" />
         </Button>
       </PopoverTrigger>
       <PopoverContent>

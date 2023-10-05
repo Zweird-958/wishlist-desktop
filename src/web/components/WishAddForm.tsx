@@ -5,7 +5,7 @@ import { formsAtom } from "../atom/language"
 import useHandleErrors from "../hooks/useHandleErrors"
 import useWishlist from "../hooks/useWishlist"
 import Wish from "../types/Wish"
-import AddIcon from "./AddIcon"
+import { PlusIcon } from "@heroicons/react/24/outline"
 import WishForm from "./WishForm"
 
 const initialValues = {
@@ -36,7 +36,7 @@ const WishAddForm = () => {
   return (
     <WishForm
       title={forms.wish.add.title}
-      icon={<AddIcon />}
+      icon={<PlusIcon className="w-6" />}
       color="danger"
       className="z-20 fixed right-5 bottom-5"
       handleSubmit={handleSubmit}

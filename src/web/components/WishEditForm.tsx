@@ -7,7 +7,7 @@ import { fieldsAtom, formsAtom } from "../atom/language"
 import useHandleErrors from "../hooks/useHandleErrors"
 import useWishlist from "../hooks/useWishlist"
 import Wish from "../types/Wish"
-import EditIcon from "./EditIcon"
+import { PencilSquareIcon } from "@heroicons/react/24/outline"
 import WishForm from "./WishForm"
 
 type Props = {
@@ -47,7 +47,7 @@ const WishEditForm = (props: Props) => {
   return (
     <WishForm
       title={forms.wish.edit.title}
-      icon={<EditIcon />}
+      icon={<PencilSquareIcon className="w-6 text-white" />}
       color="warning"
       className="right-0 z-10"
       handleSubmit={handleSubmit}
