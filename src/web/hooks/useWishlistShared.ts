@@ -7,7 +7,7 @@ import useHandleErrors from "./useHandleErrors"
 import useSession from "./useSession"
 
 const useWishlistShared = () => {
-  const { usersShared, setUsersShared, ...otherProps } =
+  const { wishlistShared, setWishlistShared, ...otherProps } =
     useWishlistSharedStore()
 
   const { handleError } = useHandleErrors()
@@ -19,28 +19,28 @@ const useWishlistShared = () => {
       return api.get<User[]>("/share/wish")
     },
     select: (data) => data.result,
-    enabled: usersShared.length === 0 && session !== null,
+    enabled: wishlistShared.length === 0 && session !== null,
     onError: handleError,
   })
 
-  // const previousValue = useRef(usersShared)
+  // const previousValue = useRef(wishlistShared)
 
   // if (previousValue.current !== data && data && session) {
   //   previousValue.current = data
-  //   setUsersShared(data)
+  //   setWishlistShared(data)
   // }
 
   useEffect(() => {
-    if (usersShared.length === 0 && data && session) {
-      setUsersShared(data)
+    if (wishlistShared.length === 0 && data && session) {
+      setWishlistShared(data)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, setUsersShared, usersShared.length])
+  }, [data, setWishlistShared, wishlistShared.length])
 
   return {
     isFetching,
-    usersShared,
-    setUsersShared,
+    wishlistShared,
+    setWishlistShared,
     ...otherProps,
   }
 }

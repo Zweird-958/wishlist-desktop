@@ -15,7 +15,7 @@ import { useAtom } from "jotai"
 import { useRouter } from "next/router"
 
 const Share = () => {
-  const { usersShared, isFetching } = useWishlistShared()
+  const { wishlistShared, isFetching } = useWishlistShared()
   const router = useRouter()
   const [common] = useAtom(commonAtom)
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
@@ -36,7 +36,7 @@ const Share = () => {
                   <Loading />
                 </ListboxItem>
               ) : (
-                usersShared.map((user) => (
+                wishlistShared.map((user) => (
                   <ListboxItem key={user.id}>{user.username}</ListboxItem>
                 ))
               )}
