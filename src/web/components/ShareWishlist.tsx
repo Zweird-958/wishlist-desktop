@@ -16,6 +16,8 @@ import { fieldsAtom, formsAtom } from "../atom/language"
 import useHandleErrors from "../hooks/useHandleErrors"
 import api from "../services/api"
 import FormField from "./FormField"
+import { WishlistShareResponse } from "../types/Api"
+import useUsersSharedWith from "../hooks/useUsersSharedWith"
 
 type Props = {
   isOpen: boolean
@@ -33,6 +35,7 @@ const ShareWishlist = (props: Props) => {
   const [fields] = useAtom(fieldsAtom)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const { handleError } = useHandleErrors()
+  const { addUserSharedWith } = useUsersSharedWith()
 
   const validationSchema = yup.object().shape({
     username: yup.string().required(forms.share.username.required),
@@ -42,7 +45,7 @@ const ShareWishlist = (props: Props) => {
     mutationFn: (credentials: typeof initialValues) => {
       setIsLoading(true)
 
-      return api.post<string>("/share/wish", credentials)
+      return api.post<WishlistShareResponse>("/share/wish", credentials)
     },
     onError: handleError,
     onSettled: () => {
@@ -50,8 +53,9 @@ const ShareWishlist = (props: Props) => {
     },
     onSuccess: (response) => {
       onClose()
-      toast.success(response.result)
-      // add user to user who have access to wishlist
+      const { message, user } = response.result
+      toast.success(message)
+      addUserSharedWith(user)
     },
   })
 

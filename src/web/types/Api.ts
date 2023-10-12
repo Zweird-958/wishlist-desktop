@@ -1,5 +1,12 @@
+import User from "./User"
+
 type ApiError = {
   error: string
 }
 
-export type { ApiError }
+type WishlistShareResponse = {
+  message: string
+  user: User
+}
+
+export type { ApiError, WishlistShareResponse }

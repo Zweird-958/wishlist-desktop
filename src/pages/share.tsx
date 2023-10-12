@@ -1,53 +1,77 @@
 import { commonAtom } from "@/web/atom/language"
-import { PlusIcon } from "@heroicons/react/24/outline"
-import Loading from "@/web/components/Loading"
 import Page from "@/web/components/Page"
 import ShareWishlist from "@/web/components/ShareWishlist"
+import UnshareWishlist from "@/web/components/UnshareWishlist"
+import UsersListbox from "@/web/components/UsersListbox"
+import useUsersSharedWith from "@/web/hooks/useUsersSharedWith"
 import useWishlistShared from "@/web/hooks/useWishlistShared"
+import User from "@/web/types/User"
 import {
-  Button,
-  Listbox,
-  ListboxItem,
-  ListboxSection,
-  useDisclosure,
-} from "@nextui-org/react"
+  ChevronRightIcon,
+  PlusIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline"
+import { Button, useDisclosure } from "@nextui-org/react"
 import { useAtom } from "jotai"
 import { useRouter } from "next/router"
+import { useState } from "react"
 
 const Share = () => {
   const { wishlistShared, isFetching } = useWishlistShared()
+  const { usersSharedWith, isFetching: usersSharedFetching } =
+    useUsersSharedWith()
   const router = useRouter()
   const [common] = useAtom(commonAtom)
+  const [selectedUser, setSelectedUser] = useState<User | null>(null)
+
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
+  const {
+    isOpen: isOpenUnshare,
+    onOpen: onOpenUnshare,
+    onClose: onCloseUnshare,
+    onOpenChange: onOpenChangeUnshare,
+  } = useDisclosure()
 
   return (
     <Page>
-      <div className="flex justify-center mt-10">
-        <div className="w-full max-w-[280px] border-small px-1 py-2 rounded-small border-default-200">
-          <Listbox
-            aria-label="users"
-            onAction={(key) => {
-              void router.push(`/wishlist/${key}`)
-            }}
-          >
-            <ListboxSection title={common.sharedWishlist}>
-              {isFetching ? (
-                <ListboxItem key={"loader"}>
-                  <Loading />
-                </ListboxItem>
-              ) : (
-                wishlistShared.map((user) => (
-                  <ListboxItem key={user.id}>{user.username}</ListboxItem>
-                ))
-              )}
-            </ListboxSection>
-          </Listbox>
-        </div>
+      <div className="flex justify-center mt-10 flex-col items-center gap-8">
+        <UsersListbox
+          title={common.sharedWishlist}
+          users={wishlistShared}
+          isFetching={isFetching}
+          action={(key) => {
+            void router.push(`/wishlist/${key}`)
+          }}
+          endContent={<ChevronRightIcon className="w-4" />}
+        />
+        <UsersListbox
+          title={common.usersSharedWith}
+          users={usersSharedWith}
+          isFetching={usersSharedFetching}
+          action={(key) => {
+            const user = usersSharedWith.find(({ id }) => id === Number(key))
+
+            if (!user) {
+              return
+            }
+
+            setSelectedUser(user)
+            onOpenUnshare()
+          }}
+          listboxColor="danger"
+          endContent={<XMarkIcon className="w-4" />}
+        />
       </div>
       <ShareWishlist
         isOpen={isOpen}
         onClose={onClose}
         onOpenChange={onOpenChange}
+      />
+      <UnshareWishlist
+        isOpen={isOpenUnshare}
+        onClose={onCloseUnshare}
+        onOpenChange={onOpenChangeUnshare}
+        user={selectedUser}
       />
       <Button
         onPress={onOpen}

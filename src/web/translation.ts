@@ -26,6 +26,7 @@ const translation = {
       dark: "Dark",
       light: "Light",
       system: "System",
+      usersSharedWith: "Users who have access to your wishlist",
     },
     forms: {
       signIn: {
@@ -74,6 +75,12 @@ const translation = {
           required: "Username is required",
         },
       },
+      unshare: {
+        title: "Stop sharing your wishlist",
+        content:
+          "Are you sure you want to stop sharing your wishlist with this user ?",
+        button: "Confirm",
+      },
       close: "Close",
     },
     fields: {
@@ -115,6 +122,7 @@ const translation = {
       dark: "Sombre",
       light: "Clair",
       system: "Système",
+      usersSharedWith: "Utilisateurs qui ont accès à votre liste d'envie",
     },
     forms: {
       signIn: {
@@ -162,6 +170,12 @@ const translation = {
         username: {
           required: "Nom d'utilisateur requis",
         },
+      },
+      unshare: {
+        title: "Arrêter de partager votre liste d'envie",
+        content:
+          "Êtes-vous sûr(e) de vouloir arrêter de partager votre liste d'envie avec cette utilisateur ?",
+        button: "Confirmer",
       },
       close: "Fermer",
     },
