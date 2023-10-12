@@ -13,7 +13,7 @@ const useWishlist = () => {
   const { session } = useSession()
 
   const { data, isFetching } = useQuery({
-    queryKey: ["wish"],
+    queryKey: ["wish", session],
     queryFn: () => api.get<Wish[]>("/wish"),
     select: (data) => data.result,
     enabled: wishlist.length === 0 && session !== null,
