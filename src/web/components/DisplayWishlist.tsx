@@ -21,7 +21,7 @@ type Props = {
 }
 
 const DisplayWishlist = (props: Props) => {
-  const [filter, setFilter] = useState<Filter>(FILTERS[0] as Filter)
+  const [filter, setFilter] = useState<Filter>(FILTERS[2] as Filter)
 
   const { wishlist, isFetching, sort, sortWishlist, canEdit, emptyText } = props
 
