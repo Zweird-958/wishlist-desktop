@@ -33,6 +33,7 @@ type Props = {
   title: string
   purchased?: boolean
   isLoading: boolean
+  isPrivate?: boolean
 }
 
 const WishForm = (props: Props) => {
@@ -51,6 +52,7 @@ const WishForm = (props: Props) => {
     purchased,
     buttonTitle,
     isLoading,
+    isPrivate,
   } = props
 
   const [image, setImage] = useState<File | null>(null)
@@ -94,6 +96,7 @@ const WishForm = (props: Props) => {
       purchased: purchased ? purchased.toString() : undefined,
       currency: currency,
       image: image ?? undefined,
+      isPrivate: isPrivate ? isPrivate.toString() : undefined,
     }
 
     Object.entries(data).forEach(([key, value]) => {

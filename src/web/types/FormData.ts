@@ -5,6 +5,7 @@ type FormData = {
   currency: string
   price: string
   link?: string
+  isPrivate?: string
 }
 
 export default FormData

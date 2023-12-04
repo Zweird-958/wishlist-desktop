@@ -22,6 +22,9 @@ const WishEditForm = (props: Props) => {
   const [purchased, setPurchased] = useState<boolean>(
     wish ? wish.purchased : false
   )
+  const [isPrivate, setIsPrivate] = useState<boolean>(
+    wish ? wish.isPrivate : false
+  )
   const { handleError } = useHandleErrors()
 
   const { updateWish } = useWishlist()
@@ -39,6 +42,9 @@ const WishEditForm = (props: Props) => {
   const togglePurchased = () => {
     setPurchased(!purchased)
   }
+  const toggleIsPrivate = () => {
+    setIsPrivate(!isPrivate)
+  }
 
   const handleSubmit = (formData: FormData) => {
     mutation.mutate(formData)
@@ -54,15 +60,26 @@ const WishEditForm = (props: Props) => {
       initialValues={{ ...wish, link: wish.link ?? "" }}
       buttonTitle={forms.wish.edit.button}
       purchased={purchased}
+      isPrivate={isPrivate}
       isLoading={mutation.isLoading}
     >
-      <div className="flex justify-between">
-        <p>{fields.bought}</p>
-        <Switch
-          color="primary"
-          isSelected={purchased}
-          onValueChange={togglePurchased}
-        />
+      <div className="flex flex-col gap-4">
+        <div className="flex justify-between">
+          <p>{fields.bought}</p>
+          <Switch
+            color="primary"
+            isSelected={purchased}
+            onValueChange={togglePurchased}
+          />
+        </div>
+        <div className="flex justify-between">
+          <p>{fields.private}</p>
+          <Switch
+            color="primary"
+            isSelected={isPrivate}
+            onValueChange={toggleIsPrivate}
+          />
+        </div>
       </div>
     </WishForm>
   )

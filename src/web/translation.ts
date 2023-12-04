@@ -93,6 +93,7 @@ const translation = {
       bought: "Bought",
       username: "Username",
       usernameToShare: "Username to share with",
+      private: "Private",
     },
   },
   fr: {
@@ -189,6 +190,7 @@ const translation = {
       bought: "Acheté(e)",
       username: "Nom d'utilisateur",
       usernameToShare: "Nom d'utilisateur à partager avec",
+      private: "Privé",
     },
   },
 }

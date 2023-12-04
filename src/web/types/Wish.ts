@@ -8,6 +8,7 @@ type Wish = {
   id: number
   createdAt: string | Date
   priceFormatted: string
+  isPrivate: boolean
 }
 
 export default Wish
